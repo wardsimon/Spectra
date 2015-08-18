@@ -1,0 +1,165 @@
+File    : Whatsnew.txt
+Date    : Wed Sep  2 19:21:04 MET DST 1998
+Subject : MFit version 4.2
+-----------------------------------------------
+
+Welcome to MFit 4.3 Package.
+
+It should contain :
+  mfit4   main programs
+and also needs
+  load    load routines, also for Mview 4.1
+  funcs   fit functions
+  nllsq   fit routines
+
+This program is to be used by Matlab version 5.3 or better.
+
+It enables graphical signal fitting with many options. Try it you'll love it !
+
+1- Installation
+
+  Just put those dirs into your matlab zone, and change at the beginning of
+  your 'startup.m' file the lines :
+
+libroot = '<the path to your MFit/Mview/Rescal/... toolbox>';
+
+  Then you may have to create the MEX files 'ffind.mex', witch is used by some
+  load routines. Move to the 'load' dir, and type (on terminal prompt):
+
+mex ffind.c
+
+  Next step is to compile the 'looktxt' program, that is also used by load routines. Just type :
+
+gcc -O looktxt.c -o looktxt       // for Unix
+gcc -O looktxt.pc -o looktxt    // for PC if you really wan't to compile it
+
+  and to create associated MeX file:
+
+mex -O -o looktxt texmex.c
+
+  For PC's, the looktxt.exe program is ready to use.
+  You have to move that executable 'looktxt' file to a 'bin' dir (or DOS directory for PC's). Then (on unix systems):
+
+rehash
+
+  Edit the file 'mfit4/mfit.ini' and modify if needed the various path names to LoadRoutines, FitFunctions and FitRoutines sections.
+
+  Mfit is now installed. Type 'mfit' to start it.
+
+2- Purpose, usage.
+
+Mfit is intended to fit any data, with any function.
+* You have to choose a 'load' routine:
+   usually, General Load Routine is efficient. However, for special data format, it's better to use associated data importation routine.
+   Load routines are quite easy to program and add to Mfit menu.
+* Then, choose your fit function.
+   It can be a coumpound function, thanks to 'multifunction...' (type : help multifunc)
+   Parameters can be fixed when clicking on push buttons.
+* Load data by clicking on 'new...' or selecting 'load' in File menu.
+* Click on 'Guess' to show starting parameters for fit, or enter them manually...
+* You can also select the fit routine. Gradient is fast, but can sometimes find a local minimum not really good.
+   For Gradient, 'dp' (in MFit:Data/Control menu) is the partials determination step. Should not be bigger than 0.1 !!
+  'stol' is the stop criteria, should be quite small (I often use 1e-5).
+   Simplex is quite good if you are far away from good fit. In that case, 'stol' should be larger (about 0.1), and
+   'dp' is the exploration zone around starting parameters (in percentage: 0.1 = 10 % up and down for each parameter).
+   It can be large (0.5) if you really don't have any idea of fit parameter values (very far when starting).
+* Click on Fit button.
+
+Simple, isn't it ?
+Just try/play with all buttons, menus, edit fields, ...
+A complete Manual is available at
+http://www.ill.fr/tas/matlab/doc/mfit4/index.html
+
+3- What's news features.
+
+The original version of mfit ('MFIT v0.2 (c) M.Zinkin 17.5.95') was designed for Matlab 4.2
+Then followed the v0.3.
+It was already quite good. Anyway, some bug fixing and adds on were necessary.
+
+Here is a list of main new features and bug fixs :
+
+Mfit 4.0
+* improved design
+* official netscape help at Risoe in 'File/Help'
+
+Mfit 4.1 : Sept 1997 (EF, DFM)
+* retrieval of mfit data to matlab prompt with 'fromfit' function ('fromfit.m')
+* better handling of 'Text' feature in graphic data window (removal of text with 'Delete' button)
+* 'Multifunction' feature : any set of functions can be combined... very powerful.
+   Force constrain on parameters or any additional matlab operation possible.
+* many small bugs removed.
+* sigma on params is now better... simplex uses a statistical evaluation, gradient uses jacobian.
+* improved batch handling(mf_batch)
+* autoguess feature installed (in data window) (11/97)
+* fromfit and tomfit enable direct MFit data handling (get/set).
+* autosave feature installed (before load new data, parameters are saved)
+* added key accelerators and corrected some minor bugs (04/98)
+* transform data feature in Mfit:Graph/Data menu(04/98)
+* free/fix all params in Mfit:Graph/Data menu(04/98)
+* Extensions with mf_ExecAfter{Load|Fit} objetcs(04/98)
+* Links to other Applications
+* MFit configuration variables can be changed by used (Links Menu)
+* Change X axis now part of MFit. Called by SSym
+* stuff fixing in : uplot faster, rbbox improved
+
+Mfit 4.2 : May 1998 (EF, DFM)
+* when saving MFit config file, also save startup section.
+  For next start, multifunc, x axis rescaling, parameters... are rebuild.
+* fit control is now in 'Option' menu of main MFit window.
+* multifunc now support 'user' parameters
+* a batch command field is now directly available. Press DoIt button to execute
+* multifunc now saves its parameters when changing fit function
+* fit parameters revert now possible
+* Minor correction in ILL batch load routine, mf_rbbox
+* speed up by 50 % multifunc with external temporary function (can be pre-compiled by matlab)
+* zoom list is now kept when reploting (at last !) in Mfit/mf_gdata
+* revised parameters uncertainty estimates in nllsq/mf_sig (EF). err=0 case corrected in mfit/mf_gdata and nllsq/mf_dfdp. ExecAfterLoad data saving in mf_gdata.
+
+Load routines 4.1 : sept 1997 (EF, DFM)
+* new batch procedures and parameters for all data formats.
+* ILL load enables automatic parameters importation to rescal and mfit.
+* importation of any data thanks to 'Load Routine/General Load Routine' feature ('multiload.m')
+* direct user importation through 'Load/Direct Data from User' feature ('frombase.m')
+* SPEC load is now better
+* Revised batch routines, mf_coldg
+
+MFit 4.3: June 2005
+* adapted to Matlab 7
+* improved multifunction
+* added many tooltips and corrected some small bugs
+* added 1D convolution tool
+
+4- Troubles
+
+If you find any bug please tell us.
+Matlab refresh drawing might cause strange things if you are using an 'autoraise' option in your Window Manager. It causes graphics to be sometimes drawn in the wrong window (!).
+The 'unix' command of matlab seems to scramble history displaying on prompt sometimes. Type '!' at matlab's prompt to fix.
+
+5- Authors
+
+Those libraries are protected through the GNU GENERAL PUBLIC LICENSE
+which is detailed in 'licence.gpl' files in each part of libraries.
+
+Copyright (C) 1998  Zinkin, McMorrow, Tennant, Farhi, and Wildes.
+
+M.Zinkin (m.zinkin1@physics.ox.ac.uk) alias MZ
+Des.McMorrow (des.mcmorrow@risoe.dk) alias DFM
+D.A. Tennant (d.tennant1@physics.oxford.ac.uk) alias DAT
+E.Farhi (farhi@ill.fr) alias EF
+
+
+Current content of MFit4 is :
+Contents.m    mf_dwin.m     mf_load.m     mf_smooth.m   mfitgo.m
+default.ini   mf_exit.m     mf_msg.m      mf_stats.m    mft_get.m
+fromfit.m     mf_exprdg.m   mf_newfn.m    mf_svdat.m    mftconv.m
+licence.gpl   mf_figs.m     mf_opt.m      mf_svfil.m    mftread.m
+mf_autogs.m   mf_file.m     mf_path.m     mf_svpar.m    tas.ini
+mf_batch.m    mf_fitrt.m    mf_print.m    mf_text.m     tomfit.m
+mf_brows.m    mf_fndpks.m   mf_pwin.m     mf_upars.m    whatsnew.txt
+mf_btprs.m    mf_gdata.m    mf_rbbox.m    mf_uplot.m
+mf_chgx.m     mf_gpar.m     mf_rmspks.m   mf_xylim.m
+mf_dofit.m    mf_guess.m    mf_rpars.m    mfit.ini
+mf_drag.m     mf_interp.m   mf_save.m     mfit.m
+
+
+

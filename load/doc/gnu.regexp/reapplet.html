@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+<TITLE>package gnu.regexp - Regular Expressions for Java</TITLE>
+</HEAD>
+<BODY BGCOLOR=WHITE TEXT=BLACK>
+<FONT SIZE="+2"><B><CODE>package gnu.regexp;</CODE></B><HR NOSHADE>
+Test Applet</FONT><BR>
+<FONT SIZE="-1">This page was last updated on 20 March 1999</FONT>
+
+<P>
+<STRONG>About the Applet</STRONG><BR>
+
+The applet below (if your browser supports Java applets, that is) lets
+you play around with the gnu.regexp engine by compiling regular
+expressions and testing them against arbitrary input text (if you
+like, cut and paste into the input textarea).  The applet JAR is about 27K
+in size, and includes the gnu.regexp library (24K).
+
+<P>
+<STRONG>Basic Usage</STRONG><BR>
+
+To get started, click the "Match" button using the defaults.  You
+should see two matches found.  Turn on the "ignore case" feature and
+click "Match" again.  A third match will be found.  Then try your own
+regular expressions (the applet defaults to a Perl5-like syntax) and
+input texts.
+
+<P>
+<STRONG>Troubleshooting</STRONG><BR>
+
+If the applet won't start, you may have an incompatible version of gnu.regexp
+in your browser's classpath setting (usually the gnu.regexp library will be downloaded for you by the browser).  You can remedy this by quitting the browser and adjusting your classpath setting to exclude gnu.regexp before relaunching.
+
+<P>
+
+<TABLE BORDER=0 BGCOLOR=BLACK CELLSPACING=0 CELLPADDING=1>
+<TR><TD><APPLET archive="gnu-regexp-applet.jar" code="gnu/regexp/util/REApplet.class" width=500 height=200>
+<PARAM NAME="input" VALUE="A man, a plan, a canal: Panama.">
+<PARAM NAME="regexp" VALUE="a\s+\w+">
+<PARAM NAME="syntax" VALUE="perl 5">
+</APPLET></TD></TR></TABLE>
+
+<P>
+
+<FONT SIZE="-1">
+<A HREF="index.html">[gnu.regexp]</A>
+<A HREF="syntax.html">[syntax and usage]</A>
+<A HREF="changes.html">[change history]</A>
+<A HREF="api/packages.html">[api documentation]</A>
+<A HREF="faq.html">[faq]</A>
+<A HREF="credits.html">[credits]</A>
+</FONT>
+</BODY>
+</HTML>
+
+

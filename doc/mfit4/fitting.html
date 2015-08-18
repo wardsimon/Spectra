@@ -1,0 +1,215 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Fitting</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<p>By now you should have successfully <a href="loading.html">loaded a
+set of data</a>, and <a href="choosefit.html">chosen a fitting function</a>.
+There should be three <b>M</b><i>fit</i> windows open: the control window,
+the data window, and the parameters window. You can now begin fitting.
+<p><b><a href="#Basic fitting">Basic fitting</a></b>
+<ol>
+<li>
+<a href="#GetParameters">Getting starting parameters</a></li>
+
+<li>
+<a href="#BeginFit">Performing a fit</a></li>
+</ol>
+<b><a href="#More advanced fitting">More advanced fitting</a></b>
+<ol>
+<li>
+<a href="#FixParameters">Fix and free parameters</a></li>
+
+<li>
+<a href="#SelectData">Select data to fit</a></li>
+
+<li>
+<a href="#AutoGuess">The autoguess feature</a></li>
+
+<li>
+<a href="#Change fit routine options">Change fit routine options</a></li>
+
+<li>
+<a href="#Fitroutine">Choosing an alternate fit routine</a></li>
+</ol>
+
+<hr WIDTH="100%">
+<center>
+<h2>
+<a NAME="Basic fitting"></a>Basic fitting</h2></center>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Get starting parameters<a NAME="GetParameters"></a></h3>
+Non-linear fitting works by using an algorithm to attempt to improve on
+a first 'guess' that you make for the function parameters that fit your
+data. The first step in fitting is to give <b>M</b><i>fit</i> a set of
+starting parameters to work with. You can do this in two ways. The first
+is simply to type them into the parameters window:
+<center>
+<p><img SRC="parwin.gif" ALT="Mfit parameters window" height=148 width=331>
+<br>Fig 1 : <b>M</b><i>fit</i> : parameter window</center>
+
+<p>you click on the box showing the value of the parameter you want to
+change, and type the new value. After you have entered values for all the
+parameters, press the 'plot' button in the control window, and the function
+will be drawn in the data window.
+<p>This is slow, and for many functions it's not obvious what starting
+parameters might be. Many <b>M</b><i>fit</i> fit functions allow you to
+get the starting parameters with the mouse, by clicking on points in the
+data window. Click on the '<b>guess</b>' button in the control window:
+<center>
+<p><img SRC="Conwin3.gif" ALT="Control window - load function menu" height=198 width=508>
+<br>Fig 2 : <b>M</b><i>fit</i> : control window asking for a peak position.</center>
+
+<p>and follow the prompts displayed in the message box, the wide test box
+just above the row of buttons in the control window. For example, many
+peak fit functions ask you to click on the centre of the peak (in the data
+window), then on the width (i.e. the half height position), and then on
+the background. When you've fiinished, the function will be draw in the
+data window.
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Beginning a fit<a NAME="BeginFit"></a></h3>
+Having chosen starting parameters, you can now begin the fit by pressing
+the 'fit' button in the control window. As the fit progresses <b>M</b><i>fit</i>
+shows the number of fit iterations in the message box, and draw the function
+with the current parameters in red in the data window. When the fit finishes,
+the word 'Done' is displayed in the message box, and the values in the
+parameters window are the results of the fit. The parameters window also
+displays the uncertainties associated with each parameter value, and the
+value of the reduced chi squared, and Q, the probability that chi squared
+should exceed its current value by chance.
+<p><b>Next</b>: <b><a href="saving.html">Saving results</a></b>
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b></div>
+
+<hr width="100%"><a NAME="More advanced fitting"></a>
+<center>
+<h2>
+More advanced fitting</h2></center>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Fix and free parameters<a NAME="FixParameters"></a></h3>
+You will often want to fix some of the function parameters to preset values,
+preventing the fitting algorithm from changing them during the fit. You
+do this simply by clicking in the check box to the left of the parameter
+name in the parameters window:
+<center>
+<p><img SRC="Parwin2.gif" ALT="Mfit parameters window" height=148 width=331>
+<br>Fig 3 : <b>M</b><i>fit</i> : parameter window with a fixed backgroung</center>
+
+<p>Here, the 'Background' parameter has been fixed at 9.06. You can free
+a parameter by clicking on the checkbox again.
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Select data to fit<a NAME="SelectData"></a></h3>
+Sometimes, you may want to restrict the data points you want to fit: you
+might just want to fit a small feature in your data, or you may want to
+exclude data points that you believe are spurious (dangerous, unless you
+have very good reasons!) You can include and exclude points from the fit
+by choosing operations from the 'select data' menu in the data window:
+<center>
+<p><img SRC="Datwin2.gif" ALT="Mfit data window" height=406 width=408>
+<br>Fig 4 : <b>M</b><i>fit</i> : Deselected points in the Data window</center>
+
+<p>To select data points to include in the fit, choose 'Select Data' in
+the 'Data' menu of the '<b>M</b><i>fit</i> : Data' window . The cursor
+will change to a cross hair, and you click and drag on the data window
+to define a box enclosing the data points you want to select. Keep clicking
+and dragging until you have selected all the points you want to include.
+You deselect points in the same way. To set the zoom mode again (default
+mode), just use the Zoom menu.
+<br>&nbsp;
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>The AutoGuess feature<a NAME="AutoGuess"></a></h3>
+Most fit functions require peak positions, widths, amplitudes and backgrounds.
+<b>M</b><i>fit
+</i>can
+perform an automatic guess for such parameters. When checking the 'AutoGuess'
+item in the Option menu of the control window, it analyzes the data, looking
+for peak characteristics, and sets the guessed values to parameters, according
+to their <i>names</i>. It does work fine for most functions, but the data
+must contain enough points to enable an efficient data analysis.
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Change fit routine options"></a>Change
+fit routine options</h3>
+It is possible to change some parameters controling the fitting process.
+To do so, select the <i>Fit Control</i> item of the <i>Options</i> menu
+in '<b>M</b><i>fit</i> : <i>Control</i> window':
+<center><img SRC="fitctrl.gif" height=128 width=188>
+<br>Fig 5 : <b>M</b><i>fit</i> : The Fit control window</center>
+
+<p>You can there change :
+<ul>
+<li>
+<b>dp</b> - this parameter depends on the fit routine&nbsp; (see <a href="#Fitroutine">Choosing
+an alternate fit routine</a>)</li>
+
+<ul>
+<li>
+for the Marquadt Levenberg method, this is the step used to compute partial
+derivatives <tt>f(x,p+dp) - f(x,p)/dp</tt> (in percent of parameter). Reasonable
+value should be below 0.1 (10 %) ; when higher, this could lead to uncertainties
+in derivative estimates.</li>
+
+<li>
+for the Simplex method, it indicates the exploration range around starting
+parameter set (in %). For instance, a value of 0.1 will indicate that each
+parameter will first be investigated between +10%/-10% around starting
+value. This range can be extended during simplex fitting process. Reasonable
+values should be between, say 0.1 (10 %) and 0.5(50 %). High values are
+to be used when your starting parameters are very approximative.</li>
+</ul>
+
+<li>
+<b>niter</b> - maximum number of iterations</li>
+
+<li>
+<b>stol</b> - sets the convergence tolerancy for fit. When the fit criterion
+(usually least-square) variation between two fit iterations is less than
+that value, the fit is considered to be stable, and finishes.</li>
+</ul>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Choosing an alternate
+fit routine<a NAME="Fitroutine"></a></h3>
+The standard fit procedure (optimization) is to minimize the least-square
+criterion by mean of an adaptative gradient (Marquardt-Levenberg method).
+This routine is supplied in a graphic mode (showing the fit process, and
+the converging parameters), as well as a non-graphic faster routine.
+<br>But you may choose to use some other fitting procedure in the 'Fit
+Routine' menu of the Control window. For instance, a <b>simplex</b> method
+is also supplied.
+<ul>
+<li>
+<b>Marquardt-Levenberg method</b> - is fast and efficient, but can converge
+towards a wrong solution in some cases (local criterion minimum)</li>
+
+<li>
+<b>Simplex method</b> - is slower, but can easely avoid local criterion
+minima solutions, and finally converge to the global minimum</li>
+</ul>
+Refer to the <a href="fitrout.html">How to write fitting routines</a> page
+in order to add your own minimization method.
+<p><b>Next: <a href="saving.html">Saving results</a></b>
+<br><b>See also:</b> <b><a href="fitrout.html">How to write fitting routines</a></b>
+, <b><a href="fitfunc.html">How to write fitting functions</a></b>
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

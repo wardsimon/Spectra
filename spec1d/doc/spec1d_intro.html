@@ -1,0 +1,46 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Des McMorrow">
+   <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+   <title>spec1d</title>
+</head>
+<body>
+
+<h2>
+Introduction</h2>
+<font size=+1><b><font color="#FF0000">Spec1d</font></b> is presently built
+on the following class structure:</font>
+<blockquote><tt><font size=+1>x-data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.x</font></tt>
+<br><tt><font size=+1>y-data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.y</font></tt>
+<br><tt><font size=+1>y error&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.e</font></tt>
+<br><tt><font size=+1>x-label&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.x_label</font></tt>
+<br><tt><font size=+1>y-label&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.y_label</font></tt>
+<br><tt><font size=+1>datafile&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.datafile</font></tt>
+<br><tt><font size=+1>y-fit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;
+s.yfit</font></tt></blockquote>
+<font size=+1><b><font color="#FF0000">Spec1d</font></b> objects can either
+be singular, or arrays. In this way it is possible to store and perform
+data analysis on many files (in fact whole data sets) using one line commands.</font>
+<p><font size=+1>Note: The handling of errors in spec1d is designed&nbsp;
+not to be restricted to the case where the errors are determined by counting
+statistics. You are advised, however, to check the routines to make sure
+that they are applicable to the problem you are trying to treat.</font>
+<p><font size=+1>The easiest way to become familiar with <b><font color="#FF0000">spec1d</font></b>
+is to study a number of examples.</font>
+<h3>
+Reading data files: use of the <font color="#FF0000">loads </font>command</h3>
+<font size=+1><a href="spec1d_intro_ex1.html">Example 1: Reading data stored
+in x, y, error format, and fitting it to a Gaussian peak</a></font>
+<br><font size=+1><a href="spec1d_intro_ex2.html">Example 2: Reading data from a 
+formatted data files: ILL format</a></font><br><font size=+1><a href="spec1d_intro_ex3.html">
+Example 3: Reading multiple scans from a single file: SPEC format</a></font>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="E. Farhi [farhi@ill.fr]">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>More Options </title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<center>[ <a href="#The column selector">Column selector</a> ][ <a href="#The Mfit parameter file importation"><b>M</b><i>fit</i>
+parameter file importation</a> ][ <a href="#General Load routine">General
+Load routine </a>][ <a href="#The Direct Data entry">Direct Data entry</a>
+]</center>
+
+<h1>
+Some loading options and comments</h1>
+
+<h3>
+<img SRC="greenbal.gif" height=14 width=14><a NAME="The column selector"></a>The
+column selector</h3>
+Most of the GUI versions of the Load routines will cause a column selector
+pop-up window to appear:
+<center>
+<p><img SRC="Colsel.gif" height=235 width=182>
+<br>Fig 1 : <b>M</b><i>fit</i> : column selector in GUI mode</center>
+
+<p>You may modify here, if necessary, the <i>x</i>, <i>y</i> ,<i>error</i>
+and <i>monitor</i> columns assignments. The final signal is <i>y</i> divided
+by the <i>monitor</i> (none means 1), and multiplied by <i>ynorm</i>.
+<br>In some cases where many signals are stored in a single file (for instance
+the SPEC files), you can enter the scan number (#) in a given experimental
+file.
+<br>Also, if the load routine handles it, you can ask for an automatic
+parameter search in the data file (use '<tt>1,setpar</tt>' as scan/part/opt
+specification). For instance, the ILL data load routine can get the temperature,
+the 3-axis instrument parameters, etc...and transfert them to the Mfit/Rescal
+windows.
+<br>&nbsp;
+<h3>
+<img SRC="greenbal.gif" height=14 width=14><a NAME="The Mfit parameter file importation"></a>The
+<b>M</b><i>fit</i>
+parameter file importation</h3>
+
+<p><br>This routine enables to plot fit parameters <i>versus</i> some others.
+<br>An <b>M</b><i>fit</i> parameter file usually contains a serie of similar
+fit results (see the <b><a href="saving.html">Saving results</a></b> page,
+and the AutoSave feature).
+<p>When loading the data file, you are first asked to choose among the
+different results stored in it with a window like:
+<center>
+<p><img SRC="mfpar1.gif" height=311 width=340>
+<br>Fig 2 : <b>M</b><i>fit</i> : parameter file part selector for importation</center>
+
+<p>Then the parameter file is analysed, and a list of parameter names found
+inside the selected sections is given. Choose the X and Y data in that
+set. Multiple choices are possible (concatenation).
+<center>
+<p><img SRC="mfpar2.gif" height=311 width=337>
+<br>Fig 3 : <b>M</b><i>fit</i> : parameter file X-Y selector for importation</center>
+
+<h3>
+<img SRC="greenbal.gif" height=14 width=14><a NAME="General Load routine"></a>The
+General Load routine</h3>
+This load routine can virtually import any kind of data stored inside a
+text file. The format of the data is not important. In fact, <tt>texmex</tt>,
+the MeX version of <a href="http://www.ill.fr/tas/matlab/doc/looktxt.html">looktxt
+</a>,
+looks for single numbers, vectors or matrices, and can pass-over the character
+strings and comments.
+<br>For instance, when importing a file, the Matlab window will display
+the analysis as follow:
+<center>
+<p><img SRC="multiloadtty.gif" height=586 width=592>
+<br>Fig 4 : Matlab workspace : The <b>M</b><i>fit </i>Multiload file analysis
+with looktxt/texmex.</center>
+
+<p>This shows the analysis/importation process, sorting character strings,
+comments, and numerical values. Then, a pou-up window will ask what numerical
+part should be used as data to import. Of course, you should choose a vector
+or matrix numerical field (the size of each part is indicated between quotes):
+<center><img SRC="multiload.gif" height=156 width=182>
+<br>Fig 5 : <b>M</b><i>fit</i> : The Multiload choice after file analysis.</center>
+
+<p>In that example, the General Load routine automatically selects the
+bigger numerical field, which is a matrix of dimension 29x16 numbers. Then,
+the usual <a href="#The column selector">Column selector</a> is displayed,
+and the importation process goes on. Usually, the data files contain a
+header indicating the column significance just before the data, as shown
+in that example. This indication is to be used for selecting the column
+affectation for X, Y, error and monitor.
+<h3>
+<img SRC="greenbal.gif" height=14 width=14><a NAME="The Direct Data entry"></a>The
+Direct Data entry</h3>
+This load routine enables to import a Matlab variable or an expression
+for X, Y, error and monitor.
+<br>When selecting 'New...' data load button or 'Load new data file...'
+from the File menu in the MFit : Control window, a window pop-up appears.
+You can use variables from the matlab workspace, and expressions:
+<center><img SRC="directdata.gif" height=179 width=308>
+<br>Fig 6 : <b>M</b><i>fit</i> : The Direct data entry pop-up</center>
+
+<p>In that example, we have previously defined the variable '<tt>a</tt>'
+in the matlab workspace
+<blockquote><tt>>> a=2;</tt></blockquote>
+After selecting OK, <tt>x</tt> will be the vector <tt>1:100</tt> , <tt>y</tt>
+will be assigned the evaluated expression using <tt>a</tt> and <tt>x</tt>.
+The error will be constant (not specified by user), but it could have been
+'<tt>sqrt(abs(y))</tt>'.
+<p>See also : <a href="manipdata.html#Exchanging data">Exchanging data
+between <b>M</b><i>fit</i> and the <tt>matlab</tt> workspace</a> (<b>M</b><i>fit</i>
+variables, <i>fromfit</i> and <i>tomfit</i> commands)
+<br>&nbsp;
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<br>(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.
+</body>
+</html>

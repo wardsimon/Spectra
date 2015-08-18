@@ -1,0 +1,65 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Fit function</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<h1>
+<b>Choosing a fitting function</b></h1>
+The Matlab functions which calculate the model functions you fit to data
+are called fitting functions. The procedure for choosing a fitting funtion
+is similar to that for choosing a <a href="loading.html">load function:</a>
+you pick a function from those listed on the control window 'Fit Functions'
+menu:
+<center>
+<p><img SRC="Conwin2.gif" ALT="Control window - load function menu" height=218 width=508>
+<br>Fig 1 : <b>M</b><i>fit</i> : control window</center>
+
+<p>The functions listed are those that <b>M</b><i>fit</i> read from the
+<a href="inifile.html">mfit.ini</a>
+file when it started. Choose the function you want by clicking on it. You
+can choose an unlisted function by choosing '<i>Other</i>...' and then
+using the dialog that appears to tell <b>M</b><i>fit</i> about your function.
+<b>M</b><i>fit</i>
+show the currently selected fit function in the control window. It is possible
+to build a more complex function (such as a gaussian plus a lorentzian,
+convoluted with an experimental resolution function) with the <a href="multifunc.html">multifunction</a>
+feature.
+<p>If <b>M</b><i>fit</i> successfully loads the fit function, it opens
+a parameters window which shows the values of the parameters associated
+with the particular function. The parameters windows looks something like
+this:
+<center>
+<p><img SRC="parwin.gif" height=148 width=331>
+<br>Fig 2 :&nbsp; <b>M</b><i>fit</i> : parameter window</center>
+
+<p>The number and names of the parameters of course depends on the function
+you chose, and the boxes will be blank when you first load a function.
+<p><b>Next:</b> <b><a href="fitting.html">Fitting</a></b>.
+<br><b>See also:</b> <b><a href="batch.html">M<i>fit</i> batch files</a></b>
+,
+<b><a href="inifile.html">The
+<tt>mfit.ini</tt> file</a></b> , <b><a href="multifunc.html">Building
+a complex fitting function</a></b> , <b><a href="fitfunc.html">How to write
+fitting functions</a></b>.
+<br>&nbsp;
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : batch</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<h1>
+
+<hr></h1>
+
+<center>[ <a href="batch.html#BatchCommands">Batch file command reference</a>
+][ <a href="batch.html#Example">Example batch file</a> ]</center>
+
+<h1>
+<b>The </b>M<b><i>fit</i> batch language</b></h1>
+<b>M</b><i>fit </i>is designed to make interactive fitting as quick and
+easy as possible. However, there may be times when you want to automate
+your fitting, especially if, as frequently happens, you need to go through
+a the same fitting procedure for many different data files. The <b>M</b><i>fit</i>
+batch language lets you automate most fitting operations. An additional
+advantage is that the batch files serve as a record of the fitting procedure
+used.
+<p>In fact, the standard format in which <b>M</b><i>fit</i> saves fit results
+(see saving fit results) is as a batch file. This makes it particularly
+easy to write batch files, as you can perform a fit manually once, save
+the results, and then edit the resulting file (the <a href="batch.html#Example">example</a>
+below was produced in this way).
+<p>The batch commands can be used in various ways:
+<ul>
+<li>
+In the <b><a href="inifile.html"><tt>mfit.ini</tt> file</a></b> , the statup
+section can contain batch commands to execute at <b>M</b><i>fit </i>launching.</li>
+
+<li>
+The <b>M</b><i>fit</i>:Control window can contain a <i>batch command field</i>
+when setting <tt>ShowBatchLine = 1</tt> in the <b><a href="inifile.html"><tt>mfit.ini</tt>
+file</a></b>. Press the <i>Do It </i>Button to execute command.</li>
+
+<li>
+In the matlab workspace, you can type</li>
+
+<ul><tt>>> mf_batch('command string')</tt> or
+<br><tt>>> mf_batch('filename')</tt> .</ul>
+Try for instance <tt>mf_batch('help').</tt>
+<li>
+In the Option menu of the <b>M</b><i>fit</i>:Control window, the 'Extensions...'
+item has a <i>mfit batch command</i> field</li>
+</ul>
+
+<h2>
+See:</h2>
+
+<ul>
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a href="batch.html#Example">Example
+batch file</a></h3>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a href="batch.html#BatchCommands">Batch
+file command reference</a></h3>
+</ul>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr width="100%"><a NAME="BatchCommands"></a>
+<h2>
+Batch language command reference</h2>
+Below is a list of batch file commands, and an brief description of what
+they do. Square brackets indicate necessary arguments, eg. <tt>[Parameter
+number]</tt>, and angle brackets indicate optional arguments, eg. <tt>&lt;Parameter
+name> </tt>Commands are case insensitive. Scroll down to browse.
+<ul><img SRC="greenbal.gif" ALT="*" height=14 width=14><a href="batch.html#DataFile">DataFile</a>
+<br><a href="batch.html#DataFile"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#DataDir">DataDir</a>
+<br><a href="batch.html#DataDir"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#FitFuncFile">FitFuncFile</a>
+<br><a href="batch.html#FitFuncFile"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#FitFuncDir">FitFuncDir</a>
+<br><a href="batch.html#FitFuncDir"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#LoadRoutineFile">LoadRoutineFile</a>
+<br><a href="batch.html#LoadRoutineFile"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#LoadRoutineDir">LoadRoutineDir</a>
+<br><a href="batch.html#LoadRoutineDir"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#OutFile">OutFile</a>
+<br><a href="batch.html#OutFile"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#OutDir">OutDir</a>
+<br><a href="batch.html#OutDir"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Load">load</a>
+<br><a href="batch.html#Par"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Par">par</a>
+<br><a href="batch.html#Par"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Fix">fix</a>
+<br><a href="batch.html#Fix"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Free">free</a>
+<br><a href="batch.html#Fix"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#fit">fit</a>
+<br><a href="batch.html#Free"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Save">save</a>
+<br><a href="batch.html#Save"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Plot">plot</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="batch.html#Pause">pause</a>
+<br><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14><a href="#axes">axes</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#guess">guess</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#exec">exec</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#vars">vars</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#help">help</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#rem">rem</a>
+<br><a href="batch.html#Plot"><img SRC="greenbal.gif" ALT="*" BORDER=0 height=14 width=14></a><a href="#stop">stop</a></ul>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr width="100%">
+<br>All Mfit variables can be modified (see the <a href="#vars">vars</a>
+command). Also, in matlab expressions (see <a href="#Par">par</a> and <a href="#exec">exec</a>),
+you can use the variables x, y, err, selected, p, dp,&nbsp; fixed.
+<br>&nbsp;
+<h3>
+<a NAME="DataFile"></a><b>DataFile</b> - Set name of data file to load.</h3>
+
+<ul><b>Syntax: </b><tt>DataFile = [File name]</tt>
+<br><b>Example:</b> <tt>DataFile = temp.dat</tt>
+<br><b>Note:</b> The data file is not actually loaded until the <a href="batch.html#Load">load</a>
+command is issued.&nbsp; The = sign is optonal
+<br><b>See also:</b> l<a href="batch.html#Load">oad,</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="DataDir"></a>DataDir - Set the data directory.</h3>
+
+<ul><b>Syntax: </b><tt>DataDir = [directory name]</tt>
+<br><b>Example:</b> <tt>DataDir = c:\temp\</tt>
+<br><b>Notes:</b> The data file is not actually loaded until the <a href="batch.html#Load">load</a>
+command is issued .&nbsp; The = sign is optonal
+<br><b>See also:</b> l<a href="batch.html#Load">oad,</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="FitFuncFile"></a>FitFuncFile - Set fit function to use.</h3>
+
+<ul><b>Syntax: </b><tt>FitFuncFile = [.m file name]</tt>
+<br><b>Example:</b> <tt>FitFuncFile = gauss</tt>
+<br><b>Notes:</b> omit the .m extension from the file name. The function
+is not actually loaded until the <a href="batch.html#Load">load</a> command
+is issued. .&nbsp; The = sign is optonal
+<br><b>See also:</b> <a href="choosefit.html">choosing a fit function</a>,
+<a href="batch.html#Load">load</a>,
+<a href="batch.html#FitFuncDir">FitFuncDir,</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="FitFuncDir"></a>FitFuncDir - Set the directory for the fit function.</h3>
+
+<ul><b>Syntax: </b><tt>FitFuncFile = [.m file name]</tt>
+<br><b>Example:</b> <tt>FitFuncFile = gauss</tt>
+<br><b>Notes:</b> omit the .m extension from the file name. The function
+is not actually loaded until the <a href="batch.html#Load">load</a> command
+is issued. .&nbsp; The = sign is optonal
+<br><b>See also:</b> <a href="choosefit.html">choosing a fit function</a>,
+<a href="batch.html#Load">load</a>,
+<a href="batch.html#FitFuncFile">FitFuncFile,</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="OutFile"></a>OutFile - Set the output file name.</h3>
+
+<ul><b>Syntax: </b><tt>OutFile = [File name]</tt>
+<br><b>Example:</b> <tt>OutFile = temp.mft</tt>
+<br><b>Notes:</b> the output the file to which fit results are saved. New
+results are appended to the end of the current output file. .&nbsp; The
+= sign is optonal
+<br><b>See also:</b> <a href="batch.html#Save">save</a><tt>, </tt><a href="batch.html#OutDir">OutDir<tt>,</tt></a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="OutDir"></a>OutDir - Set the output directory.</h3>
+
+<ul><b>Syntax: </b><tt>OutDir = [Directory name]</tt>
+<br><b>Example:</b> <tt>OutDir = c:\temp\</tt>
+<br><b>Notes:</b> the directory for the output file. .&nbsp; The = sign
+is optonal
+<br><b>See also:</b> <a href="batch.html#Save">save</a>, <a href="batch.html#OutFile">OutFile</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="LoadRoutineFile"></a>LoadRoutineFile - Set the load routine to
+use to load data.</h3>
+
+<ul><b>Syntax: </b><tt>LoadRoutineFile = [.m file name]</tt>
+<br><b>Example:</b> <tt>LoadRoutineFile = xyeload</tt>
+<br><b>Notes:</b> omit the .m extension from the file name .&nbsp; The
+= sign is optonal
+<br><b>See also:</b> <a href="loading.html">choosing a load routine</a>,
+<a href="batch.html#LoadRoutineDir">LoadRoutineDir</a></ul>
+
+<h3>
+<a NAME="LoadRoutineDir"></a>LoadRoutineDir - Set the directory for the
+load routine.</h3>
+
+<ul><b>Syntax: </b><tt>LoadRoutineDir = [Directory name]</tt>
+<br><b>Example:</b> LoadRoutineDir = c:\matlab\mfit3\load
+<br><b>Notes:</b>.&nbsp; The = sign is optonal
+<br><b>See also:</b> <a href="batch.html#LoadRoutineFile">LoadRoutineFile</a><a href="#vars">vars</a></ul>
+
+<h3>
+<a NAME="Load"></a>load - Load data file and fit function.</h3>
+
+<ul><b>Syntax: </b>load &lt;filename &lt;with funcname>>
+<br><b>Example:</b> <tt>load ba300.0,X=#,Y=1 with multibatch</tt> will
+load that file with multibatch load routine, X as point number and Y as
+column 1.
+<br><b>Notes:</b> Load the data file specified by the <tt>DataFile</tt>
+and
+<tt>DataDir </tt>commands, and load the fit function specified by the
+<tt>FitFuncFile</tt>
+and <tt>FitFuncDir</tt> commands.&nbsp; Using the optional <tt>with</tt>
+keyword will affect the <a href="batch.html#DataFile">DataFile</a> and
+<a href="batch.html#LoadRoutineFile">LoadRoutineFile</a>.
+<br><b>See also:</b> <a href="batch.html#DataFile">DataFile</a>, <a href="batch.html#DataDir">DataDir</a>,
+<a href="batch.html#FitFuncFile">FitFuncFile</a>,
+<a href="batch.html#FitFuncDir">FitFuncDir</a></ul>
+
+<h3>
+<a NAME="Par"></a>par - Set the value of a fit function parameter.</h3>
+
+<ul><b>Syntax: </b><tt>par [Parameter number] &lt;Parameter name> [Value
+or expression]</tt>
+<br><b>Example: </b><tt>par 4 123.45,</tt> or equivalently <tt>par 4 Background
+123.45</tt>
+<br><b>Notes:</b> the parameter name can be omitted
+<br><b>See also:</b> <a href="batch.html#Fix">fix</a>, <a href="batch.html#Free">free</a></ul>
+
+<h3>
+<a NAME="Fix"></a>fix - Fix the specified parameter during the fit.</h3>
+
+<ul><b>Syntax: </b><tt>fix [Parameter number or all]</tt>
+<br><b>Example:</b> fix 3 or <tt>fix all</tt>
+<br><b>Notes:</b> Fixes the specified parameter at its current value. By
+default all parameters are free.
+<br><b>See also:</b> <a href="batch.html#Par">par</a><b>, </b><a href="batch.html#Free">free</a></ul>
+
+<h3>
+<a NAME="Free"></a>free - Free the specified parameter during the fit.</h3>
+
+<ul><b>Syntax: </b><tt>free [Parameter number or all]</tt>
+<br><b>Example:</b> free 3
+<br><b>Notes:</b> Frees the specified parameter at its current value. By
+default all parameters are free.
+<br><b>See also:</b> <a href="batch.html#Par">par</a><b>, </b><a href="batch.html#Fix">fix</a></ul>
+
+<h3>
+<a NAME="fit"></a>fit - Begin fit.</h3>
+
+<ul><b>Syntax: fit</b>
+<br><b>Example:</b> fit
+<br><b>Notes:</b>
+<br><b>See also:</b><a href="#guess">guess</a></ul>
+
+<h3>
+<a NAME="Save"></a>save - Save fit results.</h3>
+
+<ul><b>Syntax: </b><tt>Save &lt;Type></tt>
+<br><b>Examples:</b> <tt>save</tt>, <tt>save data</tt>, <tt>save curve</tt>.
+<br><b>Notes:</b> Saves fit results to the file specified by the <tt>OutFile</tt>
+and <tt>OutDir</tt> commands (see above). The type argument specifies exactly
+what is saved. If type is omitted the results are saved in <b>M</b><i>fit</i>
+batch file format (see saving fit results). If <tt>type</tt> is <tt>data</tt>,
+then the current data is saved in x, y, error colum format. If type is
+<tt>curve</tt>
+the evaluated fitting function is saved in x, y column format.
+<br><b>See also:</b> <a href="batch.html#OutFile">OutFile</a>, <a href="batch.html#OutDir">OutDir</a></ul>
+
+<h3>
+<a NAME="Plot"></a>plot - Update the plot.</h3>
+
+<ul><b>Syntax: </b>plot
+<br><b>Example:</b> plot
+<br><b>Notes:</b> Uses the current data, axis limits, fit function, and
+function parameters
+<br><b>See also:</b><a href="#axes">axes</a></ul>
+
+<h3>
+<a NAME="axes"></a>axes - Set axis limits for the current graph.</h3>
+
+<ul><b>Syntax: </b><tt>axes [xmin] [xmax] [ymin] [ymax]</tt>
+<br><b>Example:</b> axes -1 1 0 100
+<br><b>Notes:</b>
+<br><b>See also:</b><a href="batch.html#Plot">plot</a></ul>
+
+<h3>
+<a NAME="pause"></a>pause - Pause execution of the batch file until the
+user presses a key.</h3>
+
+<ul><b>Syntax: </b>pause
+<br><b>Example:</b> pause
+<br><b>Notes:</b> This can be useful to monitor progress of the batch file,
+or to display data as a 'movie'
+<br><b>See also:</b><a href="batch.html#Plot">plot</a></ul>
+
+<h3>
+<a NAME="vars"></a>vars - list Mfit variables and their current values.</h3>
+
+<blockquote><b>Syntax:&nbsp;</b> vars
+<br><b>Example:</b> vars
+<br><b>Notes</b>: In fact any Mfit variable that is listed with the <a href="#vars">vars</a>
+command can be modified.
+<br><b>See also: </b><a href="batch.html#OutFile">OutFile</a>,
+<a href="batch.html#OutDir">OutDir,
+</a><a href="batch.html#DataFile">DataFile</a>,
+<a href="batch.html#DataDir">DataDir</a>,
+<a href="batch.html#FitFuncFile">FitFuncFile</a>,
+<a href="batch.html#FitFuncDir">FitFuncDir</a></blockquote>
+
+<h3>
+<a NAME="guess"></a>guess - execute an autoguess to find starting parameters</h3>
+
+<blockquote><b>Syntax: </b>guess
+<br><b>Example:</b> guess
+<br><b>Notes:</b> Signal should contain enough points, and function should
+use parameters such as <i>Amplitude, width, center, background</i>
+<br><b>See also:</b><a href="#fit">fit</a></blockquote>
+
+<h3>
+<a NAME="help"></a>help - list batch known commands</h3>
+
+<blockquote><b>Syntax: </b>help
+<br><b>Example:</b> help
+<br><b>Notes:</b>
+<br><b>See also:</b><a href="#vars">vars</a></blockquote>
+
+<h3>
+<a NAME="rem"></a>rem - comment</h3>
+
+<blockquote><b>Syntax: </b>rem &lt;string>
+<br><b>Example:</b> rem hello world
+<br><b>Notes:</b>
+<br><b>See also:</b></blockquote>
+
+<h3>
+<a NAME="stop"></a>stop - abort batch execution</h3>
+
+<blockquote><b>Syntax: </b>stop
+<br><b>Example:</b> stop
+<br><b>Notes:</b>
+<br><b>See also:</b></blockquote>
+
+<h3>
+<a NAME="exec"></a>exec - execute a matlab expression</h3>
+
+<blockquote><b>Syntax: </b>exec &lt;expression>
+<br><b>Example:</b> exec set(findobj('tag','mf_dp'),'string',0.1)
+<br><b>Notes:</b> you can also call any mfit function
+<br><b>See also:</b></blockquote>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br>
+<hr WIDTH="100%"></div>
+
+<h2>
+<a NAME="Example"></a>Example:</h2>
+Here is a sample batch file. Any line beginning with a '%' is treated as
+a comment. See the batch language <a href="batch.html#BatchCommands">command
+reference</a> for details of the commands.
+<ul><tt>% Sample batch file. This section (apart from the comments) was</tt>
+<br><tt>% produced by Mfit, by saving the results of a manual fit.</tt>
+<p><tt>% Set data file and directory</tt>
+<br><tt>datafile = RB_27502.DAT</tt>
+<br><tt>datadir = P:\RBZNCL\X20\ORD2A\</tt>
+<p><tt>% Set fit function and directory</tt>
+<br><tt>fitfunctionfile = LORZ2X2</tt>
+<br><tt>fitfunctiondir = C:\USERS\MARTIN\MATLAB\MFIT2\FUNCS\MARTIN\</tt>
+<p><tt>% Set the output file</tt>
+<br><tt>outputfile = fit1.mft</tt>
+<br><tt>outputdir = P:\RBZNCL\X20\ORD2A\</tt>
+<p><tt>% Set the load routine to use to load data</tt>
+<br><tt>loadroutinefile = xyeload</tt>
+<br><tt>loadroutinedir = c:\users\martin\matlab\mfit2\load\</tt>
+<p><tt>% Set the fit routine (algorithm used for fitting)</tt>
+<br><tt>fitroutinefile = mf_lsqr</tt>
+<br><tt>fitroutinedir = c:\users\martin\matlab\mfit2\nllsq\</tt>
+<p><tt>% Load the data file and fit function set above</tt>
+<br><tt>load</tt>
+<p><tt>% Set starting values of parameters</tt>
+<br><tt>%--------------------------------------------------</tt>
+<br><tt>par 1 Amplitude_1 1.898640e+004 5.066810e+002</tt>
+<br><tt>par 2 Centre_1 -1.393110e+000 1.376960e-005</tt>
+<br><tt>par 3 Width_1 9.5e-4</tt>
+<br><tt>par 4 Amp_2/Amp_1 0.1</tt>
+<br><tt>par 5 Offset_2 1.227e-003</tt>
+<br><tt>par 6 Width_2 1.7e-003</tt>
+<br><tt>par 7 Background 24</tt>
+<br><tt>par 8 Index 275.02</tt>
+<br><tt>%--------------------------------------------------</tt>
+<p><tt>% Fix some parameters</tt>
+<br><tt>fix 3</tt>
+<br><tt>fix 4</tt>
+<br><tt>fix 5</tt>
+<br><tt>fix 6</tt>
+<br><tt>fix 7</tt>
+<br><tt>fix 8</tt>
+<p><tt>% Do the fit</tt>
+<br><tt>fit</tt>
+<p><tt>% Save the results to the output file specified above</tt>
+<br><tt>save</tt>
+<p><tt>% Set a new datafile</tt>
+<br><tt>datafile=rb_28002.dat</tt>
+<p><tt>% Load the new file (nothing else needs to change)</tt>
+<br><tt>load</tt>
+<p><tt>% Set the 'Index' parameter (all other parameters have the values
+from</tt>
+<br><tt>% the end of the last fit)</tt>
+<br><tt>par 8 280.02</tt>
+<br><tt>fit</tt>
+<br><tt>save</tt>
+<p><tt>% New data file</tt>
+<br><tt>datafile=rb_28502.dat</tt>
+<br><tt>load</tt>
+<br><tt>par 8 285.02</tt>
+<br><tt>fit</tt>
+<br><tt>save</tt></ul>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

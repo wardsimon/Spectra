@@ -1,0 +1,61 @@
+File    : Whatsnew.txt
+Date    : Sun Sep  6 16:05:06 MET DST 1998
+Subject : SSym 0.1
+-----------------------------------------------
+
+Welcome to SSym 0.1 Package.
+
+It should contain :
+	ssym1	that uses Mfit, funcs and load routines
+
+
+This program is to be used by Matlab version 5.
+However, it should mainly work with Matlab 4.2
+
+It enables graphical signal manipulations for spectrum (Brillouin, Raman, ...).
+Symetrizations and extraction of apparatus function are main features.
+
+1- Installation
+
+	Just put those dirs into your matlab zone, and add at the end of your 'startup.m' file the lines :
+
+disp('Install Matlab Graphic app : mview ');
+path(path,[ matlabroot '/toolbox/local/ssym1' ]);
+colordef none
+
+if Mfit is already installed, it's finished.
+
+2- Purpose, usage
+
+SSym can import data from Matlab workspace and MFit. 
+If you launch SSym from Mfit, the 'ExecAfterLoad' Mfit variable is set to 
+send signal to SSym after each load.
+
+Some data files are supplied for example. 
+First select 'SSym in the Links menu.
+Load files with Mfit and general load routine. Select :
+X: point number, Y:col1 for pmma3.0
+X: col1, Y=col2 for sib42.txt
+look at what's happening.
+try features on it. There's no danger !
+
+3- What's news features.
+
+Creation of SSym on April, 1998.
+* Change X axis now part of MFit. Called by SSym
+* corrected a stupid bug in sp_pars, and some others elsewhere
+
+4- Troubles
+
+If you find any bug please tell me.
+Still in Beta version
+
+5- Authors
+
+Those libraries are protected through the GNU GENERAL PUBLIC LICENSE
+which is detailed in 'licence.gpl' files in each part of libraries.
+
+Copyright (C) 1998  Farhi.
+
+E.Farhi (manuf@ldv.univ-montp2.fr)
+

@@ -1,0 +1,18 @@
+% Fit Functions for MFit
+% MFit/MView Wed Sep  3  1997
+% see whatsnew.txt in MFit
+%
+% type 'mfit' to start MFit.
+%
+% function syntax is :
+%       [y, name, pnames, pin]=my_function(x,p, flag)
+% with :
+%   x                'x' values 
+%   p                function parameters
+%   flag =0 or none   function evaluation y=f(x,p)
+%        =1          function identify : return name of function ('name')
+%                                               name of parameters ('pnames')
+%                                               default parameters ('pin')
+%        =2          function guess should return a set of starting parameters ('pin')  
+%        =3 or y     autoguess feature for signal (x,y)
+%

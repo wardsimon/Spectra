@@ -1,0 +1,308 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="E. Farhi [farhi@ill.fr]">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (X11; I; OSF1 V5.1 alpha) [Netscape]">
+   <title>Mfit Home Page : multi functions</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<center>[ <a href="#Simple usage">Simple usage</a> ][ <a href="#More advanced multifunctions">More
+advanced multifunctions</a> ][ <a href="#function names">Function names</a>
+]</center>
+
+<h1>
+Building a complex fitting function : Multi functions</h1>
+
+<p><br><b><a href="#Simple usage">Simple usage</a></b>
+<ol>
+<li>
+<a href="#Loading data">Loading data</a></li>
+
+<li>
+<a href="#Selecting the multifunction">Selecting the multifunction</a></li>
+
+<li>
+<a href="#the multifunction parameter window">The multifunction parameter
+window</a></li>
+
+<li>
+<a href="#Guessing the multifunction parameters">Guessing the multifunction
+parameters</a></li>
+
+<li>
+<a href="#Doing the fit">Doing the fit</a></li>
+</ol>
+<b><a href="#More advanced multifunctions">More advanced multifunctions</a></b>
+<ol>
+<li>
+<a href="#Plot separate sub-functions contributions">Plot/Hide separate
+sub-functions contributions</a></li>
+
+<li>
+<a href="#Using expressions">Using expressions and user variables as sub-functions</a></li>
+
+<li>
+<a href="#Adding user parameters">Adding user parameters</a></li>
+
+<li>
+<a href="#advanced sub-functions combinaisons">Using advanced sub-functions
+combinaisons</a> (convolutions,...)</li>
+
+<li>
+<a href="#constrain">Setting a constrain on parameters</a></li>
+
+<li>
+<a href="#internal">Using internal or external multifunction storing</a></li>
+</ol>
+<b><a href="#function names">Function names</a></b>
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Simple usage"></a>Simple usage</h2>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Loading data"></a>Loading
+data</h3>
+To explain the possibilities and usage of the <b>M</b><i>fit</i> multifunction
+feature, we shall start by <a href="loading.html">loading</a> an <a href="tita5.0">example
+file</a> with the <i><a href="colsel.html#General Load routine">General
+Load routine</a></i> . Select in the <a href="colsel.html">column selector</a>
+'Point number' as X, 'Column 1' as Y, 'sqrt(y)' for error, and 'none' for
+monitor.
+<center>
+<p><img SRC="Conwin1.gif" height=198 width=508>
+<br>Fig 2 : <b>M</b><i>fit</i> : The Control window for loading the example
+file</center>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Selecting the multifunction"></a>Selecting
+the multifunction</h3>
+Then select the '<b><i>Multifunctions...</i></b>' item in the '<a href="fitfunc.html">Fit
+functions</a>' menu of the <b>M</b><i>fit</i>:Control window. The window
+that appears is intended to describe a fit function involving a combinaison
+of more simple <b>M</b><i>fit</i> fit functions. In the loaded data (see
+Fig 4 below), there are 3 peaks. We shall fit them with 2 lorentzians and
+a gaussian function.
+<p>Enter '<tt>3</tt>' in the 'Number of functions' field, and then click
+on '<i>Make function</i>' button&nbsp; There are now 3 lines <tt>fn=</tt>
+to describe the multifunction, one for each peak..
+<p>To precise the nature of each sub-function, you need to enter&nbsp;
+the <b><i>matlab name</i></b> of the fit function (the one wich has an
+extension <tt>.m</tt>).
+<br>For instance, the <i>Lorentzian</i> function is described in the <tt>lorz.m</tt>
+matlab file, and the Gaussian corresponds to the file <tt>gauss.m</tt>.
+<br>The names of all availables <b>M</b><i>fit</i> fit functions are given
+in the <tt>funcs</tt> directory (see <a href="download.html">installation</a>).
+You can also get them by typing at matlab prompt (see generated function
+<a href="#function names">list</a>
+below):
+<blockquote><tt>>> help funcs</tt></blockquote>
+Then you need to <b>assemble sub-functions</b> as a matlab expression (in
+<i>Final
+y=</i>). In the following example, we just add them.
+<p>Finally, the Multifunction window looks like:
+<center>
+<p><img SRC="multifunc.gif" height=250 width=278>
+<br>Fig 2 : <b>M</b><i>fit</i> : The multifunction description, composed
+of 2 Lorentzians, and a Gaussian.</center>
+
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14>Re-create the multifunction
+by clicking on '<i>Make function</i>' button. This has to be done each
+time you change the function number or a function name. An other possibility
+is to re-select '<i>Multifunctions</i>...' in the <i>Fit Functions</i>
+menu.
+<br>&nbsp;
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="the multifunction parameter window"></a>The
+multifunction parameter window</h3>
+The parameter window corresponding to the multifunction appears. Usually,
+each function has a background parameter. In order to avoid redondant parameters,
+we fix two of these to 0 (see <a href="fitting.html#FixParameters">Fix
+and free parameters</a>), and obtain the following parameter window:
+<center>
+<p><img SRC="multipar.gif" height=308 width=331>
+<br>Fig 3 : <b>M</b><i>fit</i> : Parameter window for a multifunction.
+Background is only free in one function..</center>
+
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Guessing the multifunction parameters"></a>Guessing
+the multifunction parameters</h3>
+The <a href="fitting.html#GetParameters">guess</a> feature works the same
+way as for a single fit function. Follow the indications given in <b>M</b><i>fit</i>:Control
+message line (on top of buttons), and the additional informations in the
+matlab workspace (showing what function is beeing guessed). The <a href="fitting.html#AutoGuess">autoguess</a>
+also works, and automatically guesses some starting parameters in the case
+of peak-like fit functions.
+<br>&nbsp;
+<h3>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Doing the fit"></a>Doing
+the fit</h3>
+The last step is the fit, performed through the usual procedure (see <a href="fitting.html">Fitting</a>).
+<br>The final plot shows the result of the multifunction, as well as each
+sub-function contribution.
+<center>
+<p><img SRC="multidata.gif" height=406 width=408>
+<br>Fig 4 : <b>M</b><i>fit</i> : The data window, with multifunction and
+separate contributions.</center>
+
+<h2>
+<a NAME="More advanced multifunctions"></a>More advanced multifunctions</h2>
+In all multifunctions features, you can use the <a href="manipdata.html#Exchanging data"><b>M</b><i>fit</i>
+internal variables</a> <tt>x,y,err,selected,fit,p,dp,fixed</tt>.
+<center>
+<p><img SRC="mfpar3.gif" height=268 width=331 align=CENTER><img SRC="multifunc3.gif" height=276 width=278 align=CENTER>
+<br>Fig 5 : <b>M</b><i>fit</i> : A more advanced multifunction usage using
+parameter variable 'p', and 2 user variables.</center>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Plot separate sub-functions contributions"></a>Plot/Hide
+separate sub-functions contributions</h4>
+
+<blockquote>If you unselect the 'fn=' butons, the separate sub-functions
+will not be drawn.</blockquote>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Using expressions"></a>Using
+expressions and user variables as sub-functions</h4>
+
+<blockquote>It is possible not to use a function name for fields <tt>fn=</tt>.
+Names that are not function names, are evaluated in the following order:
+<ul>
+<li>
+first as global matlab variables</li>
+
+<li>
+as base workspace variables (not global)</li>
+
+<li>
+then as matlab expressions using <a href="manipdata.html#Exchanging data"><b>M</b><i>fit</i>
+internal variables</a> in 'Multi Functions' window:</li>
+</ul>
+For instance, if you used a variabl;e '<tt>a</tt>' in matlab workspace,
+you can type:
+<center>
+<p>'<tt>fn=a;'</tt>.or '<tt>fn=log(a);'</tt>.</center>
+</blockquote>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14><a NAME="Adding user parameters"></a>Adding
+user parameters</h4>
+
+<blockquote>It is possible to use in multifunctions some additional parameter
+that are not related to any fit function. For instance it could be a temperature
+that you measured during an experiment, or a laser power, etc...
+<br>This is usefull if you want to gather all informations about a data
+file in the same MFit parameter file (see <a href="saving.html">Saving
+results</a>). Then you can plot a parameter versus an other, including
+your private user parameters (see <a href="colsel.html#The Mfit parameter file importation"><b>M</b><i>fit</i>
+parameter file importation</a>).
+<p>To do so, use lines like:
+<blockquote><tt>fn=user my_parameter</tt></blockquote>
+It will appear as a one parameter function. You may fix it, in order not
+to affect the fitting process. Of course, you can also use it in the '<i>Final
+y='</i> expression.</blockquote>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Using&nbsp;<a NAME="advanced sub-functions combinaisons"></a>advanced
+sub-functions combinaisons</h4>
+
+<blockquote>In the '<i>Final y='</i> expression, you may use very complex
+expression, such as <b>1D convolutions</b>:</blockquote>
+
+<blockquote>
+<blockquote><tt>Final y= convlv(f1,(f2-min(f2))./norm(f2))</tt></blockquote>
+This convolution procedure is provided in the <tt>funcs</tt> directory.
+<br>Any matlab expression is possible.
+<p><b><i><u><blink><font color="#FF6666">Note</font></blink></u></i></b>:
+for convolutions, it is <i>highly</i> recommanded that the 'f2' signal
+be <b>centered </b>(around x=0), with
+<b>no background </b>( <tt>f2 = f2
+- min(f2)</tt> ), and possibly <b>normalized</b> ( <tt>f2 = f2 ./norm(f2)</tt>
+). The previous example normalizes and substracts the background.</blockquote>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Setting a&nbsp;<a NAME="constrain"></a>constrain
+on parameters</h4>
+
+<blockquote>The <i>Constrain</i> field is evaluated just before the sub-functions.
+You can modify the parameters according to your own criteria. Parameters
+are denoted '<tt>p</tt>', and you can also use variable '<tt>x</tt>', as
+these are passed to <a href="fitfunc.html">any fit function</a>.
+<p>For instance
+<blockquote><tt>Constrain p(3) = p(4);</tt></blockquote>
+will force parameter 3. You'd better fix it in the Parameter Window in
+that case.</blockquote>
+
+<h4>
+<img SRC="greenbal.gif" ALT="*" height=14 width=14>Using&nbsp;<a NAME="internal"></a>internal
+or external multifunction storing</h4>
+
+<blockquote>When unselecting the 'Use External File' button, you ask the
+multifunction description to be stored into memory. The access is then
+slower, as a matlab precompilation is not possible. On the other hand,
+when this button is selected, matlab stores the multifunction into a file.
+You can even copy (rename it) and install it in the Fit Functions menu,
+with the <i>Browse...</i> item.</blockquote>
+
+<p><br>
+<hr WIDTH="100%">
+<br>Matlab <b>M</b><i>fit<a NAME="function names"></a></i><b>function names</b>
+given by <tt>help funcs</tt> command:
+<blockquote>&nbsp;&nbsp;&nbsp; <tt>user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+user defined constant for Multifunc</tt>
+<br><tt>&nbsp; multifunc : Multi Function handler window</tt>
+<br><tt>&nbsp; triangl&nbsp;&nbsp; : Triangular</tt>
+<br><tt>&nbsp; cusp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Power law cusp.</tt>
+<br><tt>&nbsp; dho&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Damped harmonic
+oscillator</tt>
+<br><tt>&nbsp; bose&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : bose factor</tt>
+<br><tt>&nbsp; green&nbsp;&nbsp;&nbsp;&nbsp; : Green function</tt>
+<br><tt>&nbsp; ellipse&nbsp;&nbsp; : Ellipse</tt>
+<br><tt>&nbsp; gauss&nbsp;&nbsp;&nbsp;&nbsp; : Gaussian</tt>
+<br><tt>&nbsp; gauss2&nbsp;&nbsp;&nbsp; : Gaussian Squared</tt>
+<br><tt>&nbsp; gaussx2&nbsp;&nbsp; : 2 gaussians</tt>
+<br><tt>&nbsp; lorgss&nbsp;&nbsp;&nbsp; : Lorentzian + gaussian</tt>
+<br><tt>&nbsp; lorz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Lorentzian</tt>
+<br><tt>&nbsp; lorz2&nbsp;&nbsp;&nbsp;&nbsp; : Lorentzian squared</tt>
+<br><tt>&nbsp; lorzx2&nbsp;&nbsp;&nbsp; : 2 lorentzians</tt>
+<br><tt>&nbsp; gaussn&nbsp;&nbsp;&nbsp; : Gaussian Power n</tt>
+<br><tt>&nbsp; ngauss&nbsp;&nbsp;&nbsp; : N gaussians</tt>
+<br><tt>&nbsp; nlorz&nbsp;&nbsp;&nbsp;&nbsp; : N lorentzians</tt>
+<br><tt>&nbsp; polynomial: polynomial</tt>
+<br><tt>&nbsp; pow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Power law y=0
+x>x0</tt>
+<br><tt>&nbsp; pow1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Power law y=0 x&lt;x0</tt>
+<br><tt>&nbsp; quadrat&nbsp;&nbsp; : quadratic</tt>
+<br><tt>&nbsp; sgauss&nbsp;&nbsp;&nbsp; : Gaussian plus a sloping background</tt>
+<br><tt>&nbsp; strline&nbsp;&nbsp; : slope/line</tt>
+<br><tt>&nbsp; refl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : reflectivity function</tt>
+<br><tt>&nbsp; voigt&nbsp;&nbsp;&nbsp;&nbsp; : Voigt</tt>
+<br><tt>&nbsp; lorzn&nbsp;&nbsp;&nbsp;&nbsp; : Lorentzian Power n</tt>
+<br><tt>&nbsp; sdk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 2 Airy functions
+product power 3 for SDK</tt>
+<br><tt>&nbsp; airyfp&nbsp;&nbsp;&nbsp; : Airy function for Fabry Perot</tt>
+<br><tt>&nbsp; rescon&nbsp;&nbsp;&nbsp; :&nbsp; 3D resolution convolution
+of Lorentzian+Lorentzian squared</tt>
+<br><tt>&nbsp; background: constant</tt>
+<br><tt>&nbsp; dirac&nbsp;&nbsp;&nbsp;&nbsp; : Dirac peak</tt>
+<br><tt>&nbsp; couplph&nbsp;&nbsp; : Phonon coupled with pseudo spin system.</tt>
+<br><tt>&nbsp; constant&nbsp; : constant</tt></blockquote>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<br>(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.
+<br>&nbsp;
+</body>
+</html>

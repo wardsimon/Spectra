@@ -1,0 +1,231 @@
+<HTML>
+<HEAD>
+<TITLE>package gnu.regexp - Regular Expressions for Java</TITLE>
+</HEAD>
+<BODY BGCOLOR=WHITE TEXT=BLACK>
+<FONT SIZE="+2"><B><CODE>package gnu.regexp;</CODE></B></FONT>
+<HR NOSHADE>
+<FONT SIZE="+2">Syntax and Usage Notes</FONT><BR>
+<FONT SIZE="-1">This page was last updated on 22 June 2001</FONT>
+<P>
+<B>Brief Background</B>
+<BR>
+
+A regular expression consists of a character string where some
+characters are given special meaning with regard to pattern matching.
+Regular expressions have been in use from the early days of computing,
+and provide a powerful and efficient way to parse, interpret and
+search and replace text within an application.
+
+<P>
+<B>Supported Syntax</B>
+<BR>
+Within a regular expression, the following characters have special meaning:<BR>
+<UL>
+<LI><B><I>Positional Operators</I></B><BR>
+<blockquote>
+<code>^</code> matches at the beginning of a line<SUP><A HREF="#note1">1</A></SUP><BR>
+<code>$</code> matches at the end of a line<SUP><A HREF="#note2">2</A></SUP><BR>
+<code>\A</code> matches the start of the entire string<BR>
+<code>\Z</code> matches the end of the entire string<BR>
+<code>\b</code> matches at a word break (Perl5 syntax only)<BR>
+<code>\B</code> matches at a non-word break (opposite of \b) (Perl5 syntax only)<BR>
+<code>\&lt;</code> matches at the start of a word (egrep syntax only)<BR>
+<code>\&gt;</code> matches at the end of a word (egrep syntax only)<BR>
+</blockquote>
+
+<li>
+<B><I>One-Character Operators</I></B><BR>
+<blockquote>
+<code>.</code> matches any single character<SUP><A HREF="#note3">3</A></SUP><BR>
+<code>\d</code> matches any decimal digit<BR>
+<code>\D</code> matches any non-digit<BR>
+<code>\n</code> matches a newline character<BR>
+<code>\r</code> matches a return character<BR>
+<code>\s</code> matches any whitespace character<BR>
+<code>\S</code> matches any non-whitespace character<BR>
+<code>\t</code> matches a horizontal tab character<BR>
+<code>\w</code> matches any word (alphanumeric) character<BR>
+<code>\W</code> matches any non-word (alphanumeric) character<BR>
+<code>\<i>x</i></code> matches the character <i>x</i>, if <i>x</i> is not one of the above listed escape sequences.<BR>
+</blockquote>
+
+<li>
+<B><I>Character Class Operator</I></B><BR>
+<blockquote>
+<code>[<i>abc</i>]</code> matches any character in the set <i>a</i>, <i>b</i> or <i>c</i><BR>
+<code>[^<i>abc</i>]</code> matches any character not in the set <i>a</i>, <i>b</i> or <i>c</i><BR>
+<code>[<i>a-z</i>]</code> matches any character in the range <i>a</i> to <i>z</i>, inclusive<BR>
+A leading or trailing dash will be interpreted literally.<BR>
+</blockquote>
+
+Within a character class expression, the following sequences have special meaning if the syntax bit RE_CHAR_CLASSES is on:<BR>
+<blockquote>
+<code>[:alnum:]</code> Any alphanumeric character<br>
+<code>[:alpha:]</code> Any alphabetical character<br>
+<code>[:blank:]</code> A space or horizontal tab<br>
+<code>[:cntrl:]</code> A control character<br>
+<code>[:digit:]</code> A decimal digit<br>
+<code>[:graph:]</code> A non-space, non-control character<br>
+<code>[:lower:]</code> A lowercase letter<br>
+<code>[:print:]</code> Same as graph, but also space and tab<br>
+<code>[:punct:]</code> A punctuation character<br>
+<code>[:space:]</code> Any whitespace character, including newline and return<br>
+<code>[:upper:]</code> An uppercase letter<br>
+<code>[:xdigit:]</code> A valid hexadecimal digit<br>
+</blockquote>
+
+<li>
+<B><I>Subexpressions and Backreferences</I></B><BR>
+<blockquote>
+<code>(<i>abc</i>)</code> matches whatever the expression <i>abc</i> would match, and saves it as a subexpression.  Also used for grouping.<BR>
+<code>(?:<i>...</i>)</code> pure grouping operator, does not save contents<BR>
+<code>(?#<i>...</i>)</code> embedded comment, ignored by engine<BR>
+<code>\<i>n</i></code> where 0 &lt; <i>n</i> &lt; 10, matches the same thing the <i>n</i><super>th</super> subexpression matched.<BR>
+</blockquote>
+
+<li>
+<B><I>Branching (Alternation) Operator</I></B><BR>
+<blockquote>
+<code><i>a</i>|<i>b</i></code> matches whatever the expression <i>a</i> would match, or whatever the expression <i>b</i> would match.<BR>
+</blockquote>
+
+<li>
+<B><I>Repeating Operators</I></B><BR>
+These symbols operate on the previous atomic expression.
+<blockquote>
+<code>?</code> matches the preceding expression or the null string<BR>
+<code>*</code> matches the null string or any number of repetitions of the preceding expression<BR>
+<code>+</code> matches one or more repetitions of the preceding expression<BR>
+<code>{<i>m</i>}</code> matches exactly <i>m</i> repetitions of the one-character expression<BR>
+<code>{<i>m</i>,<i>n</i>}</code> matches between <i>m</i> and <i>n</i> repetitions of the preceding expression, inclusive<BR>
+<code>{<i>m</i>,}</code> matches <i>m</i> or more repetitions of the preceding expression<BR>
+</blockquote>
+<li>
+<B><I>Stingy (Minimal) Matching</I></B><BR>
+
+If a repeating operator (above) is immediately followed by a
+<code>?</code>, the repeating operator will stop at the smallest
+number of repetitions that can complete the rest of the match.
+<p>
+<li>
+<B><I>Lookahead</I></B><BR>
+Lookahead refers to the ability to match part of an expression without consuming any of the input text.  There are two variations to this:<P>
+<blockquote>
+<code>(?=<i>foo</i>)</code> matches at any position where <i>foo</i> would match, but does not consume any characters of the input.<BR>
+<code>(?!<i>foo</i>)</code> matches at any position where <i>foo</i> would not match, but does not consume any characters of the input.<BR>
+</blockquote>
+
+</UL>
+<P>
+<B>Unsupported Syntax</B>
+<BR>
+
+Some flavors of regular expression utilities support additional escape
+sequences, and this is not meant to be an exhaustive list.  In the
+future, <code>gnu.regexp</code> may support some or all of the
+following:<BR>
+
+<blockquote>
+<code>(?<i>mods</i>)</code> inlined compilation/execution modifiers (Perl5)<BR>
+<code>\G</code> end of previous match (Perl5)<BR>
+<code>[.<i>symbol</i>.]</code> collating symbol in class expression (POSIX)<BR>
+<code>[=<i>class</i>=]</code> equivalence class in class expression (POSIX)<BR>
+<code>s/foo/bar/</code> style expressions as in sed and awk <I>(note: these can be accomplished through other means in the API)</I>
+</blockquote>
+
+<P>
+<B>Java Integration</B>
+<BR>
+
+In a Java environment, a regular expression operates on a string of
+Unicode characters, represented either as an instance of
+<code>java.lang.String</code> or as an array of the primitive
+<code>char</code> type.  This means that the unit of matching is a
+Unicode character, not a single byte.  Generally this will not present
+problems in a Java program, because Java takes pains to ensure that
+all textual data uses the Unicode standard.
+
+<P>
+
+Because Java string processing takes care of certain escape sequences,
+they are not implemented in <code>gnu.regexp</code>.  You should be
+aware that the following escape sequences are handled by the Java
+compiler if found in the Java source:<BR>
+
+<blockquote>
+<code>\b</code> backspace<BR>
+<code>\f</code> form feed<BR>
+<code>\n</code> newline<BR>
+<code>\r</code> carriage return<BR>
+<code>\t</code> horizontal tab<BR>
+<code>\"</code> double quote<BR>
+<code>\'</code> single quote<BR>
+<code>\\</code> backslash<BR>
+<code>\<i>xxx</i></code> character, in octal (000-377)<BR>
+<code>\u<i>xxxx</i></code> Unicode character, in hexadecimal (0000-FFFF)<BR>
+</blockquote>
+
+In addition, note that the <code>\u</code> escape sequences are
+meaningful anywhere in a Java program, not merely within a singly- or
+doubly-quoted character string, and are converted prior to any of the
+other escape sequences.  For example, the line <BR>
+
+<code>gnu.regexp.RE exp = new gnu.regexp.RE("\u005cn");</code><BR>
+
+would be converted by first replacing <code>\u005c</code> with a
+backslash, then converting <code>\n</code> to a newline.  By the time
+the RE constructor is called, it will be passed a String object
+containing only the Unicode newline character.
+
+<P>
+
+The POSIX character classes (above), and the equivalent shorthand
+escapes (<code>\d</code>, <code>\w</code> and the like) are
+implemented to use the <code>java.lang.Character</code> static
+functions whenever possible.  For example, <code>\w</code> and
+<code>[:alnum:]</code> (the latter only from within a class
+expression) will invoke the Java function
+<code>Character.isLetterOrDigit()</code> when executing.  It is
+<i>always</i> better to use the POSIX expressions than a range such as
+<code>[a-zA-Z0-9]</code>, because the latter will not match any letter
+characters in non-ISO 9660 encodings (for example, the umlaut
+character, "<code>&uuml;</code>").
+
+<P>
+<B>Reference Material</B>
+<BR>
+<UL>
+<LI><B><I>Print Books and Publications</I></B><BR>
+Friedl, Jeffrey E.F., <A HREF="http://www.oreilly.com/catalog/regex/"><I>Mastering Regular Expressions</I></A>. O'Reilly &amp; Associates, Inc., Sebastopol, California, 1997.<BR>
+<P>
+<LI><B><I>Software Manuals and Guides</I></B><BR>
+Berry, Karl and Hargreaves, Kathryn A., <A HREF="http://www.cs.utah.edu/csinfo/texinfo/regex/regex_toc.html">GNU Info Regex Manual Edition 0.12a</A>, 19 September 1992.<BR>
+<code>perlre(1)</code> man page (Perl Programmer's Reference Guide)<BR>
+<code>regcomp(3)</code> man page (GNU C)<BR>
+<code>gawk(1)</code> man page (GNU utilities)<BR>
+<code>sed(1)</code> man page (GNU utilities)<BR>
+<code>ed(1)</code> man page (GNU utilities)<BR>
+<code>grep(1)</code> man page (GNU utilities)<BR>
+<code>regexp(n)</code> and <code>regsub(n)</code> man pages (TCL)<BR>
+</UL>
+
+<P>
+<B>Notes</B>
+<BR>
+<SUP><A NAME="note1">1</A></SUP> but see the REG_NOTBOL and REG_MULTILINE flags<BR>
+<SUP><A NAME="note2">2</A></SUP> but see the REG_NOTEOL and REG_MULTILINE flags<BR>
+<SUP><A NAME="note3">3</A></SUP> but see the REG_MULTILINE flag<BR>
+<P>
+<FONT SIZE="-1">
+<A HREF="index.html">[gnu.regexp]</A>
+<A HREF="changes.html">[change history]</A>
+<A HREF="api/index.html">[api documentation]</A>
+<A HREF="reapplet.html">[test applet]</A>
+<A HREF="faq.html">[faq]</A>
+<A HREF="credits.html">[credits]</A>
+</FONT>
+
+</BODY>
+</HTML>
+

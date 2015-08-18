@@ -1,0 +1,192 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (X11; I; OSF1 V5.1 alpha) [Netscape]">
+   <title> ILL:EF: Looktxt </title>
+</head>
+<body>
+
+<h1>
+The 'looktxt' command</h1>
+
+<hr><i>Subject: General multipurpose text data importation. Version 0.9.4
+(22/11/2001)</i>
+<br><i>Date : 22/11/2000</i>
+<br><i>By : Farhi Entertainments.&nbsp;<a href="http://www.ill.fr/tas/matlab/doc/looktxtfr.html"><img SRC="francais.jpg" ALT="FR" BORDER=0 height=32 width=32></a><a href="http://www.ill.fr/tas/matlab/doc/looktxtfr.html">
+Version francaise</a> (obsolete)</i>
+<br><i>File : http://www.ill.fr/tas/matlab/doc/looktxt.html
+<hr></i>The 'looktxt' unix command enables the retrieving of any numerical
+data situated in a text (ASCII) file. It generates an output file that
+can be handled by Matlab(.m), Octave(.oct/.m) or any viewer (.txt). This
+file then contains numerical (and optionally character) zones.
+<br>Various options control :
+<ul>&nbsp;
+<li>
+output format (m/oct/txt) and file name.</li>
+
+<li>
+specific extraction characters.</li>
+
+<li>
+extraction modes...</li>
+</ul>
+The general syntax to analyse <i>filename </i>is :
+<center>
+<p>looktxt [-vagrftlSH] [-{pscnoF}="<i>preferences</i>"] filename</center>
+
+<p><b><blink>NOTE:</blink></b> This command also works under Octave/Matlab,
+with syntax :
+<center>
+<p>looktxt('<i>parameters</i>')</center>
+
+<p>The flag significance is as follows :
+<h4>
+Simple Options :</h4>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -v (Verbose) : displays all process steps. useful.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -a (Ascii)&nbsp;&nbsp; : if you also want to import character (ascii/text) fields.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -g (Group)&nbsp;&nbsp; : groups numerical fields as possible.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -r (noRoot)&nbsp; : use short names for numerical fields labeling.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -f (Force)&nbsp;&nbsp; : forces output file writting.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -t (Table)&nbsp;&nbsp; : extracts a 'table' matrix
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Its lines are
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>[ id&nbsp; type&nbsp; start_pos&nbsp; end_pos&nbsp; rows&nbsp; columns ]
+</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with&nbsp; type = 1 for numbers, 3 for text, 64 for comments...</pre>
+
+<h4>
+Complex Options :</h4>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -p= (point)&nbsp; : specifies
+the numerical 'point' symbol(s) (such as in 12.3).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -s= (s&eacute;par.)
+: specifies the numerical separator(s) (equivalent to spaces).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -c= (comment): specifies
+the comment lines character(s).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Comment finishes at end of line.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -n= (newline): specifies
+end of line characters (equivalent to '\n').</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -o= (output) : specifies
+the file output type.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-o=oct m or txt.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -l=X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extracts fields of at least X numbers.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -F="filename": precises
+the output file name.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extract as a Matlab structure (with -o="m")</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extract ascii header preceeding numerics</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: help</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: DEBUG mode</tt>
+<br>Default parameters are :
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; point = "."
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; separator = " HT&nbsp; VT&nbsp; CR ,; ()[]{}=|:&lt;>&amp;"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eol = " NL&nbsp; FF "
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comment = "#%"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pass ascii mode
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output is .m file</pre>
+
+<h4>
+Notes :</h4>
+
+<ul>
+<li>
+Comment lines are ignored (usefull to remove some data)</li>
+
+<li>
+special characters that can be used with '-s' et '-n' options are : \t
+: horiziontal tabulation (HT) \v : vertical tabulation (VT) \f : Form Feed
+\r : Carriage Return \n : New Line</li>
+
+<li>
+The output formats differ by the header</li>
+
+<ul>
+<li>
+An '.oct' file is :</li>
+
+<br># name: toto
+<br># type: scalar 2.349
+<br># name...
+<br>it is <b>quickly</b> importable with 'load file.oct' under Octave
+<li>
+An '.m' file is toto = [ 2 3.645 7 ]; ... It is directly importable under
+Matlab/Octave typing 'file' (<blink>No .m !!</blink>) but it can be quite
+slow sometimes.</li>
+
+<li>
+A '.txt' file is only composed of numerical parts in order to be used by
+any program (Excel, Word...). it looks like : 2 3.56 1 5.6 2 1 ...</li>
+</ul>
+</ul>
+
+<h4>
+Examples :</h4>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; looktxt foo.txt
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; looktxt -v -l=5 -g foo.txt&nbsp;&nbsp;&nbsp;&nbsp;<i> only more than 5 numbers numerical fields, in verbose mode, grouping data
+</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; looktxt -p="," -s="\t\v.; " -c="#" -o=oct -F="toto" foo.txt&nbsp;<i> output file is <b>toto.oct</b>.</i>
+
+</pre>
+
+<h3>
+Under Matlab/Octave :</h3>
+Type "looktxt('filename')", what creates <i>filename.m</i> in current path.
+Then '<b>filename</b>' to import data (no .m !).
+<br>&nbsp;
+<h3>
+Known bugs</h3>
+A 'segmentation violation' bug on PC plateforms was corrected since the
+looktxt 0.91c (MeX 0.31) version.
+<h3>
+Installation</h3>
+Compilation of looktxt for system (under Unix/Linux) : <tt>gcc -O -o looktxt
+looktxt.c</tt> or with a PC/Mac compiler in ANSI mode with standard libraries.
+<br>For PC's, put the looktxt.exe file in your <b>C:\DOS</b> or <b>C:\Command</b>
+directory.
+<p>Compilation into a MeX file under Matlab : <tt>mex -O -output looktxt
+texmex.c</tt>.
+<br>Mex files are provided for HP-UX, SGI, Windows and Linux machines).
+<center>MeX For Matlab: <a href="http://www.ill.fr/tas/matlab/ftp/looktxt.dll">[
+PC ]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexhp7">[ HP-UX
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexsg">[ SGI IRIX64
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexaxp">[ Dec OSF1
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexglx">[ Linux
+(Intel) ]</a></center>
+
+<p>&nbsp;Get <a href="http://www.ill.fr/tas/matlab/ftp/looktxt.c">looktxt.c</a>
+source file to compile it, and <a href="http://www.ill.fr/tas/matlab/ftp/texmex.c">texmex.c</a>
+matlab/mex interface (also requires looktxt.c).
+<p><i>If you can not compile it</i>, here are some pre-compiled versions
+(to be renamed as <tt>looktxt</tt>) for executable program :
+<center><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.exe">[ PC ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.HP-UX">[
+HP-UX ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.IRIX64">[
+SGI IRIX 64 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.OSF1">[
+Dec OSF1 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.SunOS">[
+Sun Solaris ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.AIX">[
+IBM AIX ] </a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.Linux">[
+Linux SuSe (Intel)]</a> <a href="http://www.ill.fr/tas/matlab/ftp/looktxt.LinuxPPC">[
+Linux PPC (PowerMac) ]</a></center>
+
+<p><br>
+<div align=right>
+<hr><a href="http://www.ill.fr/tas/matlab/doc/mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="http://www.ill.fr/tas/matlab/doc/mfit.html">M<i>fit</i>
+user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<address>
+<a href="mailto:farhi@ill.fr">farhi@ill.fr&nbsp; </a>Apr 2001.</address>
+
+</body>
+</html>

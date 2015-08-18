@@ -1,0 +1,68 @@
+RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+    6555      1      0
+ILL TAS data in the new ASCII format follow after the line VV...V               
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      80      0                                                                 
+in20  regnault/l  19-Nov-99 16:16:05                                            
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+INSTR: in20
+EXPNO: 4-05-372
+USER_: regnault/lorenzo
+LOCAL: tasset
+FILE_:   6555
+DATE_: 19-Nov-99 16:16:05
+TITLE: basco
+COMND:  sc a4    55.80 da4     0.10 mn      50. np  25
+POSQE: QH=  1.0000, QK=  0.0000, QL=  0.0000, EN=   0.0000, UN=meV
+STEPS: DA4      =   0.10,
+PARAM: DM=   2.08710, DA=   3.43720, SM=-1., SS= 1., SA=-1.
+PARAM: FX= 1., KFIX=   4.10000
+PARAM: ALF1= 600.00, ALF2=  40.00, ALF3= 600.00, ALF4= 600.00
+PARAM: BET1= 600.00, BET2= 600.00, BET3= 600.00, BET4= 600.00
+PARAM: ETAM=    30.0, ETAA=    30.0
+PARAM: AS=   1.63740, BS=   4.85000, CS=  23.22000
+PARAM: AA= 90.0000, BB= 90.0000, CC=120.0000, ETAS=     5.0
+PARAM: AX=   1.000, AY=   0.000, AZ=   0.000
+PARAM: BX=   0.000, BY=   0.000, BZ=  -1.000
+VARIA: I1      =  -5.47  I2      =   6.03  I3      =   0.00  I4      =  -1.30
+VARIA: I5      =   0.00  I6      =   0.00  I7      =  -0.56  I8      =   0.40
+VARIA: I9      =   0.00  I10     =   0.00  I11     =   0.00
+VARIA: A1      = -21.54, A2      = -43.08, A3      = -49.33, A4      =  54.60,
+VARIA: A5      = -12.87, A6      =   0.00, CH      =  70.00, TM      =  32.03,
+VARIA: GM      =  -3.94, GL      =   0.01, GU      =  -0.04, TU      =  14.14,
+VARIA: TL      =  14.14, TA      =   4.12, GA      =  -6.22, RM      =  27.64,
+VARIA: MS      =   0.00, RH      = 146.76
+ZEROS: A1      =-182.25, A2      =-177.09, A3      =-182.58, A4      =-179.36,
+ZEROS: A5      =-266.35, A6      =-181.80, CH      =   0.00, TM      =   0.00,
+ZEROS: GM      = -69.00, GL      = -20.00, GU      = -20.04, TU      =  -6.34,
+ZEROS: TL      =  -6.34, TA      = -84.77, GA      = -47.40, RM      =-121.00,
+ZEROS: MS      =   0.00, RH      =   3.00
+PARAM: mn=     50.00
+FORMT: (i4,1x,f8.3,1x,2(f8.0,1x),f9.2,1x,f8.0,1x) 
+DATA_: 
+  PNT     A4          M1       M2      TIME     CNTS   
+   1   54.601        50.       4.      3.14      15.  
+   2   54.705        50.       2.      3.17       9.  
+   3   54.798        50.       3.      3.16      13.  
+   4   54.897        50.       1.      3.17      18.  
+   5   55.002        50.       2.      3.14      11.  
+   6   55.100        50.       0.      3.15      17.  
+   7   55.199        50.       3.      3.18      14.  
+   8   55.298        50.       5.      3.15      34.  
+   9   55.403        50.       5.      3.14      26.  
+  10   55.501        50.       0.      3.16      48.  
+  11   55.595        50.       4.      3.15      41.  
+  12   55.705        50.       2.      3.15      61.  
+  13   55.798        50.       2.      3.16      43.  
+  14   55.897        50.       2.      3.15      51.  
+  15   56.001        50.       1.      3.15      49.  
+  16   56.100        50.       4.      3.14      50.  
+  17   56.199        50.       3.      3.15      47.  
+  18   56.298        50.       2.      3.19      29.  
+  19   56.402        50.       2.      3.15      27.  
+  20   56.496        50.       1.      3.17      22.  
+  21   56.600        50.       3.      3.15      17.  
+  22   56.699        50.       2.      3.15      17.  
+  23   56.798        50.       3.      3.16      20.  
+  24   56.902        50.       8.      3.15      11.  
+  25   56.996        50.       3.      3.15      14.  

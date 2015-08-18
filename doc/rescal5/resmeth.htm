@@ -1,0 +1,84 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.77 [en] (X11; U; Linux 2.4.4-4GB i686) [Netscape]">
+   <meta name="AUTHOR" content="Cowley Group">
+   <meta name="Microsoft Border" content="tb, default">
+   <title>Resolution Methods</title>
+</head>
+<body>
+
+<center>
+<h3>
+<i>These help pages were designed at the <a href="http://xray.physics.ox.ac.uk/">Clarendon
+Laboratory</a>, <a href="http://www.physics.ox.ac.uk/">Department of Physics</a>,
+<a href="http://www.ox.ac.uk/">Oxford University</a>, U.K.</i></h3></center>
+
+<center><i>by </i>A. Tennant and D. McMorrow.</center>
+
+<center>
+<h3>
+<img SRC="reslogo.gif" height=189 width=226 align=BOTTOM>&nbsp;</h3></center>
+
+<h2>
+Resolution Methods</h2>
+<b>RESCAL for MATLAB</b> offers a choice of methods for calculating the
+resolution function of a neutron triple-axis spectrometer on the control
+bar of the parameter window, see <a href="resint.htm">Interactive windows
+and menus</a>. The choices are:&nbsp;
+<ul>
+<li>
+<b>Cooper-Nathans method</b> : (<i>M.J. Cooper and R. Nathans, Acta Cryst.
+A29, 160-169.</i>) calculates the resolution function from angular elements
+of spectrometer such as collimators, and neglect spatial effects such as
+size of sample.&nbsp;</li>
+
+<li>
+<b>Popovici method</b>: (<i>M. Popovici, Acta Cryst. A31, 507 (1975)</i>)
+calculates resolution function including spatial effects (source, monochromator,sample,analyser
+and detector shapes and dimensions), focussed monochromators and analysers,
+and waveguides.&nbsp;</li>
+</ul>
+The reason for offering a choice is that the spatial components are often
+not important or are perhaps unknown. Or, phenomenological parameters for
+an instrument may have been developed some time ago based on the Cooper-Nathans
+method which are known to give the correct resolution widths with this
+method. In other cases however spatial focussing effects play an important
+role, or it may be that a focussed monochromator or analyser was used and
+needs to be accounted for in the resolution calculation. For these cases
+the Popovici method is used. This method is chosen by default on <a href="resinst.htm">starting
+RESCAL for MATLAB</a>. Both methods use <a href="resint.htm">interactive
+windows and menus</a> for entering parameters either by file or directly
+with an extra window being started up for spatial parameters in the case
+of the Popovici method. The Popovici method is identical with the Cooper-Nathans
+method when the lateral spatial sizes such as detector width are made much
+larger than the spectrometer distances and flat monochromator/analysers
+are chosen. This provides a check on the two calculations. Both methods
+have been tested against similar fortran implementations of the respective
+methods (RESCAL at the ILL for the Cooper-Nathans method, and RESTRAX at
+the ILL for the Popovici method) and are in agreement.&nbsp;
+<h4>
+<a href="rescal.htm">RETURN TO HOME PAGE</a></h4>
+
+<address>
+(c) A. Tennant D. McMorrow November 29 1995&nbsp;</address>
+
+<center>
+<address>
+<b><font color="#800000"></font></b></address></center>
+
+<center>
+<br><img SRC="line6.gif" height=21 width=623></center>
+
+<center>
+<address>
+<b><font color="#804000">These pages&nbsp; were last updated on January
+30, 1999</font><font color="#800000">&nbsp;</font></b></address></center>
+
+<center>
+<address>
+<b><font color="#800000">[mirrored to ILL March 25th, 2002]</font></b></address></center>
+
+</body>
+</html>

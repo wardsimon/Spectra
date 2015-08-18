@@ -1,0 +1,261 @@
+Spec1d - Tools to manipulate 1D data sets
+-----------------------------------------
+Des McMorrow 16.4.98 
+
+Ver 0.99
+
+Requires MATLAB 5.1 or higher
+
+Install latest version of MFIT etc from:
+http://www.ill.fr/tas/matlab/doc/matprgs.html
+
+This collection of routines is designed to facilitate 
+the manipulation of 1d spectra from the command line
+in MATLAB. Spectra can be loaded into separate workspace 
+structures and then processed with simple one-line 
+commands. Liberal use is made of the
+operator overload feature of MATLAB5 so that operators
+such '+' are redefined to work on 1d spectra, including
+the correct handling of error propogation.
+
+
+Command summary:
+----------------
+
+For the following examples sn (n=1,2...) is a spec1d data type, 
+defined in spec1d.m, xc and yc are constants to be applied 
+to the x and y axes respectively. 
+
+Command		Description			Examples
+---------------------------------------------------------------
++		plus				r=s1+s2+s3+s4;
+                                                r=s1+yc;
+                                                r=s1+[xc,yc];
+
+-		minus				r=s1-s2;
+                                                r=s1-yc;
+                                                r=s1-[xc,yc];
+
+.*		multiply			r=s1.*s2; 
+                                                r=yc.*s1;
+                                                r=[xc,yc].*s1;
+
+./		divide				r=s1./s2;
+                                                r=s1./yc;
+                                                r=s1./[xc,yc];
+
+[]		append (x values differ)	r=[s1;s2;s3];
+
+combine		combine (x values differ)	r=combine(0.01,s1,s2,s3);
+
+cut             cut data specified by x range   r=cut(s1,[xleft1 xright1],[xleft2 xright2])
+
+disp		display data columns		disp(s1)
+
+extract		extract data from spectra	[x,y,e,yf]=extract(s1); 
+
+fits            fit data to mfit function       [r,f]=fits(s1,'gauss',[100 0.01 0.1 1]);
+
+loads		load data into spec1d object	see below
+
+peakm           calculate peak parameters       r=peakm(s1,[bgleft bgright])
+                (moment method)
+
+peakt           calculate integrated intensity  r=peakt(s1)
+                (trapezoidal method)
+
+plot		simple plot of spectra		plot(s1,s2,s3)
+
+transform       transform data                  r=transform('normalise',s1,1);
+                                                r=transform('dydx',s1);
+
+Contents:
+---------
+
+1. Loading spectra
+2. Basic plotting
+3. Simple operations
+4. Other operations
+  4.1 Combine
+  4.2 Cut
+  4.3 disp
+  4.4 extract
+  4.5 fits
+  4.6 peak
+  4.7 plot
+  4.8 Transform
+5. Installation
+6. In the pipeline
+
+1. Loading spectra:
+------------------
+
+Spectra can be loaded using the command file loads.
+This makes use of the standard MFIT/MVIEW load routines
+to load the data into a data structure.
+
+For example, the SPEC data file 'spec.01' maybe loaded into
+the data structure 's1' using the following command
+
+>>s1=loads('specbatch','spec.01,X=K,Y=Detector,S=3');
+
+Here 'specbatch' specifies the standard
+MFIT/MVIEW load routine for SPEC type data files, and
+the line 'spec.01,X=K,Y=Detector,S=3' causes the
+3rd scan from the file 'spec.01' to be loaded with 
+the x varible equal to 'K' and the Y variable set to
+'Detector'.
+
+s1 is a data structure defined in 'spec1d.m' to be
+
+s1.x		:  x-data
+s1.y		:  y-data
+s1.e		:  error on y
+s1.x_label	: Label for x-axis
+s1.y_label	: Label for y-axis
+s1.datafile	: Data file from which the scan was loaded
+s1.yfit         : Fitted value of data
+
+2. Basic plotting:
+-----------------
+
+A basic plot of the spectra can be generated with the
+plot command, eg.
+
+>>plot(s1);
+
+Two or more spectra can be overlayed
+
+>>plot(s1,s2,s3);
+
+Most properties of the graph can be edited by clicking on the 
+appropriate feature. Left click on the lables to edit them.
+Right click on the lines to edit them.
+
+3. Simple operations:
+--------------------
+
+Simple arithmetic operations may be performed on the 
+spectra using the plus '+', minus '-', element-by-element
+multiplication '.*', and simple element-by-element divide
+'./'. 
+
+Note: these operations require that the spectra have 
+identical x-values. If this is not the case then the
+spectra have to be first interpolated, or in the case of
+'+' 'combine' may be used.
+
+For example, suppose we wish to load scans 3, 4 and 5 from
+file 'spec.01' and then process them using simple 
+arithmetic.
+
+First load the scans into workspaces:
+
+>>s3=loads('specbatch','spec.01,X=K,Y=Detector,S=3');
+>>s4=loads('specbatch','spec.01,X=K,Y=Detector,S=4');
+>>s5=loads('specbatch','spec.01,X=K,Y=Detector,S=5');
+
+We can now add the three spectra and view the result 
+by typing:
+
+>>r=s3+s4+s5;
+>>plot(r);
+
+Alternatively s5 could be subtracted from the sum of 
+s3 and s4.
+
+>>r=s3+s4-s5;
+>>plot(r);
+
+The operators '.*' and './' work in a similar way,
+e.g.
+
+>>r=s3.*s4;
+
+or even
+
+>>r=2.*s4-s3;
+
+It is possible to append spectra as follows
+
+>>r=[s1;s2;s3;s4];
+
+4. Other operations:
+--------------------
+
+These will be added to with time.
+See the help section of the individual commands. 
+Presently supported commands include:
+
+4.1 Combine
+--------------------------------
+
+This is used to combine data points when averaging spectra that 
+do not have the same x-values, e.g.,
+
+>>r=combine(0.01,s1,s2,s3);
+
+Averages points in spectra s1, s2, and s3 that do not differ by 
+0.01 in their x values. This can also be used as a crude rebinning
+of one spectra
+
+>>r=combine(0.01,s1);
+
+4.2 Cuts
+--------
+
+4.3 Disp
+--------
+
+4.4 Extract
+-----------
+
+4.5 Fits
+--------
+
+4.6 Peak
+--------
+
+4.7 Transform
+-------------
+
+spectrum_out=transform(transform_function,spectrum_in,args)
+
+Transform spectrum according to the transform function, e.g.,
+
+>>r=transform('normalise',spectra,1)
+ 
+Currently available transform functions include:
+
+- r=transform('normalise',spectra,normalisation_value);
+- r=transform('dydx'     ,spectra);
+
+4.3 Interpolate
+---------------
+
+Not implimented yet
+
+5. Installation:
+----------------
+
+- Requires ver 5.0 of MATLAB or later.
+- Download latest version of load routines from
+
+ftp://ftp.ldv.univ-montp2.fr:7084/pub/Manuf/Archives/ForMatlab/
+
+-You should create a directory called '@spec1d' in a directory
+immediately below one that is in your matlab path and put 
+all the files here, apart from loads.m which should be
+placed in the MFIT/MVIEW load routine directory. Make sure that
+the funcs,  load and nllsq directories of MFIT/MVIEW are in 
+your MATLAB path.
+
+Obtaining latest Matlab stuff (MFit/MView/Rescal/SSym/load/funcs/nllsq)
+is easy on URL :
+
+http://www.ldv.univ-montp2.fr/matprgs.html
+
+6. In the pipeline
+------------------
+
+6.1 Interpolation - one spectra onto another

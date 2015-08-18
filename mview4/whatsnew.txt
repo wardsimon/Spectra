@@ -1,0 +1,82 @@
+File   : Whatsnew.txt
+Date : Wed Sep  3  1997
+Subject : MView version 4.1
+-----------------------------------------------
+
+Welcome to MView 4.1 Package.
+
+It should contain :
+	mview4		main programs
+	load		load routines, also for Mfit
+
+
+This program is to be used by Matlab version 5.
+However, it should mainly work with Matlab 4.2
+
+It enables graphical signal manipulations with many options. Try it you'll love it !
+
+1- Installation
+
+	Just put those dirs into your matlab zone, and add at the end of your 'startup.m' file the lines :
+
+disp('Install Matlab Graphic app : mview ');
+path(path,[ matlabroot '/toolbox/local/mview4' ]);
+path(path,[ matlabroot '/toolbox/local/load' ]);
+colordef none
+
+	Then you have to create the MEX files 'ffind.mex', witch is used by some load routines. Move to the 'load' dir, and type (on terminal prompt):
+
+cmex ffind.c
+
+	Next step is to compile the 'looktxt' program, that is also used by load routines. Just type :
+
+gcc -O looktxt.c -o looktxt 			// for Unix
+gcc -O looktxt.pc -o looktxt 		// for PC
+
+	You have to move that executable 'looktxt' file to a 'bin' dir (or DOS directory for PC's). Then (on unix systems):
+
+rehash
+
+	Edit the file 'mview4/mview.ini' and modify if needed the various path names to LoadRoutines section.
+
+	Mview is now installed. Type 'mview' to start it.
+
+2- Purpose, usage
+
+The object of Mview is to import many data files, and do operations between them.
+
+3- What's news features.
+
+The original version of mview (Des McMorrow 14.6.96) was designed for Matlab 4.2
+It was addapted for Matlab 5 recently.
+
+Mview 4.1 : Aug 1997 (DFM)
+* Well, I don't really know what was new at this time.
+* Anyway, many things seem to be improved.
+
+Load routines 4.1 : sept 1997 (EF, DFM)
+* new batch procedures and parameters for all data formats.
+* ILL load enables automatic parameters importation to rescal and mfit.
+* importation of any data thanks to 'Load Routine/General Load Routine' feature ('multiload.m')
+* direct user importation through 'Load/Direct Data from User' feature ('frombase.m')
+
+4- Troubles
+
+If you find any bug please tell us.
+Mview might sometime produce some 'warning' du to compatibility stuff. It doesn't matter...
+Matlab refresh drawing might cause strange things if you are using an 'autoraise' option in your Window Manager. It causes graphics to be sometimes drawn in the wrong window (!).
+The 'unix' command of matlab seems to scramble history displaying on prompt.  Type '!' at matlab's prompt to fix.
+
+
+5- Authors
+
+Those libraries are protected through the GNU GENERAL PUBLIC LICENSE
+which is detailed in 'licence.gpl' files in each part of libraries.
+
+Copyright (C) 1998  Zinkin, McMorrow, Tennant, Farhi, and Wildes.
+
+M.Zinkin (m.zinkin1@physics.ox.ac.uk)
+Des.McMorrow (des.mcmorrow@risoe.dk)
+D.A. Tennant (d.tennant1@physics.oxford.ac.uk)
+E.Farhi (farhi@ill.fr)
+

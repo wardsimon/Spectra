@@ -1,0 +1,59 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Des McMorrow">
+   <meta name="GENERATOR" content="Mozilla/4.6 [en-gb] (Win98; I) [Netscape]">
+   <title>spec1d</title>
+</head>
+<body>
+
+<h2>
+<b><font size=+1>Example 1: Reading data stored in x, y, error format,
+and fitting it to a Gaussian peak</font></b></h2>
+<font size=+1><b><font color="#FF0000">Spec1d</font></b> has built-in filters
+to load most types of data files. If the filter does not exist, then it
+is either easy to</font>
+<br><font size=+1>create a new filter, or to convert the data to x, y,
+error format, and then read in using the 'xyeload' filter.</font>
+<br><font size=+1>For example, the following commands can be used to load
+the file arraydat.dat (x, y and error stored in</font>
+<br><font size=+1>column form), fit it to a Gaussian, and to plot it:</font>
+<p><img SRC="ex1.gif" height=268 width=864>
+<p><font size=+1>which produces the figure</font>
+<p><img SRC="fig1.gif" height=447 width=508>
+<p><font size=+1>The code generated the plot in the following way:</font>
+<ul>
+<li>
+<font size=+1>The <b><font color="#FF0000">loads</font></b> function is
+used to load the data (x, y and error) from the file 'arraydat.dat' into
+the <b><font color="#FF0000">spec1d </font></b>object s.</font></li>
+
+<li>
+<font size=+1>The spectrum in s is then fitted to a Gaussian lineshape
+using the <b><font color="#FF0000">fits</font> </b>function. As no initial
+parameter values were given, the fitting routine estimates them from a
+moment analysis using the function <b><font color="#FF0000">peakm</font></b>.
+The parameters of the fit&nbsp; are returned in the structure fitdata,
+and the fitted values and original data in sfit.</font></li>
+
+<li>
+<font size=+1><b><font color="#FF0000">plot </font></b>is used to plot
+the data and fit.</font></li>
+
+<li>
+<font size=+1>Finally, the fit parameters in fitdata are added to the plot
+using <b><font color="#FF0000">formatpars</font>.</b></font></li>
+</ul>
+<font size=+1>In this example, each command was typed at the matlab prompt.
+They can of course be placed in a file, which is then run from the commad
+line. This allows the steps used in a complex data analysis&nbsp; to be
+stored for editing, and also as a record of what was done.</font>
+<p><font size=+1>Both <b><font color="#FF0000">loads</font></b> and <b><font color="#FF0000">fits</font></b>
+are much more flexible than this example suggests, as will be made clear
+in the other examples. Check the</font>
+<br><font size=+1>help supplied with each function for details.</font>
+<blockquote>&nbsp;</blockquote>
+
+</body>
+</html>

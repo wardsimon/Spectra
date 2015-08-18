@@ -1,0 +1,72 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Writing fitting routines</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<h1>
+<b>Writing your own fitting routines</b></h1>
+Non-linear fitting algorithms usually begin with a starting guess for the
+function parameters that minimize some target function (usually chi squared),
+and then attempt to improve upon the initial values by an iterative procedure.
+Different algorithms do this in different ways, and may also estimate the
+resulting uncertainties in the parameter values obtained in different ways.
+You can supply your own fitting routines which allows you to determine
+both the minimization algorithm and the target function.
+<p>The Gradient routine supplied with Mfit is adapted from the Levenberg-Marquardt
+algorithm <tt>leasqr.m</tt> by Richard I. Shrager, A.Jutan, and Ray Muzic.
+A <tt>simplex</tt> method adapted from the matlab <tt>fmins</tt> function
+is also provided. Des McMorrow has also written a FORTRAN .mex file interface
+to the excellent CERN package MINUIT, but this is machine dependent, and
+so is not included.
+<a href="mailto:des.mcmorrow@risoe.dk">Ask</a> if you're
+interested.
+<h2>
+<b>Function format</b></h2>
+Fitting routines are .m files (or .mex files - see the Matlab external
+interface guide) with the syntax:
+<ul><b><tt>function [p, std]=function_name(x,y,err,pin,dpin,func)</tt></b></ul>
+The input parameters are:
+<ul>
+<li>
+<b><tt>x</tt></b>, <b><tt>y</tt></b>, <b><tt>err</tt></b> - vectors containing
+the data. <tt>err</tt> is the unceratinty in <tt>y</tt></li>
+
+<li>
+<tt><b>pin</b> </tt>- vector of initial parameter values</li>
+
+<li>
+<tt><b>dpin</b> </tt>- vector the same length as pin. If pin(n)=0 then
+parameter n is held at the <tt>same value during the fit</tt></li>
+
+<li>
+<tt><b>func</b> - </tt>the name of the fitting function called. (See
+<a href="fitfunc.html">'Writing
+fitting functions'</a> for details)</li>
+</ul>
+and the function returns <b><tt>p</tt></b> and <b><tt>std</tt></b>, vectors
+containing the best fit estimates of the paramters, and the associated
+uncertainties respectively.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

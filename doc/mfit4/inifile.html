@@ -1,0 +1,281 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : the INI file</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<center>[ <a href="#The mfit.ini file">The mfit.ini file</a> ][ <a href="#Using more than one .ini configuration file">Using
+more than one .ini configuration file</a> ][ <a href="#Saving an active configuration for future use">Saving
+an active configuration for future use</a> ]
+<br>[ <a href="#File format:">mfit.ini File format</a> ][ <a href="#Create and mfit.ini file for your system:">Create
+a mfit.ini file for your system</a> ][ <a href="#Example">Example</a> ]</center>
+
+<h1>
+<a NAME="The mfit.ini file"></a><b>The mfit.ini file</b></h1>
+When it starts, <b>M</b><i>fit</i> reads a lot of configuration information
+from the <tt>mfit.ini</tt> file. It specifies things like:
+<ul>
+<li>
+Where to find all your fitting functions, and what to call them</li>
+
+<li>
+Where to find all your load functions, and what to call them</li>
+
+<li>
+Where to find all your fitting routines, and what to call them</li>
+
+<li>
+Data window default position, size, and colors</li>
+
+<li>
+Graph fonts and font sizes</li>
+
+<li>
+Control window position</li>
+
+<li>
+Text height (improves appearance and readability on some OS's)</li>
+
+<li>
+The default data directory</li>
+
+<li>
+What to do when starting</li>
+</ul>
+The advantages of forcing you to register all the functions individually
+are:
+<ul>
+<li>
+You can give your routines sensible names, rather than just referring to
+them by the .m file name - so you choose 'Lorentzian + Lorentzian squared
+(sloping background)' rather than slorlor2.m, for example.</li>
+
+<li>
+You can put the functions in any directory - e.g. with the data they apply
+to. It's probably advisable to group most of the functions together, however.</li>
+</ul>
+The penalty is that you have to set the <tt>mfit.ini</tt> file up manually
+before you can run <b>M</b><i>fit. </i>The following sections explain how
+to set up a suitable configuration file for your installation.
+<p>You can still modify some <b>M</b><i>fit</i> configuration variables
+after launch by selecting the <i>Mfit Config</i> item from the <i>Mfit
+: Control : Options</i> menu.
+<h1>
+<a NAME="Using more than one .ini configuration file"></a>Using more than
+one <tt>.ini</tt> configuration file</h1>
+It is possible to maintain various configuration files. When typing
+<blockquote><tt>mfit</tt></blockquote>
+the mfit.ini file is used, but you can also type for instance
+<blockquote><tt>mfit('my_inifile.ini')</tt></blockquote>
+In that case, the file that you specified is used for the <b>M</b><i>fit</i>
+configuration, and if it is not found, the <tt>mfit.ini</tt> file is used
+instead.
+<br>&nbsp;
+<h1>
+<a NAME="Saving an active configuration for future use"></a>Saving an active
+configuration for future use</h1>
+If you use a special configuration of <b>M</b><i>fit</i>, for instance
+after selecting the <b>M</b><i>fit Config</i> item from the <b>M</b><i>fit
+: Control : Options</i> menu, you can save your own configuration into
+the <tt>inifile</tt> (hich is <tt>mfit.ini</tt> by default but can be changed
+in <i>Options : MFit Config</i>) by selecting 'Save Configuration File'
+from the <i>Mfit : Control : File</i> menu.
+<p>The saved the configuration will store (and restore at each <b>M</b><i>fit</i>
+startup using your configuration) the active data set, <a href="multifunc.html">multifunction</a>,
+<a href="manipdata.html">data
+transformation</a>, fit control options it will be included in your configuration.
+<h2>
+<a NAME="File format:"></a>mfit.ini File format:</h2>
+The <tt>mfit.ini</tt> file (see <a href="inifile.html#Example">example</a>)
+consists of four&nbsp; or five sections, each of which starts with the
+section name in curly braces. The sections are <tt>{general}</tt>, which
+specifies default files, directories and graphical properties, then the
+<tt>{Load
+Routines}</tt>,
+<tt>{Fit Functions}</tt>, and <tt>{Fit Routines}</tt> sections
+which register load routines, fit functions, and fit routines for use with
+<b>M</b><i>fit.
+</i>The
+format of the <tt>{general}</tt> section is clear from the example below.
+The other sections consist of a series of lines, each of which is of the
+format:
+<ul>
+<li>
+<tt>[file name], [Directory], [Description]</tt></li>
+</ul>
+where <tt>[file name] </tt>is the name of an .m file (without extension),<tt>
+[Directory]</tt> is the directory in which it is found, and <tt>[Description]</tt>
+is a text description of the function. For example, the line
+<ul>
+<li>
+<tt>gauss, c:\matlab\mfit3\funcs, Gaussian (width sigma</tt>)</li>
+</ul>
+registers a function c:\<tt>matlab\mfit3\funcs\gauss.m, </tt>which has
+a menu entry <tt>'Gaussian (width sigma</tt>) '. Note that a blank line
+inserts a separator into the corresponding menu.
+<p>A fifth optional <tt>{startup}</tt> section can contain some <b>M</b><i>fit
+</i><a href="batch.html">batch</a> commands to execute on starting. Of
+course, you can use the <tt>exec</tt> batch command to extend this feature
+to any matlab command.
+<h2>
+<a NAME="Create and mfit.ini file for your system:"></a>Create a mfit.ini
+file for your system:</h2>
+
+<blockquote><img SRC="greenbal.gif" height=14 width=14>Load a copy of <a href="mfit.ini">a
+basic <tt>mfit.ini</tt></a> file into your favourite text editor</blockquote>
+
+<ul><img SRC="greenbal.gif" height=14 width=14>Use 'search and replace'
+to make change the directories to wherever you have installed <b>M</b><i>fit</i>
+on your system: e.g. replace all occurences of <tt>'c:\matlab\mfit\funcs'</tt>
+with <tt>'~\matlab\mfit3\funcs'</tt>, and so on.
+<br><img SRC="greenbal.gif" height=14 width=14>Save the results as mfit.ini
+in your <b>M</b><i>fit</i> directory
+<br><img SRC="greenbal.gif" height=14 width=14>Run <b>M</b><i>fit</i>,
+and make sure you can pick functions from the menus</ul>
+Note that you can have more than one <tt>mfit.ini</tt> file: <b>M</b><i>fit</i>
+reads the mfit.ini file it finds in directory in which it is started, or
+the .ini file specified on the command line, eg. <tt>mfit('c:\expdata\mfitexp.ini</tt>')&nbsp;
+(see <a href="#Using more than one .ini configuration file">Using more
+than one <tt>.ini</tt> configuration file</a>)
+<h2>
+<a NAME="Example"></a>Example:</h2>
+Here is what a typical mfit.ini file looks like at the moment. Click <a href="mfit.ini">here</a>
+to get a copy:
+<br>(I've added some comments in <font color="#FF0000">red</font> here,
+other items are intuitive and self-explicite I hope)
+<br>Some of the <b>M</b><i>fit</i> configuration variables are accessible
+from the <i>Mfit Config</i> item of the <i>Option</i> menu in the <b>M</b><i>fit</i>
+: Control window
+<p><tt>{General}<br>
+LoadRoutineFile =&nbsp;<br>
+LoadRoutineDir&nbsp; = /home/tas/matroot/matlab/load<br>
+LoadRoutineName =&nbsp;<br>
+FitFuncFile&nbsp;&nbsp;&nbsp;&nbsp; = gauss<br>
+FitFuncDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /home/tas/matroot/matlab/funcs<br>
+FitFuncName&nbsp;&nbsp;&nbsp;&nbsp; = Gaussian<br>
+DataFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = unknown.dat<br>
+DataDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;<br>
+OutFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = temp.mft<br>
+OutDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;<br>
+BatchFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = temp.mbt<br>
+BatchDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;<br>
+FigureBgColor&nbsp;&nbsp; = black<br>
+AxesColor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = white<br>
+FitColor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = cyan<br>
+EbarColor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = red<br>
+DataColor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = green<br>
+DataColorSelected&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = magenta<br>
+FigurePosition&nbsp; = 200 50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#FF0000">%
+for data graph specifications<br>
+</font>FigureSize&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 400 350<br>
+ContWinPosition = 37 231&nbsp;<br>
+ParWinPosition&nbsp; = 29 70&nbsp;<br>
+AxesFont&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Times<br>
+AxesFontSize&nbsp;&nbsp;&nbsp; = 12<br>
+LabelFont&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Times<br>
+LabelFontSize&nbsp;&nbsp; = 16<br>
+FitPoints&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% points to show when drawing fit line, empty means
+'use data point number'<br>
+</font>ContWinPosition = 100 500<br>
+ParWinPosition&nbsp; = 50 50<br>
+TextBoxHeight&nbsp;&nbsp; = 18<br>
+MarkerSize&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 10<br>
+DataLineStyle = none<br>
+AutoGuess&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+AutoSave&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+ShowPwinAtStart = 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% 0 : hide, 1 :show parameter window at MFit start<br>
+</font>IniFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = mfit.ini&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% you can change this in MFit:Control:Options:MFit
+Config:Inifile<br>
+</font>ShowBatchLine&nbsp;&nbsp; = 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% 0 : hide, 1: show batch command field in Mfit:Control</font></tt>
+<br><tt><font color="#000000">ExecAfterLoad&nbsp;&nbsp; =</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% a command to execute after each data load<br>
+</font><font color="#000000">ExecAfterFit&nbsp;&nbsp;&nbsp; =&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">% a command to execute after each data fit</font></tt>
+<pre>
+{Load Routines}
+===General purpose=================&nbsp;&nbsp;&nbsp; <font color="#FF0000">% this appears as a menu separator
+</font>multigui, /home/tas/matroot/matlab/load, General Load routine GUI
+multibatch, /home/tas/matroot/matlab/load, General Load routine Auto/Batch
+%xyeload , /home/tas/matroot/matlab/load, X Y error columns text file
+%multi&nbsp;&nbsp; ,&nbsp; /home/tas/matroot/matlab/load, Multicolumn GUI&nbsp;&nbsp;&nbsp;
+%pargui&nbsp; , /home/tas/matroot/matlab/load , MFIT parameter file (v0.0)
+mf_gpar , /home/tas/matroot/matlab/mfit4, MFIT parameter file (v1.0)
+frombase, /home/tas/matroot/matlab/load , Direct User data entry
+===Special Neutron data formats============
+illgui,&nbsp;&nbsp; /home/tas/matroot/matlab/load, ILL data (new format) GUI
+illbatch,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/load, ILL data (new format) Auto/Batch
+tasgui,&nbsp; /home/tas/matroot/matlab/load, TASCOM (Riso data format) GUI&nbsp;&nbsp;&nbsp;
+tasbatch, /home/tas/matroot/matlab/load , TASCOM (Riso data format) Auto/Batch
+specgui ,&nbsp; /home/tas/matroot/matlab/load, SPEC GUI&nbsp;
+specbatch, /home/tas/matroot/matlab/load , SPEC&nbsp; Auto/Batch
+===Special local data formats============
+mcabatch ,&nbsp; /home/tas/matroot/matlab/load, MCA text data
+{Fit Functions}
+===Single peaks====================
+gauss,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Gaussian&nbsp;
+gauss2,&nbsp; /home/tas/matroot/matlab/funcs, Gaussian squared
+sgauss,&nbsp; /home/tas/matroot/matlab/funcs, Gaussian (sloping background)
+lorz,&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Lorentzian
+lorz2,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Lorentzian squared
+airyfp,&nbsp; /home/tas/matroot/matlab/funcs, Airy (for Fabry Perot)
+cusp,&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Cusp (double power law)
+dho,&nbsp;&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Damped Harmonic Oscillator + Inc.
+triangl,&nbsp; /home/tas/matroot/matlab/funcs, Triangular peak (width hwhm)
+voigt,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Voigt function
+dirac,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Dirac peak
+===Double peaks====================
+gaussx2,&nbsp; /home/tas/matroot/matlab/funcs, Two Gaussians
+lorzx2,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Two Lorentzians
+lorgss,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Lorentzian + Gaussian
+green,&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, Green function
+===Multiple peaks==================
+ngauss,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, N Gaussians
+nlorz,&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs, N Lorentzians
+multifunc, /home/tas/matroot/matlab/funcs, MultiFunctions...
+===Miscellaneous===================
+%rescon , /home/tas/matroot/matlab/funcs, Lorentzian + Lorentzian squared with 3D resolution convolution}
+pow,&nbsp;&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Power law (below x0)
+pow1,&nbsp;&nbsp;&nbsp; /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Power law (above x0)
+ellipse, /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ellipse
+background,&nbsp; /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp; Constant (Background)
+strline, /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Straight line )ax+b)
+quadrat, /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quadratic (ax^2+bx+c)
+polynomial, /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp; Polynomial
+expon,&nbsp;&nbsp; /home/tas/matroot/matlab/funcs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Exponential decay
+==Specific=========================
+refl, /home/tas/matroot/matlab/funcs/, Reflectivity (N layers)
+trix,&nbsp; /home/tas/matroot/matlab/funcs/trix, 4D-TAS resolution function
+trix2,&nbsp; /home/tas/matroot/matlab/funcs/trix, 4D-TAS resolution function v2
+%sdk, /home/tas/matroot/matlab/funcs/, 2 tandem Fabry Perot (SDK)
+%couplph, /home/tas/matroot/matlab/funcs, Spin-Phonon coupled function
+{Fit Routines}
+=== Non-linear least squares routines ====
+mf_flsqr, /home/tas/matroot/matlab/nllsq, Levenberg Marquardt gradient (Fast)
+mf_glsqr, /home/tas/matroot/matlab/nllsq, Levenberg Marquardt gradient (Graphic)
+mf_simplx, /home/tas/matroot/matlab/nllsq, Simplex (Nelder-Mead method)
+mf_simplg, /home/tas/matroot/matlab/nllsq, Simplex Graphic (Nelder-Mead method)</pre>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

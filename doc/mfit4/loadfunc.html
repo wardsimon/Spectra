@@ -1,0 +1,124 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Writing load routines</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<h1>
+<b>Writing your own load functions</b></h1>
+Data files come in many different formats, and a strnegth of <b>M</b><i>fit</i>
+is that it allows you to write your own load functions so that you can
+load any data format transparently. <b>M</b><i>fit</i> includes load functions
+for some common (and some not-so-common!) data formats, but you may well
+want to write your own to cope with special formats.
+<p>Usually, you should try first the <i><a href="colsel.html#General Load routine">General
+Load routine</a></i>, but if you plan to import massively some specific
+data format files, you may write a faster and adapted load routine.
+<h2>
+<b>Function format</b></h2>
+Load functions are .m files with the syntax:
+<ul><b><tt>function [x,y,err,xlab,ylab]=xyeload(filename)</tt></b></ul>
+The function takes <tt>filename</tt>, the name of the data file including
+the path, as a parameter, and returns three equal length vectors <tt>x</tt>,
+<tt>y</tt>,
+and <tt>err </tt>corresponding to the x, y, and uncertainty-in-y values
+of the data. The function can also return <tt>xlab</tt> and <tt>ylab</tt>,
+Matlab strings which, if supplied, are used to label the x and y axes of
+the graph.
+<p>If an error occurs in the load function it should exit with one (or
+all) of <tt>x</tt>, <tt>y</tt>, <tt>err</tt> an empty vector.
+<h2>
+Example:</h2>
+Here is the code for the x, y, error column ascii file load function (<tt>xyeload.m</tt>).
+This function loads ascii files with a text header followed by three column
+numeric data. The header is ignored, except for the last line, which, if
+it consists of three words, is assumed to give the column labels which
+are then extracted.
+<ul>
+<pre>function [x,y,err,xlab,ylab]=xyeload(file)
+%
+% MFIT function [x,y,err]=xyeload(file)
+%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MZ 29.11.94
+%
+% This is a basic load routine for MFIT, illustrating the required
+% syntax. The routine takes the name of a data file (including path) as a
+% parameter and returns the column vectors x, y, err.
+
+%------------- Open data file---------------------
+fid=fopen(file,'r');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (fid&lt;0)&nbsp;
+&nbsp;&nbsp; x=[];
+&nbsp;&nbsp; return
+end
+
+%-------------- Initialize arrays-----------------
+data=[];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+header='dummy';
+text=fgetl(fid);
+
+%============= Load data ===========================================
+
+%------Read header and first row of data --------------------------
+istext=1;
+while (istext==1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; [row1 count]=sscanf(text,'%f');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; if isempty(row1)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; header=str2mat(header, text);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; text=fgetl(fid);
+&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; istext=0;
+&nbsp;&nbsp;&nbsp; end
+end
+
+%------ Read data and reshape into matrix --------------------------
+data=fscanf(fid,'%f');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % Read data into vector (for speed)
+ncol=length(row1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % Use row1 to work out how to reshape
+nrow=length(data)/ncol;
+if (nrow*ncol~=length(data))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; error('Bad data format');
+end
+data=[row1'; reshape(data,ncol,nrow)'];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % Reshape vector to matrix
+fclose(fid);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % close input file
+
+x=data(:,1);
+y=data(:,2);
+err=data(:,3);
+
+
+%===== Make x and y column labels ===================================
+
+%-----Try to be clever and make labels from last line of header ----------
+s=deblank(header(size(header,1),:));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % last line of header
+i=find(s==9);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % replace tabs by spaces
+s(i)=32*ones(size(i));
+[xlab s]=strtok(setstr(s),' ');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % x label is first word
+[ylab s]=strtok(setstr(s),' ');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % y label is second word
+[elab s]=strtok(setstr(s),' ');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % elabel is third word&nbsp;
+
+%----- Wrong number of columns? Then just 'x' and 'y'------------------
+if ~(length(elab)>0 &amp; length(s)==0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % s should be empty if 3 words
+&nbsp;&nbsp; xlab='x';
+&nbsp;&nbsp; ylab='y';
+end</pre>
+</ul>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

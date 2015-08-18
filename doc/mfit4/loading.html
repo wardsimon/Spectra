@@ -1,0 +1,133 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Loading data</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<center>[ <a href="#Choose a load function">Choose a load function</a>
+][ <a href="#Choose a data file">Choose a data file</a> ]</center>
+
+<h1>
+<b>Loading data files</b></h1>
+
+<h3>
+<img SRC="greenbal.gif" height=14 width=14 align=BOTTOM><a NAME="Choose a load function"></a><b>Choose
+a load function</b></h3>
+<b>M</b><i>fit</i> uses load functions to get data from your data files
+into a form it can recognize. The first step in loading data is to choose
+the appropriate load function from the 'MFit:Control:Load Routine' menu
+in the control window:
+<center>
+<p><img SRC="Conwin2.gif" ALT="Control window - load function menu" height=218 width=508>
+<br>Fig 1 : <b>M</b><i>fit</i> : control window</center>
+
+<p>The functions that appear on the menu are those that <b>M</b><i>fit</i>
+read from the <a href="inifile.html">mfit.ini</a> file when it started.
+Choose a load function from the menu by clicking on it. If you choose '<i>Other</i>...'
+you can choose a <a href="loadfunc.html">load function</a> that is not
+one of those listed in the .ini file. <b>M</b><i>fit</i> shows the currently
+selected load function in the control window.
+<p>Some load routines :
+<ul>
+<li>
+The <i><a href="colsel.html#General Load routine">General Load routine</a></i>
+enables to load any data stored into a text (ascii) file. It does analyze
+the file contents (with <a href="http://www.ill.fr/tas/matlab/doc/looktxt.html">looktxt
+</a>),
+separate and sort numerical parts (single numbers, vectors and matrices).</li>
+
+<li>
+The <i><a href="colsel.html#The Mfit parameter file importation">MFIT parameter
+file</a></i> enables to get the parameter values saved in an <b>M</b><i>fit</i>
+output file (see <a href="saving.html">Saving results</a>), for instance
+plot an amplitude <i>vs.</i> a temperature.</li>
+
+<li>
+The <i><a href="colsel.html#The Direct Data entry">Direct User data entry</a></i>
+enables, when pressing 'New...' button or selecting 'Load New Data file...'
+in the control window, to enter directly an expression for x, y and the
+error. One can use here the user variables from the matlab session. A blank
+field will re-use the active data.</li>
+
+<li>
+It is also possible to transfert directly (by typing matlab commands) data
+between <b>M</b><i>fit</i> and the matlab workspace. See <a href="manipdata.html#Exchanging data">Exchanging
+data between <b>M</b><i>fit</i> and the <tt>matlab</tt> workspace</a>.</li>
+</ul>
+
+<p><br>Usually, load routines are available as <i>Graphic User Interface</i>
+(GUI, asks user preferences) and <i>Automatic</i> (tries to guess, usefull
+for <a href="batch.html">batch</a> runs) modes
+<br>You can define your own load routines for special data formats.
+<br>&nbsp;
+<br>&nbsp;
+<h3>
+<img SRC="greenbal.gif" height=14 width=14 align=BOTTOM><a NAME="Choose a data file"></a>Choose
+a data file</h3>
+The next step is to choose your data file. There are actually three ways
+you can do this: the simplest is to press the '<b>New..</b>' button to
+the right of the 'Data file' box in the control window (see the above figure
+1). Alternatively, you can choose 'Load new data file...' from the control
+window 'File' menu (or Control-L key). In either you will be presented
+with a dialog box to allow you to choose a data file:
+<center>
+<p><img SRC="Getfile.gif" height=406 width=333>
+<br>Fig 2 : <b>M</b><i>fit</i> : selecting a file to load.</center>
+
+<p>Choose a file, changing directories if necessary. <b>M</b><i>fit</i>
+will attempt to load the selected file using the current load function.
+When using a Graphic User Interface (GUI) routine, the load routine might
+ask for additional informations about how to import the data. Often, the
+<a href="colsel.html">column
+selector</a>&nbsp; will appear.
+<center><img SRC="Colsel.gif" height=235 width=182>
+<br>Fig 3 : <b>M</b><i>fit</i> : column selector in GUI mode</center>
+
+<p>Click OK button. If successful, a data window, containing a graph of
+your data will be opened. Get the example ILL data file <a href="006555">here</a>.
+It looks something like this:
+<center>
+<p><img SRC="Datwin.gif" ALT="Mfit data window" height=406 width=408>
+<br>Fig 4 : <b>M</b><i>fit</i> : the data window (with ILL data GUI load).</center>
+
+<p>If the data file you want to load is in the current data directory (i.e.
+the same directory as the last data file loaded), you can just edit the
+name in the data file box in the control window, right next to the 'Data
+File' indication in the MFit Control window.
+<br>You may click on any text to edit it, zoom, select/deselect points
+with the left button. The middle button in the graph will indicate the
+point coordinates. You may also <a href="manipdata.html">manipulate your
+data</a> ('Change X-axis' and 'Transform' items of the 'MFit : Graph/Axes'
+menu). If you encounter some problems in viewing your data, you can still
+close the data window (MFit : Graph : Data menu/Close), and reload it (MFit
+: Control : File menu). You can also change the color mode with the matlab
+command '<tt>colordef</tt>'.
+<p><b>Next:</b> <b><a href="choosefit.html">Choosing fitting functions</a></b>.
+<br><b>See also:</b> <b><a href="colsel.html">Options when loading data
+files</a></b>,
+<b><a href="batch.html">M<i>fit</i> batch files</a></b>
+, <b><a href="inifile.html">The
+<tt>mfit.ini</tt> file</a></b> , <b><a href="manipdata.html">Manipulating
+data</a></b> ,
+<b><a href="loadfunc.html">How to write load functions</a></b>.
+<br>&nbsp;
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

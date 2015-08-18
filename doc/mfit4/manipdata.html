@@ -1,0 +1,122 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="E. Farhi [farhi@ill.fr]">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>MFit Home Page : Manipulating data</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<center>[ <a href="#Exchanging data">Exchanging data</a> ][ <a href="#Data transformation">Data
+transformations </a>][ <a href="#rescale">X-axis transform</a> ]</center>
+
+<h1>
+Manipulating data with Matlab and M<i>fit</i></h1>
+&nbsp;
+<h3>
+<img SRC="greenbal.gif" height=14 width=14><a NAME="Exchanging data"></a>Exchanging
+data between <b>M</b><i>fit</i> and the <tt>matlab</tt> workspace</h3>
+The <b>M</b><i>fit</i> program handles some local variables, refering to
+the active data window and parameter window:
+<blockquote><b>x</b> - [length <i>n</i>, vector] the X axis data
+<br><b>y</b> - [length <i>n</i>, vector] the Y axis data
+<br><b>err</b> - [length <i>n</i>, vector] the error bars amplitude
+<br><b>selected</b> - [length <i>n</i>, vector] the selected points for
+fit (0 : unselected, 1 : selected)
+<br><b>p</b> - [length <i>m</i>, vector] the fit function parameters
+<br><b>dp</b> - [length <i>m</i>, vector] the fit function parameters uncertainties
+after fitting
+<br><b>fixed</b> - [length <i>m</i>, vector] the fixed parameters (0 :
+free, 1 : fixed)
+<br><b>fit</b> - [usually length <i>n</i>, vector] the fitted curve, evaluated
+from fit function</blockquote>
+These are not normally accessible from the Matlab workspace. Anyway, there
+are two functions that enable to manipulate these variables directly. In
+all <b>M</b><i>fit</i> routines (load routines, fit functions, fitting
+routines...), these variables are available as local variables.
+<p><b>Matlab -> M<i>fit </i>: tomfit</b>
+<blockquote>Suppose you have some data stored into the Matlab workspace.
+You can send these data directly to <b>M</b><i>fit</i> by mean of the <tt>tomfit</tt>
+function:</blockquote>
+
+<blockquote>
+<blockquote><tt>>> tomfit(x,y,err,selected,p,fixed);</tt></blockquote>
+If you use empty parameters for that function (for instance <tt>tomfit([],y)</tt>),
+the corresponding <b>M</b><i>fit</i> data will be kept (not modified).</blockquote>
+<b>M<i>fit -> </i>Matlab : fromfit</b>
+<blockquote>Similarly, you can retreive <b>M</b><i>fit</i> data into the
+Matlab workspace by mean of the <tt>tomfit</tt> function:
+<blockquote><tt>>> [x,y,err,selected,fit,p,dp,fixed]=fromfit;</tt></blockquote>
+This enables to perform some operations directly on matlab variables coming
+from <b>M</b><i>fit</i>, and then send them back to <b>M</b><i>fit.</i>with
+tomfit.</blockquote>
+
+<h3>
+<img SRC="greenbal.gif" height=14 width=14>&nbsp;<a NAME="Data transformation"></a>Data
+transformations</h3>
+Once you have loaded some data into <b>M</b><i>fit </i>(see <a href="loading.html">Loading
+data files</a>), it is possible to modify <b>M</b><i>fit</i> internal variables
+<tt>x</tt>, <tt>y</tt> and <tt>err</tt>, when selecting the '<i>Transform...</i>'
+item of the <i>Data</i> menu in the <b>M</b><i>fit</i> : Data window.
+<center>
+<p><img SRC="transform.gif" height=179 width=308>
+<br>Fig 1 : <b>M</b><i>fit</i> : Transform pop-up from Data window.</center>
+
+<p>Internal variables can be used here. This method does not require to
+type commands into the Matlab workspace, as iwhen you use the <a href="#Exchanging data">Exchanging
+data</a> with Matlab workspace method.
+<p>In fact, it acts exaclty the same as the <i><a href="colsel.html#The Direct Data entry">Direct
+User data entry</a></i> , but uses the <b>M</b><i>fit</i> variables instead
+of the Matlab workspace ones.
+<h3>
+<img SRC="greenbal.gif" height=14 width=14> X-axis transform (<a NAME="rescale"></a>rescale)</h3>
+In some cases, the X-axis needs to be <b>rescaled</b> (for instance when
+a non linearity occurs in scanning during an experiment).
+<br>In that case, select the '<i>Change X-Axis</i>' item of the <i>Data</i>
+menu in the <b>M</b><i>fit</i> : Data window.
+<center>
+<p><img SRC="rescale.gif" height=188 width=308>
+<br>Fig 2 : <b>M</b><i>fit</i> : Change X-Axis pop-up from Data window.</center>
+
+<p>1- For this operation, you first select some X-values in the current
+Data window. Either you enter the numerical values with the keyboard, or
+you click on '<b><i>Get Points</i></b>' button. In that case a pointer
+will appear in the Data window. Select the reference points and hit a keyboard
+key to end acquisition.
+<p>Optionally, you can ask to modify these values either into the nearest
+maxima (<b>Max</b> button), or to compute nearest peak estimates (<b>Peak</b>
+button).
+<p>2- Then transfert these values to the '<b><i>Old Axis</i></b>' catalog,
+and enter for each of them the real value that better suits you (the one
+that you would expect) in the <b><i>New Axis</i></b> list.
+<p>3- Select the <b>order</b> of the polynomial transformation. The corresponding
+polynome coefficients are displayed.
+<p>4- Click on <b>OK</b> button. The Old Axis will then be changed into
+a New Axis. In the given <a href="tita5.0">example</a> (Fig 2), the original
+axis ranged from 0 to 2000. With a second order transformation, it finally
+ranges from 0.5 to 3.06, and the data appears stretched:
+<center>
+<p><img SRC="chgx1.gif" height=256 width=281 align=CENTER> <b><font size=+4>->&nbsp;</font></b><img SRC="chgx2.gif" height=256 width=281 align=CENTER>
+<br>Fig 2 : <b>M</b><i>fit</i> : Effect of an X-Axis change on data aspect</center>
+
+<p>If you need to perform an X-Axis change for each loaded data set, with
+the same polynome, you can then activate the <b><i>Auto Rescale</i></b>
+feature in the <i>Options</i> menu of the <b>M</b><i>fit</i> : Control
+window.
+<br>&nbsp;
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<br>(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.
+</body>
+</html>

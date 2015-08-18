@@ -1,0 +1,82 @@
+This file is inteded to write down local changes to be debugged and implemented.
+
+%%%%% HMR July 2001
+
+On can now specify e.g. [51 161] in loads - the routine will add leading zeros.
+
+%%%%% HMR April 2001
+
+17/4-2001: Change fits.m so that it removes points with zero error rather than points with zero y.
+18/4-2001: Changed smooth to take vectors
+18/4-2001: Changed times to take vectors
+
+%%%%% ESRF id20 experiment April 2001
+
+7/4-2001 HMR: specbatch.m before a file with zeroes in the monitor got
+monitor of 1 for all data points. Now only for those with zero
+monitor.
+
+7/4-2001 HMR: cut.m now does vectors of spectra
+
+7/4-2001 HMR: loads now sorts the data pooints.
+
+10/4-2001 HMR: If column headertoo short, specbatch adds DegK
+(temperature) after the L column.
+
+%%%%% Jan 2001
+
+List of changes by DFM
+
+ 1. fits.m : line 35, now uses one background point, works with spec1d arrays
+ 2. plot.m: turn off tex interpreter for labels
+ 3. extract.m: modified to work with spec1d arrays
+ 4. peakt.m: modified to work with spec1d arrays
+ 5. peakm.m: modified to work with spec1d arrays
+
+%%%%% Nov 2000
+
+List of changes by HMR
+
+List of changes to spec1D files.
+20/11-2000 HMR, NBC, BHL, Anyone else ?
+
+spec1d.m:  spec1d(a,b,c) -> s.x=, s.y=b, s.e=c
+
+gfields.m: renamed to getfield.m (consistent with struct/getfield)
+sfields.m: renamed to setfield.m (Could be simplified by using the built in).
+
+combine.m: Before a simple mean was perfomed. 
+This is wrong for counts taken with different monitor counts, 
+which is one of the most used applications of this function.
+One can now specify method='mean', 'counts' or 'weight'.
+'counts' is default.
+
+cut.m: Changed help text slightly.
+
+mapplot.m: Creates a 2D map from an array of spectra.
+
+minus.m: Changed, to minus(s1,s2)=plus(s1,-1*s2)
+
+plus.m: If spectra do not have same length, s2 is interpolated to 
+the x-values of s1.
+
+mtimes.m: Calls times.m so that 2*s2 works aswell as 2.*s2
+
+mrdivide.m: Calls rdivide.m so that 1/s and s/2 works aswell as 1./s and s./2
+
+smooth.m: Convolutes data with a Gaussian - as if choosing worse 
+resolution. For aiding data-asessment - not for manipulation!
+
+What is the point in having transform.m
+why not call directly dydx(s) and normalise(s,maxvalue)
+
+vertcat.m: Fewer lines version - same functionality.
+
+interpolate.m: Interpolates a spectrum to new x-values.
+Is called by plus.m, times.m and rdivide.m
+
+
+THINGS STILL TO DO:
+Having both combine and rebin is a bit overlapping.
+Rebin should be reviewed concerning how averaging is done.
+
