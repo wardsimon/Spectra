@@ -4,3 +4,6 @@
 [submodule "spinw"]
 	path = spinw
 	url = https://github.com/tsdev/spinw
+[submodule "Mtools"]
+	path = Mtools
+	url = https://github.com/substance33/Mtools
