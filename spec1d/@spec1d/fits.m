@@ -6,11 +6,11 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     % @SPEC1D/FIT Fits data in spec1d object s1 to MFIT function
     % specified in func. Also works for an array of spec1d objects.
     %
-    % Version 4.1, July 2015
+    % Version 4.2, July 2015
     % Simon Ward, based on the work of Des McMorrow and Henrik Ronnow
-    
-    global x_per_spec
-    
+    c = onCleanup(@cleanup);
+    global multifit_ind x_per_spec
+
     %--- Parse the inputs and set defaults
     p = inputParser;
     p.CaseSensitive = false;
@@ -223,5 +223,13 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     if options.multifit
         [sout, fitdata] = multifit_extract(sout,fitdata,notfixed);
         x_per_spec = [];
+        multifit_ind = [];
     end
 end
+
+function cleanup
+    global multifit_ind x_per_spec
+    x_per_spec = [];
+    multifit_ind = [];
+end
+

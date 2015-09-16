@@ -17,7 +17,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
     % prt= Jacobian Matrix prt(i,j)=df(i)/dp(j)
     %================================
     
-    global param_keep x_per_spec
+    global param_keep x_per_spec multifit_ind
     
     if isempty(x_per_spec)
         m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
@@ -116,6 +116,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
                         f1 = zeros(sum(x_per_spec),1);
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                            multifit_ind = ind;
                             f1(ind) = feval(func,x(ind),p_new);
                         end
                         prt(:, par_ind) = (f1 - f) / del(1);
@@ -134,12 +135,14 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
                         f1 = zeros(sum(x_per_spec),1);
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                            multifit_ind = ind;
                             f1(ind) = feval(func,x(ind),p_new);
                         end
                         ps(par_ind) = tp;
                         f2 = zeros(sum(x_per_spec),1);
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                            multifit_ind = ind;
                             f1(ind) = feval(func,x(ind),p_new);
                         end
                         prt(:, par_ind) = (f1 - f2) / min_del(par_ind);
@@ -166,6 +169,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
                             f1 = zeros(sum(x_per_spec),1);
                             for i = 1:length(x_per_spec)
                                 [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                                multifit_ind = ind;
                                 f1(ind) = feval(func,x(ind),p_new);
                             end
                             prt((lo_ind:ma_ind), jjj) = (f1(lo_ind:ma_ind) - f(lo_ind:ma_ind)) / del(jj);
@@ -184,12 +188,14 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
                             f1 = zeros(sum(x_per_spec),1);
                             for i = 1:length(x_per_spec)
                                 [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                                multifit_ind = ind;
                                 f1(ind) = feval(func,x(ind),p_new);
                             end
                             ps(jjj) = tp;
                             f2 = zeros(sum(x_per_spec),1);
                             for i = 1:length(x_per_spec)
                                 [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
+                                multifit_ind = ind;
                                 f1(ind) = feval(func,x(ind),p_new);
                             end
                             prt((lo_ind:ma_ind), jjj) = (f1(lo_ind:ma_ind) - f2(lo_ind:ma_ind)) / min_del(jjj);

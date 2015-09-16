@@ -149,7 +149,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     
     %% argument processing
     %%
-    global  x_per_spec
+    global x_per_spec iter_l multifit_ind
     x_per_spec_local = x_per_spec;
     verbose = options.verbose; %This will decide if to tell them the results
     dFdp    = options.dfdp;
@@ -263,6 +263,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
         f = zeros(sum(x_per_spec_local),1);
         for i = 1:length(x_per_spec_local)
             [p_new, ~, ind] = multifitp2p(p,dpin,i);
+            multifit_ind = ind;
             f(ind) = feval(F,x(ind),p_new);
         end
     end
@@ -290,6 +291,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     %% do iterations
     %%
     for iter = 1:niter
+        iter_l = iter;
         c_act = mc.' * p + vc < nz; % index of active constraints
         mca   = mc(:, c_act);
         %     vca = vc(c_act);
@@ -390,6 +392,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
                     f = zeros(sum(x_per_spec_local),1);
                     for i = 1:length(x_per_spec_local)
                         [p_new, ~, ind] = multifitp2p(p,dpin,i);
+                        multifit_ind = ind;
                         f(ind) = feval(F,x(ind),p_new);
                     end
                 end
