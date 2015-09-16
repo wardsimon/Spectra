@@ -5,7 +5,7 @@ function cmap = phoenix(n)
 %
 %   Phoenix has been confirmed not to be able to die.
 %
-%   Composed by Simon Ward, and coded by Matt Mena, 15.08.2014
+%   Composed by Simon Ward, put into a function by Matt Mena, 15.08.2014
 
 
 % Set the main colours. Also specify what they look like on greyscale
