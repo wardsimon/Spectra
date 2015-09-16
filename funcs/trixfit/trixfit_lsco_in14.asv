@@ -1,0 +1,71 @@
+%
+% TRIXFIT script
+%
+% Fitting triple-axis data, including resolution effects calculated using the
+% Cooper-Nathans or Popovici methods.
+%
+% Notes: 
+% (1)  The Monte Carlo integration routine used for the convolution introduces
+%      noise, and as a result it is necessary to balance the parameters used
+%      by the fit routine, the three fcp parameters:
+%                [parameter_step no_of_iterations convergence_criterion]
+%      against the number of sampling points used by the Monte Carlo. In general,
+%      the larger the number of sampling points the smaller the paramter_step
+%      can be between iterations. Typical values to get started are 1000 and 0.05.
+% (2)  This version of TRIXIFT can cope with scans of H, K, L or E, but not mixed scans.
+%      In the event of scans involving multiple reciprocal lattice coordinates, edit 
+%      the file 'trixfit.m'
+% (3)  Before fitting EACH AND EVERY data set it is necessary to call trixfit_ini 
+%
+% Des McMorrow and Henrik Roennow
+% Version: May 2003
+%
+
+initialise.monitor_flag=1;                   % 1 for count on monitor, 0 for count on time
+initialise.monte_carlo_samples=20000;        % Monte Carlo steps for convolution integration    
+
+initialise.resolution_method='rc_popma';     % rc_popma (Popovici) or rc_cnmat (Cooper-Nathans)
+initialise.rescal_pars='lsco_in14.par';      % parameters for Cooper-Nathans (mandatory)
+initialise.popovici_pars='lsco_in14.cfg';    % parameters for Popovici (optional)
+
+initialise.xsec_file='lsco_xsec';            % definition of S(Q,w)
+initialise.bkgd_file='lsco_bkgd';            % background definition 
+initialise.pnam_file='lsco_pnam';            % sets parameter names
+initialise.corr_file='lsco_corr';            % correction to calculated intensities, 
+                                             % e.g. lambda/2 in monitor
+
+% Define a few variables to make life easier
+
+niter=10;   % No. of iterations for fitting
+pvals=[];  % Fitted parameters
+evals=[];  % Errors in parameters
+
+%======================================================================================                                             
+%----- 0.3 meV, 1.5 K, QH scan
+                                             
+%----- Run trifit_ini to initialise the parameters
+
+error_status=trixfit_ini(initialise);
+if ~isempty(error_status), disp('Error initialising parameters'),return, end
+                    
+pin=[1000 1.105 0 0.3]; %----- Specify Qh,Qk,Ql and w, 1000 indicates scan variable
+                    
+pin=[pin 1.5 0 1 0.9 0.04 0.1];   %----- Cross-sec parameters defined in xsec_file
+pin=[pin 80 0 6 6];               %----- Background parameters used in bkgd_file
+
+%----- Load and combine data
+
+s=loads('illbatch','U:\illlib\trixfit\0267[73 75 76 79 80],X=QH,Y=CNTS,M=M1')*620;
+s=combine(0.005,s);
+
+%----- Set fit control parameters (fcp), determine which parameters to fit and perform fit  
+  
+fcp=[0.01 niter 0.0001];notfixed=zeros(size(pin));
+notfixed(8:end)=1;
+notfixed(12)=0;
+[s,f]=fits(s,'trixfit',pin,notfixed,fcp)
+pvals=[pvals [f.pvals]]; evals=[evals [f.evals]];
+
+%----- Plot fit  
+  
+trix_plot(s,f,initialise,'QH','CNTS','LSCO x=0.10 EN=0.3meV T=1.5K')

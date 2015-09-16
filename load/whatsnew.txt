@@ -1,0 +1,35 @@
+File   : Whatsnew.txt
+Date : Jan 13 2000
+Subject : Load routines for MFit/Mview
+-----------------------------------------------
+
+A load routine is of the form 
+
+      [x,y,err,xlab,ylab,monitor]=load_routine(file)
+ with
+     file      filename to load
+     x,y,err   signal and error
+     xlab,ylab x,y labels (names) for graph.
+     monitor is an alternate data column to extract.
+
+Usually, each data format load routine is composed of 3 sub-load routines :
+
+[data,datastr,{...}]=format_data(filename)        // gets initial file data. data is emty in case of error
+[x, y, err, xlab, ylab,monitor]=format_batch(filespec)    // first parse filespec (which may contain extraction options)
+                                                  // then call format_data, and get signal
+                                                  // filespec is usually : filename,{options}
+[x, y, err, xlab, ylab,monitor]=format_gui(file)          // call format_batch and ask user through GUI interface to choose extraction settings.
+
+Valid options (to be added after filename, in any order) :
+      X=string/number     name/column for X, use '-' for auto setting, '#' for point number in Y.
+      Y=string/number     name/column for Y
+      M=string/number     name/column for monitor, can also be : none, use '-' for auto setting
+      E=string/number     name/column for Y error, can also be : sqrt(y) or none
+      N=number            normalisation value
+      S=number            scan number
+      gui                 ask user with GUI
+      setpar              set parameters if possible (in rescal or mfit)
+
+Expressions for X and Y are possible. For instance 'Y=2:c' means 'get for Y values all columns from 2 to number of columns (n=c=ncolumns).
+
+Multi* files need to access the 'looktxt' program (texmex Mex file to be compiled). looktxt is very efficient.

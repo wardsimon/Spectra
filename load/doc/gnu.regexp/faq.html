@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<TITLE>package gnu.regexp - Regular Expressions for Java</TITLE>
+</HEAD>
+<BODY BGCOLOR=WHITE TEXT=BLACK>
+<FONT SIZE="+2"><B><CODE>package gnu.regexp;</CODE></B><HR NOSHADE>
+Frequently Asked Questions</FONT><BR>
+<FONT SIZE="-1">This page was last updated on 26 January 2001</FONT>
+<P>
+<B>Thread safety</B><BR>
+<I>Is the package threadsafe?</I>
+<BR>
+<BR>
+Yes, by design.  Once a RE object is compiled, it is never modified.  Runtime data is attached to REMatch objects, which are created for each thread executing one of the match methods.
+<P>
+<B>Subexpression Indices</B><BR>
+<I>I have a regular expression that looks like "(Hello)World|(Foo)Bar".  When I try to match the text "HelloWorldFooBar", the first match returns "HelloWorld" and its first subexpression is "Hello", both of which are correct.  For the second match I get "FooBar", but the first subexpression is empty.  What gives?</I>
+<BR>
+<BR>
+The behavior is correct.  The subexpressions are numbered according to their position in the entire regular expression.  Therefore the subexpression that matches "Foo" in the second match is subexpression number two.
+<P>
+<B>Getopt classes</B><BR>
+<I>When I try to compile the classes in gnu.regexp.util, I get errors saying gnu.getopt.Getopt and gnu.getopt.LongOpt cannot be found.  Are they missing from the distribution?</I>
+<BR>
+<BR>
+While it's not necessary to compile the example classes in gnu.regexp.util, to do so you'll need to acquire Aaron Renn's excellent getopt package, which is also free software, but maintained separately.  You can find it <A HREF="http://www.urbanophile.com/arenn/hacking/download.html">on his web site</A>.
+<P>
+<B>Examples</B><BR>
+<I>Where can I get some examples of real-world regular expressions?</I>
+<BR>
+<BR>
+You could buy a book.  Or you could search the web.  Or you could join the mailing list and ask there.  Or you could contribute some so this answer is more helpful.
+<P>
+<B>Package naming</B><BR>
+<I>The official Sun recommendations on package naming conventions state that one should use a top-level domain name, reversed, for publicly distributed packages.  Why aren't you using org.gnu.regexp instead of gnu.regexp?</I>
+<BR>
+<BR>
+Because I like gnu.regexp better.  If you don't, feel free to repackage it.  Such is open source.  Before you flame me, realize that this conversation has been played out many, many times (and thus earns its place on this FAQ), and for many, many different gnu.* packages with many, many different maintainers.  Until I get an official recommendation from the FSF to the contrary, it's going to be gnu.regexp.
+<P>
+<B>Compile Problems</B><BR>
+<I>I get an error compiling RESyntax.java.  Is there a bug?</I>
+<BR>
+<BR>
+There is a problem with certain versions of javac and their support of static initializers.  If you encounter it, first compile RESyntax.java (javac RESyntax.java), then proceed with compiling the rest of the classes.
+<P>
+<B>Java Versions</B><BR>
+<I>Why doesn't gnu.regexp 1.1.0 and above work on Java 1.0.2?</I><BR>
+<BR>
+Because dependencies on the java.io.Reader and java.io.Serializable classes were introduced into the package with version 1.1.0.  Fortunately, unless you are running a Homebrew Computer Club antique, you quite likely can run a Java 1.1 or Java 2 virtual machine on your system.
+<P>
+<B>Two GNU Java Regular Expression Packages</B><BR>
+<I>Are there two GNU java regexp projects?  Why don't you join efforts?</I>
+<BR>
+<BR>
+Yes, there are, and I've corresponded briefly with the author of
+gnu.rex.  His package serves a different niche (smaller footprint,
+fewer features).  Unifying them with a single front-end might be worth
+a shot.  If you are interested in contributing to uniting the
+projects, let us know.
+<P>
+<B>License Terms</B><BR> 
+<I>I saw that gnu.regexp was licensed under
+the LGPL (Lesser GNU General Public License).  Can I get a formal
+statement of the legal situation of using this software from you?</I>
+<BR>
+<BR>
+The Free Software Foundation has a number of articles
+that discuss the legal ramifications of the LGPL.  See <a
+href="http://www.gnu.org/">the GNU site</a> for details.
+<P>
+<I>Can I get an affidavit of Y2K compliance from you?</I>
+<BR>
+<BR>
+As an independent developer, it is not feasible for me to guarantee
+Y2K compliance, POSIX compliance, or make any other warranties.  That
+being said, there are currently (version 1.1.3) no aspects of the
+regular expression library that refer in any way to date- or
+time-related functions or APIs, so gnu.regexp is unlikely in the
+extreme to cause any Y2K issues.
+<P>
+<B>Donations, Etc.</B><BR>
+<I>This is a great utility.  Can I send you money?</I>
+<BR>
+<BR>
+Actually, I just <i>wish</i> this was a frequently asked question.
+But seriously, I would much prefer that if you feel the urge, you
+donate to the Free Software Foundation on behalf of gnu.regexp.  Apart
+from helping fund important software development efforts, your gift is
+also tax deductible, and they'll send you a keen t-shirt if you're
+lucky.
+<P>
+<FONT SIZE="-1">
+<A HREF="index.html">[gnu.regexp]</A>
+<A HREF="changes.html">[change history]</A>
+<A HREF="syntax.html">[syntax and usage]</A>
+<A HREF="api/index.html">[api documentation]</A>
+<A HREF="reapplet.html">[test applet]</A>
+<A HREF="credits.html">[credits]</A>
+</FONT>
+</BODY>
+</HTML>
+

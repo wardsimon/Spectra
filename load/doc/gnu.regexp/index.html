@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 FINAL//EN">
+<HTML>
+<HEAD>
+<TITLE>package gnu.regexp - Regular Expressions for Java</TITLE>
+<LINK REV=MADE HREF="mailto:wes@cacas.org">
+</HEAD>
+<BODY BGCOLOR=WHITE TEXT=BLACK>
+<FONT SIZE="+2"><STRONG><CODE>package gnu.regexp;</CODE></STRONG>
+<BR CLEAR=ALL>
+<HR NOSHADE>
+<APPLET CODE="Animation.class" CODEBASE="http://www.gnu.org/graphics" WIDTH="130" HEIGHT="86" ALIGN=RIGHT>
+<PARAM name="base-name" value="drop">
+<PARAM name="extension" value="jpg">
+<PARAM name="num-images" value="15">
+<PARAM name="image-sequence" value="1..10,9,7,5,3,1">
+<PARAM name="frame-delay" value="30">
+<PARAM name="inner-loop-repeat" value="2">
+<PARAM name="loop-delay" value="10000">
+<PARAM name="outer-loop-repeat" value="0">
+<A HREF="http://www.gnu.org/graphics/drop-1.jpg"><IMG SRC="http://www.gnu.org/graphics/drop-1.jpg" ALT=" [image of the evil water droplet] " WIDTH="130" HEIGHT="86" BORDER="0">&#32;(jpeg 3k)</A>
+<A HREF="http://www.gnu.org/philosophy/gif.html">no gifs due to patent problems</A>
+</applet>
+
+Regular Expressions for Java</FONT><BR>
+<FONT SIZE="-1">This page was last updated on 21 October 2001</FONT>
+<P>
+<STRONG><A NAME="latest">Latest Version</A></STRONG>
+<BR>
+The latest version of the package is 1.1.4. Download <A HREF="ftp://ftp.tralfamadore.com/pub/java/gnu.regexp-1.1.4.tar.gz">gnu.regexp-1.1.4.tar.gz</A>.  You may need to rename the file if your browser changes it.<BR>
+The GZIPped file includes the Java archive library and
+the complete source code.  Versions 1.1.0 and above of gnu.regexp require Java 1.1 or higher.
+<P>
+<STRONG><A NAME="latest">Java 1.0 Compatibility Version</A></STRONG>
+<BR>
+The previous version of the package was 1.0.8, released in March 1999. Download <A HREF="ftp://ftp.tralfamadore.com/pub/java/gnu.regexp-1.0.8.tar.gz">gnu.regexp-1.0.8.tar.gz</A>.  You may need to rename the file if your browser changes it.<BR>
+The GZIPped file includes the Java archive library and
+the complete source code.  Versions 1.0.8 and below are compatible with Java 1.0.  Please note that the compatibility version is not being actively maintained.
+<P>
+<STRONG>Reference material (for latest version):</STRONG><BR>
+<A HREF="api/index.html">API documentation</A> (javadoc generated)<BR>
+<A HREF="syntax.html">Syntax and usage notes</A><BR>
+<A HREF="changes.html">Change history</A><BR>
+<A HREF="reapplet.html">Test applet</A><BR>
+<A HREF="faq.html">Frequently asked questions</A><BR>
+<A HREF="credits.html">Credits</A><BR>
+
+
+<P>
+
+<STRONG>Technical Notes</STRONG>
+<BR>
+
+The gnu.regexp package is a pure-Java implementation of a traditional
+(non-POSIX) NFA regular expression engine.  Its syntax can emulate
+many popular development tools, including awk, sed, emacs, perl and
+grep.  For a relatively complete list of supported and non-supported
+syntax, refer to the <A HREF="syntax.html">syntax and usage notes</A>.<BR>
+
+<P>
+<STRONG>Terms of Use</STRONG>
+<BR>
+
+The regexp library is distributed under the terms of the <A
+HREF="http://www.gnu.org/copyleft/lesser.html">GNU Lesser General
+Public License</A>.  The COPYING.LIB file included
+in the distribution contains the details.  This program is <A
+HREF="http://www.gnu.org/philosophy/free-sw.html">free software</A>.
+You are encouraged to adapt it to your own needs, and contribute to
+the program's ongoing development.
+
+<P>
+<STRONG>Installation</STRONG>
+<BR>
+1. Download the <A HREF="#latest">latest version</A>.<BR>
+2. Use GNU tar to extract the files.<BR>
+<BLOCKQUOTE>
+<CODE>tar xvzf gnu.regexp-1.1.4.tar.gz</CODE><BR>
+</BLOCKQUOTE>
+<BR>
+3. You will be left with the HTML-formatted documentation, a Java archive file containing the compressed bytecode for the gnu.regexp package, and the complete library source as well as source to a number of related utilities.<BR>
+4. Add the .jar file to your CLASSPATH setting.  See the README file for help.
+<P>
+<STRONG>Mailing List</STRONG>
+<BR>
+To join a mailing list of gnu.regexp users and developers, send an email with the word "subscribe" in the subject to <A HREF="mailto:regexp-request@cacas.org">regexp-request@cacas.org</A>.  You will be automatically subscribed.
+<P>
+Mailing list <A HREF="http://www.thispc.com/pipermail/regexp/">archives</A> are available.
+<P>
+<STRONG>Contribute</STRONG>
+<BR>
+If you would like to help contribute to the ongoing development of the package,
+or if you have suggestions for future enhancements and functionality,
+please send email to <a href="mailto:wes@cacas.org">wes@cacas.org</A> or better yet subscribe to the list.
+<P>
+<STRONG>Some applications built with gnu.regexp</STRONG><BR>
+<A HREF="http://www.enhydra.org/">Enhydra</A>, an open source application server<BR>
+<A HREF="http://www.xmlblaster.org/">xmlBlaster</A>, open source message-oriented middleware<BR>
+<A HREF="http://www.arlut.utexas.edu/gash2">Ganymede</A>, an RMI-based directory management system<BR>
+<A HREF="http://www.microstate.com/hamilton/">Hamilton</A>, an enterprise application server<BR>
+<A HREF="http://jedit.sourceforge.net/">jEdit</A>, a GUI text editor<BR>
+<A HREF="http://muffin.doit.org/">Muffin</A>, a filtering proxy web server<BR>
+<A HREF="http://www.jext.org/">Jext</A>, a GUI text editor<BR>
+<A HREF="http://www.sourceforge.net/projects/gutenpalm">GutenPalm</A>, document compressor for PalmOS<BR>
+<A HREF="http://www.mckoi.com/database/">Mckoi SQL Database</A>, an open source SQL-92 database system<BR>
+<A HREF="mailto:wes@cacas.org">Link to your application here!</A><BR>
+<P>
+<STRONG>Relevant links</STRONG><BR>
+<A HREF="http://www.gnu.org/software/java/java.html">GNU Java Software</A><BR>
+<A HREF="http://www.gnu.org/software/classpath/classpath.html">GNU Classpath Project</A><BR>
+<A HREF="http://java.sun.com/">JavaSoft (Sun)</A><BR>
+<A HREF="http://www.blackdown.org/java-linux.html">Java-Linux Porting Project</A><BR>
+<A HREF="http://www.transvirtual.com/">Kaffe OpenVM</A><BR>
+<A HREF="http://www.hungry.com/products/japhar/">Japhar free VM</A><BR>
+
+</BODY>
+</HTML>

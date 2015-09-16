@@ -1,0 +1,300 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title> LDV:EF: Octave.intro </title>
+</head>
+<body>
+
+<h1>
+Une introduction simple &agrave; Octave et MatLab</h1>
+
+<hr><i>Sujet : Initiation &agrave; Octave/Matlab.</i>
+<br><i>Date : 25/07/96. rev 24/1/97.</i>
+<br><i>By : Farhi Entertainments</i>
+<p><i>Fichier : ~manuf/public_html/octaveintro.html</i>
+<hr>
+<br><blink>NOTE </blink>: An english version of this page will be available
+one day...
+<br><b>Link</b> : Matlab Programs (in english) at <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html">http://www.ill.fr/tas/matlab/doc/matprgs.html</a>
+<pre>
+Ce fichier a pour but de vous presenter rapidement les possibilit&eacute;s d'Octave&nbsp;
+version 2 et MatLab 5, alternatives a APL.
+
+Octave/Matlab est un langage math&eacute;matique interactif de haut niveau pour le&nbsp;
+calcul num&eacute;rique. Il utilise une ligne de commande et r&eacute;alise les calculs au&nbsp;
+fur et &agrave; mesure que vous les demandez, ou &agrave; partir d'un programme &eacute;crit.
+Octave/Matlab est particulierement adapt&eacute; &agrave; la resolution de
+probl&egrave;mes num&eacute;riques non lin&eacute;aires et d'alg&egrave;bre lin&eacute;aire.
+
+Note : Octave est compatible MatLab(R), produit commercial tr&egrave;s r&eacute;pandu, et le
+langage Octave/MatLab est directement inspir&eacute; du langage C. Ne paniquez pas,
+c'est tr&egrave;s simple !
+Notons que certaines syntaxes (",**,++,--,!,**,#,&amp;&amp;,||) sont propres &agrave; Octave, mais on&nbsp;
+est pas oblig&eacute; de les utiliser.
+
+Pour toute remarque sur ce travail, cliquez <a href="mailto:manuf@ill.fr">ICI</a>.
+
+</pre>
+
+<h2>
+D&eacute;marrer avec Octave.</h2>
+
+<ul>
+<li>
+Pour appeler Octave, il suffit de taper la commande "octave" sur votre
+terminal a partir d'un IBM : <tt>jullien, tran, anglaret, foret, vacher</tt>.</li>
+
+<li>
+Pour appeler Matlab, tapez "matlab" &agrave; partir de <tt>athena </tt>.</li>
+</ul>
+Il apparait alors un 'prompt' du type "octave:1>" ou ">>" indiquant que
+le programme attend vos instructions. Les &eacute;lements qu'Octave/Matlab
+sait manipuler sont des variables (enti&egrave;res, r&eacute;elles, complexes,
+matrices, vecteurs, chaines de caract&egrave;res) et des fonctions. Les
+resultats sont affich&eacute;s par le programme 'GnuPlot' sous Octave,
+ou directement par Matlab. IMPORTANT : Dans tous les cas, si une commande
+d'Octave/Matlab vous est obscure, il suffit de taper <b>'help ' </b>pour
+que s'affiche une description rapide de ce qu'elle fait. Pour obtenir la
+liste de tout ce que connait Octave/Matlab, tapez "help" au prompt. Il
+existe des aides 'interactives' par netscape avec les commandes suivantes
+: <tt>doc </tt>: aide Octave et Matlab generale.
+<tt>ldvintro </tt>: cette
+introduction
+<tt>ldv </tt>: les commandes de traitement du signal 'maison'.
+IMPORTANT 2 Le retour : Ce guide n'est qu'indicatif. Pour de plus amples
+informations, consultez le mode d'emploi complet, ou venez me voir... Nous
+allons maintenant nous familliariser avec les commandes Octave/Matlab en
+suivant une serie d'exemples.
+<h2>
+Les types de donn&eacute;es.</h2>
+Interessons nous &agrave; Ignace (ou Germaine pour les feministes). Il
+vient de r&eacute;cuperer les r&eacute;sultats du futur prix Nobel et veut
+les exploiter. Il communique ses precieux resultats &agrave; octave/matlab
+: (les lignes de commande sont represent&eacute;es par ':n> commande')
+commande commentaire :1> age_du_capitaine = 35.25 un r&eacute;el, qui est
+affich&eacute; &agrave; l'ecran. :2> shtroumpf = 1 + 2i un complexe. (NB
+: 4i = 4*i) :3> loto = [ 2 78 6 95 15 ] un vecteur ligne. :4> zorglub =
+5:15 un intervalle de 5 &agrave; 15 par pas de 1. :5> tobozo = [ 1 i ;
+3 4*i ] une matrice. Le ';' indique un saut de ligne. Les lignes de commande
+entr&eacute;es sont directement interpret&eacute;es, et le resultat est
+mis dans la variable 'ans' (qui contient donc toujours le dernier resultat).
+Si la ligne de commande ne se termine pas par un point virgule (;), le
+resultat est affich&eacute;. La variable 'A' est diff&eacute;rente de la
+variable 'a'. Note pour Octave : L'appui sur la touche 'TAB' lors de la
+frappe de la commande demande &agrave; Octave de completer la ligne d'apres
+les mots et fonctions qu'il connait. Un double appui sur cette touche liste
+les commandes commencant par les lettres que vous avez tap&eacute;es. Exemple
+: tapez sur Octave (le pauvre) : 'polyd' puis sur 'TAB'. Octave compl&egrave;te
+en ajoutant 'eriv'. Essayez avec 'po' puis double-'TAB' -> octave liste
+les commandes commencant par 'po'. La ligne de commande Octave est &eacute;ditable,
+&eacute;ffacable, et est enregistr&eacute;e dans un fichier '.octave-hist'
+sur votre racine. L'ensemble des sessions octave/matlab peuvent etre int&eacute;gralement
+enregistr&eacute;es dans le fichier 'diary' en tappant 'diary on' (ou 'off'
+pour desactiver).
+<h2>
+Les op&eacute;rateurs.</h2>
+Les op&eacute;rateurs math&eacute;matiques de base sont +, -, * (multiplication),
+/ (division). L'&eacute;l&eacute;vation &agrave; une puissance s'&eacute;crit
+'^' (et aussi '**' avec Octave). Lorsque l'on fait preceder un op&eacute;rateur
+par un point (.), on indique &agrave; oct/mat que l'op&eacute;ration doit
+etre effectu&eacute;e terme a terme. Cela est bien utile pour effectuer
+par exemple des calculs rapides sur des vecteurs. \ (anti-slash) : division
+&agrave; gauche (comme / mais sans calculer l'inverse pour les matrices).
+' (quote) : transposition de vecteur ou matrice. ++ : incr&eacute;mentation
+(x=x+1) (Octave) -- : d&eacute;cr&eacute;mentation (x=x-1) (Octave) - :
+n&eacute;gation 'normale' = : &eacute;galite 'normale' (assignation) [
+x y ... ] : concat&eacute;nation des &eacute;lements 'x' 'y' ... ; : passage
+&agrave; la ligne dans une concat&eacute;nation avec [ ]. 'toto' : chaine
+de charact&egrave;res (et aussi "toto" avec Octave) : : intervalle ou colonne/ligne.
+ex 1:10 = [ 1 2 3 .. 10 ] , ou 1:0.5:10 = [ 1 1.5 2 .. 10 ] % : commentaires
+(et aussi '#' avec Octave) . : op&eacute;ration terme &agrave; terme Les
+op&eacute;rateurs de comparaison et bool&eacute;ens sont les suivants :
+&lt;, >, &lt;=, >= : devinez == : &eacute;galite logique (test) ~=, &lt;>
+: different (et != avec Octave) &amp; : et | : ou ~ : n&eacute;gation logique
+('non ...') (et aussi '!' avec Octave) Certains op&eacute;rateurs sont
+un peu sp&eacute;ciaux. Prenons par exemple le ':'. Il indique de facon
+g&eacute;n&eacute;rale un intervalle. ':' : de 1 &agrave; la taille de
+l'objet qu'il indexe. (ligne ou colonne) 'n:m' : de n &agrave; m par pas
+de 1. 'n:p:m' : de n &agrave; m par pas de p. Les op&eacute;rateurs 'increments'
+r&eacute;alisent une variation de 1 sur une variable. Plac&eacute;s avant
+la variable, ils incrementent avant l'&eacute;valuation (Octave only).
+Les lignes sont &eacute;valu&eacute;es de gauche &agrave; droite, en tenant
+compte de l'ordre de priorit&eacute; habituel.
+<h2>
+Voir vos donnees.</h2>
+Ignace desire presenter ses resultats. Tout d'abord il regarde quelles
+sont les variables qu'il a communiqu&eacute; &agrave; Octave/Matlab, avec
+la comande 'who'. Puis pour voir une variable, il tape son nom : octave:8>
+loto affiche 'loto = 2 78 6 95 15' si l'on desire voir une partie d'une
+variable, il suffit de le preciser : octave:9> tobozo(:,2) prend la deuxieme
+colonne de 'tobozo' et affiche ans = 0 + 1i 0 + 4i Lors d'un affichage
+sur plusieures pages, appuyez sur 'Return' et 'space' pour faire defiler
+les lignes, sur 'q' pour arreter l'affichage. Crtl+C pour stopper. Pour
+cr&eacute;er un graphique, il suffit de taper 'plot(y)' (x est alors 1:n)
+ou 'plot(x,y)'. On peut aussi utiliser 'disp(loto)' ou fprintf(stdout,"%f",loto)
+(comme en C).
+<h2>
+Appeler des fonctions et faire des calculs.</h2>
+Octave/Matlab ne serait pas grand chose sans ses biblioth&egrave;ques.
+Elles comprennent de nombreuses fonctions specialis&eacute;es de calcul.
+Certaines font partie int&eacute;grante d'Octave/Matlab (situ&eacute;es
+au niveau de l'orteil du pied gauche), et d'autres sont des fichiers de
+fonctions &eacute;ditables. Les fichiers de fonction sont des fichiers
+textes, d'extension '.m', dont le nom est le nom de la fonction ecrite
+dedans. Ils sont constitu&eacute;s de suites d'instructions comme si elles
+&eacute;taient tap&eacute;es directement &agrave; la ligne de commande
+Prenons un exemple : Tapez sur un terminal IBM (pas octave) 'faxe /usr/local/GNU/Octave/lib/octave/1.1.0/m/signal/sinc.m'
+sur IBM ou 'faxe /usr/local/MatLab/toolbox/local/FromOctave/sinc.m' sur
+Athena et voici que par magie, vous editez la fonction 'sinc'. Cela est
+aussi possible en tapant 'type sinc' avec Oct/Mat. On voit qu'elle demande
+en entr&eacute;e une valeur (x) et retourne un resultat (result). Puis
+se trouvent des lignes de commentaires, ceux qui sont affich&eacute;s lorsque
+l'on tape 'help sinc'. La taille de l'&eacute;l&eacute;ment d'entr&eacute;e
+est calcul&eacute;e (en lignes et colonnes), puis le nombre d'&eacute;l&eacute;ments.
+La variable 'result' est initialis&eacute;e &agrave; 1 (il n'est pas toujours
+necessaire d'initialiser les variables, car elles sont cr&eacute;es d&egrave;s
+que le besoin s'en fait resentir. Elle sont aussi de taille variable).
+La fonction 'find' est appel&eacute;e, et retourne la position des &eacute;lements
+non nuls. Pour tous ces &eacute;lements, le sinus cardinal est calcul&eacute;,
+puis le resultat est mis sous la forme du vecteur d'entr&eacute;e. Pour
+faire vos propres calculs, vous utiliserez des fonctions, et vous en ecrirez
+vous meme. Pour appeler un fichier '.m' il suffit de taper son nom. Ex
+: sinc(loto) Nous detaillerons plus loin les biblioth&egrave;ques disponibles.
+<h2>
+Programmation structuree.</h2>
+Les programmes 'octave/matlab' peuvent (et doivent) etre structur&eacute;s
+par des instructions de controle. Voici la liste des mots clef correspondants,
+et leur description : if (condition) % TEST (then-body) % execute (body)
+si (condition) est vraie (i.e different de 0) end on peut aussi utiliser
+: if (condition) (then1) elseif (condition2) % &eacute;quivalent &agrave;
+'else' puis 'if' (then2) else (else-body) % execute si les tests sont tous
+faux end while (condition) % TANT QUE (body) % execute (body) tant que
+(condition) est vraie end for var = expression(vecteur ou matrice) % BOUCLE
+(for-body) % &agrave; chaque pas, var = une colonne de 'expression' end
+Il est possible de sortir des structures 'while' et 'for' avant terme (i.e
+au milieu de l'execution) par l'instruction 'break'. L'instruction 'continue'
+permet de passer directement au pas suivant (Octave only). La d&eacute;claration
+des fonctions se fait de la facon suivante : function retval = function_name(arguments)
+% ou [ retval1, retval2 .. ] = function_name(arguments) (function body)
+end Le nombre d'arguments et de valeurs &agrave; retourner en fin de fonction
+peut etre variable. Ces nombres sont stockes dans 'nargin' et 'nargout'.
+Cela permet par exemple de faire des fonctions qui se comportent differemment
+suivant le nombre d'arguments pass&eacute;s, ou attendus en fin d'execution.
+Un fichier texte commencant par 'function' est par defaut le fichier definissant
+la fonction dont le nom est celui du fichier. Tout autre fichier texte
+est interpret&eacute; comme une suite d'instructions octave/matlab comme
+si elles &eacute;taient tap&eacute;es &agrave; la main.. Pour le lancer
+il suffit de taper le nom du fichier sans l'extension '.m'.
+<h2>
+Vos fichiers de donn&eacute;es</h2>
+Octave et Matlab utilisent un format '.mat' de stockage binaire. Une fois
+les donn&eacute;es en m&eacute;moire, on tape : <tt>save -mat-binary filename.mat
+[variables] </tt>avec Octave <tt>save filename [variables] </tt>avec Matlab
+pour sauver sur disque.
+<p>&nbsp;Pour charger un fichier '.mat' en m&eacute;moire, on tape : <tt>load
+filename.mat [variables] </tt>avec Octave <tt>load filename [variables]
+</tt>avec
+Matlab En ce qui concerne l'importation de donn&eacute;es exterieures (exp&egrave;riences
+par exemple), je vous conseille de lire <a href="octaveldv.html">Traitement
+de donnees avec Octave/Matlab</a>(voir 'Importation de donn&eacute;es').
+<h2>
+Les librairies standard.</h2>
+Le d&eacute;tail des librairies est disponible dans les pages Web officielles
+d'Octave et Matlab, sur la page 'travail' du labo.
+<h4>
+* Utility Functions</h4>
+ceil(x) entier au dessus de x floor(x) entier en dessous de x fix(x) tronque
+x round arrondit au plus pr&egrave;s sign signe de x exp, log, log2, log10,
+sqrt gcd, lcm PGCD et PPCM max, min rem reste de division euclidienne.
+<h4>
+* Complex arithmetic</h4>
+abs norme angle,arg conj imag, real
+<h4>
+* Trigonometry</h4>
+tout ce qu'il faut.
+<h4>
+* Sum and Products</h4>
+sum prod cumsum somme cumul&eacute;e cumprod sumsq somme des carr&eacute;s
+<h4>
+* Special functions</h4>
+plein de trucs bizarres (erf, gamma, ...).
+<h4>
+* Linear Algebra</h4>
+Calculs de bases propres (null, orth) valeurs propres (eig) det, trace,
+inverse ...
+<h4>
+* Matrix Factorizations</h4>
+cholesky, hessenberg, LU, QR, Singular Value Decomposition
+<h4>
+* Functions of a matrix</h4>
+expm, logm, sqrtm, kron (kronecker)...
+<h4>
+* Matrix Utilities</h4>
+matrices 'zero', 'un', identite, aleatoire, diagonale. Vecteurs lineaires
+et log Matrices bizarres (Vandermond, Hilbert,...)
+<h4>
+* Matrix Manipulations</h4>
+Trouver des &eacute;lements dans des matrices. Tests. Matrices triangulaires.
+<h4>
+* Polynomes</h4>
+matrice compagnon, convolution, d&eacute;convolution, poly (polynome caracteristique)
+d&eacute;rivation, int&eacute;gration, &eacute;valuation, calcul de residus
+de fraction P/Q.
+<h4>
+* Equations Non Lin&eacute;aires</h4>
+Resolution de tout syst&egrave;me non lineaire.
+<h4>
+* Equations differentielles</h4>
+Resolution de tout systeme diff&eacute;rentiel du premier ordre
+<h4>
+* Trucs bizarres</h4>
+Programmation NL, Moindres carr&eacute;s g&eacute;n&eacute;ralises, programmation
+quadratique.
+<h4>
+* Int&eacute;gration</h4>
+Integration de toute fonction.
+<h4>
+* R&eacute;gulations</h4>
+Plein de fonctions pour l'automatique...
+<h4>
+* Traitement du signal</h4>
+FFT a 1 ou 2 dimensions, filtres FFT, convolution, FFT inverses, r&eacute;ponses
+fr&eacute;quentielles de filtres.
+<h4>
+* Fonctions Statistiques</h4>
+Tout ce qu'il faut.
+<h4>
+* Plotting</h4>
+Graphes a 2 et 3 dimensions.
+<h4>
+* Image Processing</h4>
+
+<h4>
+* Input and Output</h4>
+Gestions des Entrees/Sortie : fichiers, peripheriques...
+<h4>
+* String Functions</h4>
+pas grand chose malheuresement (sprintf, strset, int2num, ...)
+<h4>
+* System utilities</h4>
+Gestion du temps, commandes Unix, informations...
+<h2>
+Commandes annexes ayant leur importance.</h2>
+who et whos : voir les variables en memoire type : voir le contenu d'une
+fonction help : voir l'aide d'une fonction which : informations sur une
+fonction/variable
+<p>Vers <a href="octaveldv.html">Traitement de donnees avec Octave/Matlab</a>
+<p>Vers <a href="mfitldv.html">Mode d'emploi de Mfit pour Matlab 5
+<hr><a href="http://www.ill.fr/tas/welcome.html" target="_top"><img SRC="left_motif.jpg" height=34 width=37 align=CENTER></a></a>[
+<a href="http://www.ill.fr/tas/welcome.html" target="_top">Back
+to ILL/TAS Home Page</a> ][ <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">Back
+to ILL/TAS Matlab Page</a> ]
+<br>&nbsp;
+<br>&nbsp;
+<address>
+<a href="mailto:farhi@ill.fr">farhi@ill.fr </a>Nov 1999.</address>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : Writing fitting functions</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<h1>
+<b>Writing your own fitting functions</b></h1>
+Before starting to write a new function, you should wonder if your function
+can be written as a combinaison of various simple and already available
+functions. For those common cases, <b>M</b><i>fit</i> provides a tool,
+called the <a href="multifunc.html">multifunction</a>, that does not require
+to type in a single program line.
+<p>The Matlab functions that code the mathematical functions you fit to
+your data are called fiting functions. One of the most useful features
+of <b>M</b><i>fit</i> compared to other fitting packages is that the Matlab
+language makes it quick and easy to write even complex functions. This
+section describes how to write your own fitting functions. If you have
+not used the Matlab language and .m files before, you may want to read
+the Matlab user guide alongside this document.
+<br>&nbsp;
+<br>&nbsp;
+<h2>
+<b>Function format</b></h2>
+Fitting functions are .m files with the syntax:
+<ul><b><tt>function [y, name, pnames, pin]=function_name(x, p, flag)</tt></b></ul>
+The function takes two or three parameters...
+<ul>
+<li>
+<b><tt>x</tt></b> - vector of values for which to evaluate the function
+y=f(x)</li>
+
+<li>
+<b><tt>p</tt></b> - vector of function parameters, i.e. parameter 1 = p(1),
+parameter 2 = p(2) etc.</li>
+
+<li>
+<b><tt>flag</tt></b> - can be absent, or if present can take the values
+1, 2 or a vector:</li>
+
+<ul>
+<li>
+If absent the function returns y=f(x).</li>
+
+<li>
+If <tt>flag=1</tt> (identify) the function also returns (see below) the
+function name, and an array of parameter names.</li>
+
+<li>
+If <tt>flag=2</tt> (guess) the function returns a vector of intial parameter
+values (see example).</li>
+
+<li>
+If <tt>flag=y</tt> (auto-guess) uses (x,y) to guess starting parameters.</li>
+</ul>
+</ul>
+...and returns a minium of 1 and a maximum of 4 parameters:
+<ul>
+<li>
+<b><tt>y</tt></b> - a vector of function values corresponding to the value
+of the function for the input vector <tt>x</tt> and parameters <tt>p</tt>.</li>
+
+<li>
+<b><tt>name</tt></b> - a Matlab string describing the function</li>
+
+<li>
+<b><tt>pnames</tt></b> - an array of Matlab strings (one per parameter)
+giving the parameter names.<i>fit</i> appends saved ata to the end of the
+current output file. The current output file name is displayed in the control
+window</li>
+
+<li>
+<b><tt>pin</tt></b> - a starting parameter set</li>
+</ul>
+
+<h2>
+Example:</h2>
+Here is the code for the Gaussian fitting function that is one of the default
+functions. This can be used as a template for your own functions. Note
+that you can use the mf_msg([text]) function to display user prompts in
+the control window message box.
+<ul>
+<pre>function [y, name, pnames, pin]=gauss(x,p, flag)
+%
+% MFIT function [y, name, pnames, pin]=gauss(x,p, flag)
+%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gaussian fitting function
+%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MZ 29.11.94
+%
+% Check to see whether flag exists: if not, evaluate the function
+if nargin==2;
+&nbsp;&nbsp; y=p(4)+p(1)*exp(-0.5*((x-p(2))/p(3)).^2);
+%
+% If flag does exist, return the function and parameter names
+else
+&nbsp;&nbsp; y=[];
+&nbsp;&nbsp; name='Gaussian';
+&nbsp;&nbsp; pnames=str2mat('Amplitude','Centre','Width','Background');
+&nbsp;&nbsp; pin=[0 0 1 0];
+&nbsp;&nbsp; if flag==2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mf_msg('Click on peak');
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [cen amp]=ginput(1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mf_msg('Click on width');
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [width y]=ginput(1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width=abs(width-cen);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mf_msg('Click on background');
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [x bg]=ginput(1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amp=amp-bg;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pin=[amp cen width bg];
+&nbsp;&nbsp; end
+end</pre>
+</ul>
+Note also that the only essential line in a fitting function is the one
+beginning y=... i.e. the minimal Gaussian fitting function would read:
+<ul>
+<pre>function [y, name, pnames, pin]=gauss(x,p, flag)
+&nbsp;&nbsp; y=p(4)+p(1)*exp(-0.5*((x-p(2))/p(3)).^2);</pre>
+</ul>
+However, <b>M</b><i>fit</i> would not know the parameter names (it would
+use names like 'parameter 1', etc.) and the user would have to input initial
+parameter values manually.
+<p>If you want to change a minimal fit function into a Mfit one, just add
+the <tt>flag</tt> input parameter, the output parameters '<tt>name, pnames,
+pin </tt>, and the following lines at the end of the function (modify the
+parameters default values and names anyway):
+<p><tt>if (nargin>2)</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y=[];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name='my_function';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnames=str2mat('Amplitude','Centre','Width','Background');
+% params names</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pin=[0 0 1 0];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+% default parameters</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if flag==2</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mf_msg('This function cannot handle Guess feature.');&nbsp;&nbsp; % user
+asking section</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</tt>
+<br><tt>end</tt>
+<p><b>See also</b>: <b><a href="multifunc.html">multifunction</a></b>
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</body>
+</html>

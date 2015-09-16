@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (X11; U; Linux 2.4.18-4GB i686) [Netscape]">
+  <title>ILL/TAS: Matlab Programs</title>
+</head>
+<body>
+<center>
+<h1>Some Matlab programs&nbsp;<img
+ src="http://www.ill.fr/tas/images/logo21.jpg" naturalsizeflag="0"
+ align="right" height="90" width="90"></h1>
+</center>
+<center>
+<address>URL is http://www.ill.fr/tas/matlab/doc/matprgs.html</address>
+</center>
+This page offers you to import some programs for <b>Matlab </b>libraries
+for softwares like:
+<ul>
+  <li> <b><a href="http://www.mathworks.com">Matlab</a></b> (version 5
+or
+higher)
+provided by MathWorks (<a href="http://www.mathworks.com">http://www.mathworks.com</a>).</li>
+  <li> <b><a href="http://www.che.wisc.edu/octave/index.html">GNU
+Octave </a></b>(freeware,
+manual at <a href="http://dv.go.dlr.de/pdinfo_dv/octave.html">http://dv.go.dlr.de/pdinfo_dv/octave.html</a>).</li>
+  <li> <b><a href="http://www.mathtools.com">MIDEVA</a></b> Matlab
+clone
+is also
+available from MathTools (30 days evaluation version at <a
+ href="http://www.mathtools.com">http://www.mathtools.com</a>)
+essentially for <i>Windows</i> plaforms.</li>
+  <li> <b><a href="http://www.scilab.org">Scilab</a></b> a
+wonderfull
+Matlab clone, fast, free, with GUI and objects (figure, uicontrol,
+uimenu)
+as well as a <i>Simulink</i> clone.</li>
+</ul>
+You may also use <a href="http://kmatplot.sourceforge.net/">KMatPlot</a>,
+an external viewer replacing <a href="http://www.gnuplot.vt.edu/">GNUPlot</a>
+for <a href="http://www.che.wisc.edu/octave/index.html">Octave</a>, or
+default <a href="http://www-rocq.inria.fr/scilab">Scilab</a> plot
+windows.
+Nice.
+<p><b>Note : </b>For <span style="font-style: italic;">.tar.gz</span>
+files.
+<br>
+Use on Unix systems <tt>gunzip [file.gz] </tt>, then <tt>tar xf
+[file.tar]</tt>,
+or with Winzip on PC's, rename files from <tt>.tar.gz</tt> to <tt>.tgz</tt>.
+</p>
+<p><b>Date </b>: Wed May 25 10:23:00 CEST 2005<br>
+</p>
+The installation procedure is explained in the <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+file (containing descriptions, installation procedures and <b>Whatsnew</b>).
+<hr>
+<center>[ <a href="#News">News</a> ] [ <a href="#description">Packages
+description</a> ] [ <a href="#download">Downloading
+</a>for
+Matlab ] [ <a href="#help">Help </a>] [ <a href="#octave">Octave
+stuff
+</a>]
+[ <a href="#looktxt">C stuff </a>]</center>
+<hr>
+<center>
+<h2><a name="News"></a>News (June 2005, updated August 2005)<br>
+</h2>
+<div style="text-align: left;">Here is some news about recent changes
+in the MFit, MView, Rescal, etc... packages. More is available in the <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+file (containing descriptions, installation procedures and <b>Whatsnew</b>).
+<br>
+<ul>
+  <li>Added 1D convolution tool in MFit:Options menu<br>
+  </li>
+  <li>Compatibility from Matlab 6.5 to Matlab 7 solved</li>
+  <ul>
+    <li>MView now displays legend on overlay plots</li>
+    <li>MView now displays subplot overviews</li>
+    <li>Many tooltips added (Mview, Rescal, MFit)</li>
+    <li>A new multiple file selector for MView and MFit/Unix.<br>
+    </li>
+    <li>Some bugs solved, color defaults changed</li>
+  </ul>
+  <li>MFit:Multifunction is now easier to use (selection of functions
+based on their real name, and not anymore on their Matlab function name)</li>
+</ul>
+<ul>
+  <li>Standalone versions are now available for Windows and Linux</li>
+</ul>
+<br>
+</div>
+<br>
+<h2>Matlab v5 Graphic User Interface Applications : Description</h2>
+</center>
+This package presents specific Matlab graphic applications. All is done
+through mouse, plots and menus.
+<br>
+<a name="description"></a>
+<h4>A Description of packages</h4>
+<b>M</b><i>fit</i>
+(now v4.3.3, Aug 23rd 2005)<br>
+provides an attractive and easy to use point-and-click interface. Most
+operations (including guessing starting parameters for fits) can be
+performed
+via the mouse. The main object is to fit any type of (x,y) data with
+any
+fit function (even combinaisons), with various efficient algorithms.
+Many
+options are also available. A full <a
+ href="http://www.ill.fr/tas/matlab/doc/mfit4/index.html">manual</a>
+is available.
+<p>&nbsp;<b>M</b><i>view</i>
+(now v4.2.2,&nbsp; Aug 22nd 2005)<br>
+is designed in order to manipulate and display up to 20 data files.
+As Mfit, it is also a point-and-click application. A link with MFit
+permits
+to fit each data set.
+</p>
+<p>&nbsp;<b>Rescal</b>
+(now v5.1)<br>
+is a specific application to compute 4D resolution ellipsoid for
+inelastic
+scattering instruments (neutrons... Popovici's and Cooper Nathan's
+methods).
+It is then possible to use it through a 4D convolution in a fit
+function
+(see <tt>trix</tt>, which is included in archives).(note : this
+program
+is <b>not</b> based on <tt>Rescal</tt> famous code). A full <a
+ href="http://www.ill.fr/tas/matlab/doc/rescal5/rescal.htm">manual</a>
+is available (Jan. 1999).
+</p>
+<p>&nbsp;<b>S</b><i>Sym</i>
+<br>
+is a specific application to work with interferometers spectra
+(Brillouin,
+Raman...). It is still a <i>Beta</i> version. Various algorithms
+propose
+to extract from signal instrumental function (response of instrument to
+a Dirac excitation), to perform X or Y symetrisation, etc. MFit can
+communicate
+with it.
+</p>
+<p>&nbsp;<b>Spec1d</b>
+<br>
+is a set of commands in order to fit and manipulate data from Matlab's
+prompt. It requires load routines, fit functions and routines. In fact
+it is an MFit without the Graphical User Interface. A full <a
+ href="http://www.ill.fr/tas/matlab/doc/spec1d/spec1d.html">manual</a>
+is available (v2, Feb. 2001).
+</p>
+<p>&nbsp;<b><i>MFit/Mview Load routines</i></b> (load)
+<br>
+enable importation of any data through <tt>looktxt</tt> program (down
+there), but also supply specific load routines (ILL, SPEC, TASCOM...).
+If this doesn't satisfy you, writing a new load routine is quite easy.
+A Mex version of looktxt is available (called <tt>texmex</tt>)
+</p>
+<p>&nbsp;<b><i>MFit Fit functions</i></b> (funcs)
+<br>
+provide all basic functions. <i>Mutlifunction</i> is also possible,
+combining some functions into an arbitrary expression, for instance
+convolution
+with <tt>convlv</tt> (coming from <i>SpectraTools</i>)... Writing a
+specific
+fit function is also very easy.
+</p>
+<p>&nbsp;<b><i>MFit Fit routines</i></b> (nllsq)
+<br>
+non linear least square minimisation routines, with Gradient and
+Simplex
+methods.
+</p>
+<p><b>M</b><i>fit<font size="+0"> </font></i><font size="+0">was
+initially
+developped by M. Zinkin (version 0.3, 1997), and then updated by </font><a
+ href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>.(version
+4.2, 1999).
+<br>
+The <i><b>M</b>Rescal</i> extension for triple axis spectrometers was
+written by A. Tennant and <a href="mailto:des.mcmorrow@risoe.dk">D.
+McMorrow
+</a>(version
+5, 1998), inspired from parts of <b><a
+ href="http://omega.ujf.cas.cz/restrax/">ResTrax</a></b>
+by J. Kulda and J. Saroun.
+<br>
+The <i><b>S</b>Sym</i> program was written by <a
+ href="mailto:farhi@ill.fr">E.
+Farhi</a>.
+<br>
+<i><b>M</b>view</i> was written by <a
+ href="mailto:des.mcmorrow@risoe.dk">D.
+McMorrow</a>. and <a href="mailto:wildes@ill.fr">A.R. Wildes</a>
+<br>
+<i><b>S</b>pec1d</i> was written by <a
+ href="mailto:des.mcmorrow@risoe.dk">D.
+McMorrow</a> and <a href="mailto:hmr@ill.fr">H. Ronnow</a>.
+</p>
+<hr>
+<center>
+<h2><a name="download"></a>Downloading (Matlab stuff)</h2>
+</center>
+All programs are available under the <a
+ href="http://www.ill.fr/tas/matlab/doc/licence.gpl">GNU General
+Public Licence</a> terms.
+<br>
+The installation procedure is explained in the <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+file (containing descriptions, installation procedures and <b>Whatsnew</b>).
+<p><b>Complete archives</b> [ made on <a
+ href="http://www.ill.fr/tas/matlab/ftp/tardate.txt">Date
+of archive</a> ]. The whole source package is about <b>5 Mo</b>.<br>
+</p>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic; text-align: center; color: rgb(255, 0, 0);">Matlab
+Source Code<br>
+      <span style="font-weight: normal;">requires Matlab &gt;= 5.4</span><br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic; text-align: center; color: rgb(255, 0, 0);">Windows
+Executable<br>
+      <span style="font-weight: normal;">(free, Matlab 7 version)</span><br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic; text-align: center; color: rgb(255, 0, 0);">Linux
+Executable<br>
+      <span style="font-weight: normal;">(free</span><span
+ style="font-weight: normal;">, Matlab 7 version</span><span
+ style="font-weight: normal;">)</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/ftp/illlib.tar.gz">TAR
+GZ</a>&nbsp; [ 3.8 ko ]</td>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/standalone/windows/MCRInstaller.exe">MCRInstaller.exe</a>
+[ 102 Mo ]<br>
+extract into the <span style="font-style: italic;">standalone</span>
+directory<br>
+      </td>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/standalone/linux/MCRInstaller.zip">MCRInstaller.zip</a>
+[ 105 Mo ]<br>
+extract into the <span style="font-style: italic;">standalone</span>
+directory</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/ftp/illlib.zip">ZIP</a>
+[ 4.2 ko ]</td>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/standalone/windows/standalone.zip">standalone</a>
+[ 3.2 Mo ]<br>
+extract and launch <span style="font-style: italic;">startill.exe</span><br>
+      </td>
+      <td style="vertical-align: top;"><a
+ href="http://www.ill.fr/tas/matlab/standalone/linux/standalone.zip">standalone</a>
+[ 3.7 Mo ]<br>
+extract, launch <span style="font-style: italic;">'install.csh'</span>
+and then <span style="font-style: italic;">'go'</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<b>Installation summary for Source Code:</b> (see <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+for details and changes)
+<ol>
+  <li>get the archive</li>
+  <li>extract the archive into a directory that Matlab/Octave can
+access
+(e.g. <tt>/usr/local/matlab/toolbox/local</tt>)</li>
+  <li>Inside <i>Matlab/Octave</i>, launch the '<i><a
+ href="http://www.ill.fr/tas/matlab/ftp/install.m">install</a></i>'
+script (no guaranty). Under Unix systems, it is better to be 'root' so
+that mex generation can create MeX files.</li>
+  <ol>
+    <b>or</b>
+  </ol>
+  <li>verify the <a href="http://www.ill.fr/tas/matlab/ftp/startup.m">startup.m</a>
+file, in order to install the pathes to these libraries (e.g. just
+modify
+the <tt>libroot</tt> variable to <tt>/usr/local/matlab/toolbox/local</tt>)</li>
+  <li>create the MeX files for your plateform (see <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+or <a href="http://www.ill.fr/tas/matlab/doc/mfit4/download.html">Mfit:download</a>
+page)</li>
+  <li>launch <tt>matlab</tt> and type <tt>mfit</tt> for instance</li>
+</ol>
+<p><b>Installation summary for Standalone: (free, does not require
+Matlab) including <span style="font-style: italic;">MView,</span> <span
+ style="font-style: italic;">MFit</span> and <span
+ style="font-style: italic;">Matlab/Rescal</span>.<br>
+</b></p>
+<ol>
+  <li>extract the <span style="font-style: italic;">standalone</span>
+archive</li>
+  <li>extract <span style="font-style: italic;">MCRInstaller</span>
+archive inside the <span style="font-style: italic;">standalone</span>
+directory (should create a <span style="font-style: italic;">v72</span>
+directory there)</li>
+  <li>under linux, launch <span style="font-style: italic;">'install.csh'</span></li>
+  <li>launch <span style="font-style: italic;">'startill.exe'</span>
+(windows) or <span style="font-style: italic;">'go'</span> (linux)<b><br>
+    </b></li>
+</ol>
+<p><b><br>
+</b><b>Partial archives and download ressources </b>(all included in
+the larger archives up-there)
+</p>
+<ul>
+  <li>The <a href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+file (containing descriptions, installation procedures and Whatsnew).
+Our
+Matlab <a href="http://www.ill.fr/tas/matlab/ftp/startup.m">startup.m</a>
+and <a href="http://www.ill.fr/tas/matlab/ftp/finish.m">finish.m</a>
+file.
+The <a href="http://www.ill.fr/tas/matlab/ftp/todo.txt">TODO</a> file.
+The <a href="http://www.ill.fr/tas/matlab/ftp/licence.gpl">Licence</a>
+file.</li>
+  <li>the sublibraries for packages Mfit and Mview :</li>
+  <br>
+  <a href="http://www.ill.fr/tas/matlab/ftp/load.tar.gz">load</a> Load
+routines for Mfit and Mview (with looktxt and ffind as Mex) <br>
+  <a href="http://www.ill.fr/tas/matlab/ftp/funcs.tar.gz">funcs</a> Fit
+functions for Mfit (with <tt>trix</tt> and <tt>convlv</tt>) <br>
+  <a href="http://www.ill.fr/tas/matlab/ftp/nllsq.tar.gz">nllsq</a> Fit
+methods for Mfit (simplex and adapatative gradient) <li><a
+ href="http://www.ill.fr/tas/matlab/ftp/mfit4.tar.gz">Mfit 4.3</a>
+fitting
+application. The<a href="http://www.ill.fr/tas/matlab/ftp/mfnew.txt">
+Mfit
+whatsnew</a> file. <a href="mfit4_doc.tar.gz">tar.gz</a> Mfit Manual
+180
+ko</li>
+  <br>
+The original (old) Mfit v0.3 (Matlab &lt;= 5) archive [<a
+ href="http://www.ill.fr/tas/matlab/ftp/mfit3.tar.gz">tar.gz</a>][<a
+ href="http://www.ill.fr/tas/matlab/ftp/mfit3.zip">zip</a>] <li><a
+ href="http://www.ill.fr/tas/matlab/ftp/mview4.tar.gz">Mview 4.1</a>
+data processing application. The<a
+ href="http://www.ill.fr/tas/matlab/ftp/mvnew.txt">
+Mview whatsnew</a> file.</li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/rescal5.tar.gz">Rescal</a>
+4D-TAS
+application (needed by trix) and</li>
+  <br>
+  <a href="http://www.ill.fr/tas/matlab/ftp/trix.tar.gz">trix</a>
+4D-TAS
+fit functions for Mfit. <br>
+The<a href="http://www.ill.fr/tas/matlab/ftp/rcnew.txt"> Rescal whatsnew</a>
+file. <li><a href="http://www.ill.fr/tas/matlab/ftp/ssym1.tar.gz">SSym</a>
+Spectrum
+analysis (Brillouin,Raman,...still in Beta version).</li>
+  <br>
+The<a href="http://www.ill.fr/tas/matlab/ftp/ssnew.txt"> SSym whatsnew</a>
+file. <li><a href="http://www.ill.fr/tas/matlab/ftp/spec1d.tar.gz">Spec1d</a>
+Fit
+and data handling at Matlab's prompt</li>
+  <br>
+The spec1d <a href="spec1d/spec1d.html">manual</a>.
+</ul>
+The <a href="http://www.ill.fr/tas/matlab/ftp/PackList.txt">PackList.txt</a>
+file shows the entire librairies file structure, here at ILL.
+<p></p>
+<hr>
+<center>
+<h2><a name="help"></a>Help pages</h2>
+</center>
+<h3>
+<img src="http://www.ill.fr/tas/images/redball.jpg" align="middle"
+ height="14" width="14">Help pages at ILL
+(France)</h3>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><b><font
+ size="+1"><a href="http://www.ill.fr/tas/matlab/doc/mfit4/index.html">MFit
+4.2 Manual</a></font></b> (Data fitting)<br>
+      <span style="font-style: italic;">This help is directly available
+in the MFit application</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><b><font
+ size="+1"><a href="http://www.ill.fr/tas/matlab/doc/rescal5/rescal.htm">Rescal
+Manual</a></font></b> (4D TAS resolution function)<br>
+      <span style="font-style: italic;">This help is directly available
+in the Rescal/Matlab application</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><b><font
+ size="+1"><a href="http://www.ill.fr/tas/matlab/doc/spec1d/spec1d.html">Spec1d
+Manual</a></font></b> (data browsing and fitting)<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><span
+ style="font-weight: bold; font-style: italic;">MView</span><br>
+No help exists. <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">[ HTML, <font
+ size="+0"><a href="http://www.ill.fr/tas/matlab/doc/mfit4/mfit4.ps.gz">PS</a>
+and <a href="http://www.ill.fr/tas/matlab/doc/mfit4/mfit4.pdf">PDF</a>
+version </font>] </td>
+      <td style="vertical-align: top; text-align: center;">[HTML, <font
+ size="+0"><a
+ href="http://www.ill.fr/tas/matlab/doc/rescal5/rescal5.ps.gz">PS</a>
+and <a href="http://www.ill.fr/tas/matlab/doc/rescal5/rescal5.pdf">PDF</a>
+version </font>]</td>
+      <td style="vertical-align: top; text-align: center;">[ HTML, <font
+ size="+0"><a
+ href="http://www.ill.fr/tas/matlab/doc/spec1d/spec1d.ps.gz">PS</a> and
+      <a href="http://www.ill.fr/tas/matlab/doc/spec1d/spec1d.pdf">PDF</a>
+version </font>] </td>
+      <td style="vertical-align: top; text-align: center;">Use tooltips<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<blockquote><b><font size="+1"><a
+ href="http://www.ill.fr/tas/matlab/doc/mfit4/index.html"></a></font></b>
+  <p><b>Older MFit</b> <span style="font-weight: bold;">help</span>
+page [ <a href="http://www.ill.fr/tas/matlab/doc/mfit9908.ps.gz">PS</a>
+file 110 ko] (August 1999, version 4.2).&nbsp; </p>
+  <p>In <i>french</i> (15/11/1997). </p>
+  <blockquote><b>MFit</b> <a
+ href="http://www.ill.fr/tas/matlab/doc/mfitldv.html">help
+page</a> <br>
+    <b>Matlab/Octave</b> <a
+ href="http://www.ill.fr/tas/matlab/doc/octaveintro.html">introduction</a>
+    <br>
+    <b>Matlab/Octave</b> <a
+ href="http://www.ill.fr/tas/matlab/doc/octaveldv.html">data
+analysis</a> tools help</blockquote>
+</blockquote>
+<h3>
+<img src="http://www.ill.fr/tas/images/greenbal.gif" align="middle"
+ height="14" width="14">Other resources</h3>
+<blockquote><a href="http://www.risoe.dk/fys/" target="_top">Risoe
+Physics
+Department Homepage </a>with Matlab programs (29 Aug 1997 version)
+  <p><a href="http://xray.physics.ox.ac.uk/x-ray.htm">X-Ray Laboratory
+in
+Oxford Physics</a> where were created MFit, MView and Rescal </p>
+  <p><a
+ href="http://www.risoe.dk/fys/External/DesmondMcMorrow/manuals/Matlab/Mfit/index.html"
+ target="_top">Mfit
+help at Risoe</a>(version 0.3, 1997) </p>
+The <a href="http://neutrons.phy.bnl.gov/ResLib/index.html">ResLib 2.1</a>
+program for Triple-Axis Resolution Calculation</blockquote>
+<hr>
+<center>
+<h2><a name="octave"></a>Downloading Octave/Matlab signal processing
+libraries</h2>
+</center>
+This package proposes some non-graphic routines for signal processing
+(for
+Octave and Matlab).
+<br>
+See also (in french) <b>Matlab/Octave</b> <a
+ href="http://www.ill.fr/tas/matlab/doc/octaveintro.html">introduction</a>
+and<b> Matlab/Octave</b> <a
+ href="http://www.ill.fr/tas/matlab/doc/octaveldv.html">data
+analysis</a> tools help.
+<p><b>Installation summary:</b> (see <a
+ href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+for details)
+</p>
+<ol>
+  <li>get the archive</li>
+  <li>extract the archive into a directory that Octave can access (e.g.
+    <tt>/usr/local/share/octave/site/m</tt>)</li>
+  <li>Inside <i>Matlab/Octave</i>, launch the '<i><a
+ href="http://www.ill.fr/tas/matlab/ftp/install.m">install</a></i>'
+script (no guaranty)</li>
+</ol>
+<ul>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/SpectralTools.tar.gz">SpectralTools</a>
+Signal processing (fits, interpolations, smoothing, 1D convolution ...)</li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/FileTools.tar.gz">FileTools</a>
+Data importation. may need <tt>looktxt</tt></li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/MiscTools.tar.gz">MiscTools</a>
+Miscellaneous functions</li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/load.tar.gz">load</a>
+Load routines&nbsp;
+(with looktxt as Mex)</li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/funcs.tar.gz">funcs</a>
+Fit functions&nbsp;
+(with <tt>convlv</tt>)</li>
+  <li> <a href="http://www.ill.fr/tas/matlab/ftp/nllsq.tar.gz">nllsq</a>
+Fit methods&nbsp;
+(simplex and adapatative gradient)</li>
+</ul>
+<hr>
+<center>
+<h2><a name="looktxt"></a>Looktxt program (v0.9.4 - 22/11/2001)</h2>
+</center>
+This powerful program in C analyses any text data and identifies
+numeric
+parts. It is needed by some load routines in MFit.
+<br>
+It can be used under DOS, Unix, Matlab or Octave.
+<p>See the&nbsp; <a href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>&nbsp;
+and <a href="http://www.ill.fr/tas/matlab/doc/looktxt.html">looktxt </a>help
+for more details on installation/compilation.
+</p>
+<p><a href="http://www.ill.fr/tas/matlab/doc/looktxt.html">looktxt </a>help
+(and <a href="http://www.ill.fr/tas/matlab/doc/looktxtfr.html">french</a>
+version).
+</p>
+<p>Get <a href="http://www.ill.fr/tas/matlab/ftp/looktxt.c">looktxt.c </a>source
+file to compile it (for PC and Mac version, change chars <b>\n</b> ito
+<b>\n\r</b>
+in source code, e.g. with <i>unix2dos</i>).
+<br>
+To be compiled with commands such as <tt>gcc -O -o looktxt looktxt.c</tt>
+</p>
+<p>A C-to-Mex version (<tt><a
+ href="http://www.ill.fr/tas/matlab/ftp/texmex.c">texmex.c,
+v0.31</a></tt>) also exists for Matlab (in <i>load</i> routines. Mex
+files
+are provided for HP-UX, SGI, Windows and Linux machines).
+</p>
+<center>MeX For Matlab: <a
+ href="http://www.ill.fr/tas/matlab/ftp/looktxt.dll">[
+PC ]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexhp7">[
+HP-UX
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexsg">[ SGI
+IRIX64
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexaxp">[ Dec
+OSF1
+]</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.mexglx">[ Linux
+(Intel) ]</a></center>
+<p><i>If you can not compile it</i>, here are some pre-compiled
+versions
+(to be renamed as <tt>looktxt</tt>) for executable program :
+</p>
+<center><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.exe">[ PC ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.HP-UX">[
+HP-UX ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.IRIX64">[
+SGI IRIX 64 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.OSF1">[
+Dec OSF1 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.SunOS">[
+Sun Solaris ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.AIX">[
+IBM AIX ] </a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.Linux">[
+Linux SuSe (Intel)]</a> <a
+ href="http://www.ill.fr/tas/matlab/ftp/looktxt.LinuxPPC">[
+Linux PPC (PowerMac) ]</a></center>
+<p>Additional C function for programmers: A C function to override
+positional fprintf limitation when using
+more
+than NL_ARGMAX positional parameters in format string
+('%d$[dliouxXeEfgGcs]'),
+specially for Dec/HP/Compaq and possibly some SGI systems. [ <a
+ href="http://www.ill.fr/tas/matlab/ftp/pfprintf.c">pfprintf.c</a>
+]
+<br>
+</p>
+<hr>
+<center>[ <a href="#description">Packages description</a> ] [ <a
+ href="#download">Downloading
+</a>for
+Matlab ] [ <a href="#help">Help </a>] [ <a href="#octave">Octave
+stuff
+</a>]
+[ <a href="#looktxt">C stuff </a>]</center>
+<p><a href="http://www.ill.fr/tas/welcome.html" target="_top"><img
+ src="left_motif.jpg" align="middle" height="34" width="37"></a>[
+<a href="http://www.ill.fr/tas/welcome.html" target="_top">Back
+to ILL/TAS Home Page</a> ]
+<br>
+&nbsp;
+<br>
+&nbsp;
+</p>
+<address><a href="mailto:farhi@ill.fr">farhi@ill.fr&nbsp;</a> Aug 2001 .</address>
+</body>
+</html>

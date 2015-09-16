@@ -1,0 +1,363 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title> LDV:EF: MFit.LDV </title>
+</head>
+<body>
+
+<h1>
+Data Analysis with Mfit for Matlab</h1>
+
+<hr><i>Sujet : Mfit, graphic program for fit..</i>
+<br><i>Date : 15/11/97</i>
+<br><i>By : Farhi Entertainments</i>
+<p><i>File : ~manuf:7081/public_html/mfitldv.html
+<hr></i><blink>NOTE </blink>: An english version of this page will be available
+one day...
+<br><b>Link</b> : Matlab Programs (in english) at <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html">http://www.ill.fr/tas/matlab/doc/matprgs.html</a>
+<br>&nbsp;
+<br>&nbsp;
+<h2>
+Edito :</h2>
+Maintenant que nous avons 4 postes Matlab, il nous est possible d'utiliser
+pleinement les ressources graphiques de Matlab 5. Sur le plan calculs,
+Octave a pratiquement les memes possibilit&eacute;s (sauf : tableaux &agrave;
+n>2 dimensions, graphiques...), bien qu'un peu moins rapide. C'est vrai
+Matlab va tr&egrave;s vite, mais Octave se tient encore... Pour toute remarque
+sur ce travail, cliquez <a href="mailto:manuf@ill.fr">ICI</a>.
+<hr>
+<h3>
+Sommaire :</h3>
+1) <a href="#1">Possibilites de Mfit. Lancement.</a>
+<br>2) <a href="#2">Importation/Exportation de donn&eacute;es.</a>
+<br>3) <a href="#3">Le fit simple.</a>
+<br>4) <a href="#4">Le fit du pro....</a>
+<br>5) <a href="#5">Faire une fonction pour Mfit</a> <a href="#6">Conclusion.</a>
+<center>--O+O--</center>
+L'aide officielle de <a href="mfit4/index.html">Mfit</a> par son cr&eacute;ateur,
+Martin Zitkin. Attention il y a eu pas mal d'am&eacute;liorations depuis.&nbsp;<a NAME="1"></a>
+<h2>
+1) Possibilt&eacute;s de Mfit. Lancement</h2>
+Mfit est un ensemble de programmes pour Matlab 5, situ&eacute;s dans :
+/usr/local/MatLab/toolbox/local/mfit3 % interface graphique pour fits.
+/usr/local/MatLab/toolbox/local/nllsq % Non Linear Least Square fit (Marquardt-Levenberg)
+/usr/local/MatLab/toolbox/local/load % importation de donnees /usr/local/MatLab/toolbox/local/funcs
+% bibliotheques de fonctions de base pour Mfit /usr/local/MatLab/toolbox/local/rescal5
+% fits 4D de spectres neutrons '3 axes'. Le programme Mfit s'utilise principalement
+&agrave; la souris. Les possibilites sont :
+<ul>
+<li>
+Importation de tout type de donnees (fichiers textes, fichiers ILL, SPEC,
+TAScom, LLB...)</li>
+
+<li>
+Importation directe de donn&eacute;es par l'utilisateur (&agrave; partir
+de donn&eacute;es Matlab)</li>
+
+<li>
+Exportation de donn&eacute;es Mfit vers variables Matlab. Sauvegarde dans
+un fichier de r&eacute;sultat.</li>
+
+<li>
+Affichage graphique des donn&eacute;es, impression</li>
+
+<li>
+axes, zoom, s&eacute;lection/d&eacute;selection de zones pour les fits.</li>
+
+<li>
+s&eacute;lection de fonctions de fit, ou fonction utilisateur</li>
+
+<li>
+pre-fit &agrave; la souris pour d&eacute;terminer les parametres de d&eacute;part
+des fits.</li>
+
+<li>
+s&eacute;lection de la routine de fit (Marquardt rapide ou graphique, autre...)</li>
+
+<li>
+Multi fonction : tout assemblage de fonctions de base</li>
+
+<li>
+fits a 1D avec fonction d'appareil.</li>
+
+<li>
+D&eacute;termination automatique de param&egrave;tres de d&eacute;part
+pour les fits de pics</li>
+
+<li>
+... et tout ce que je ne dis pas ...</li>
+</ul>
+Pour lancer Mfit, executer d'abord Matlab (ouvrir une fenetre sur Athena,
+puis taper <tt>matlab</tt>), puis <tt>mfit </tt>. Une fenetre avec menus
+et tout et tout s'ouvre... Elle comprend :
+<ul>
+<li>
+un menu 'File' pour la gestion des donn&eacute;es.</li>
+
+<li>
+un menu 'Load Routines' pour choisir (&eacute;ventuellement) une fonction
+de lecture de fichier ad hoc.</li>
+
+<li>
+un menu 'Fit Function' pour choisir les fonctions de fit.</li>
+
+<li>
+un menu 'Fit Routines' pour choisir la routine de fit.</li>
+</ul>
+La configuration de Mfit est affich&eacute;e dans des champs, associes
+&agrave; des boutons rapides pour modifier ces choix. Le bouton 'Guess'
+sera utilis&eacute; pour initialiser le fit. Le bouton 'Fit' fera l'op&eacute;ration
+magique. Dans la fenetre du graph (MFit:dData), vous pouvez commander le
+zoom, secetionner/de-selectionner des points, changer l'apparence du graph,
+activer l'AutoGuess, etc...&nbsp;<a NAME="2"></a>
+<h2>
+2) Importation de donn&eacute;es</h2>
+Il y a deux facons d'importer des donn&eacute;es : soit a partir d'un fichier,
+soit a partir de donn&eacute;es que vous avez deja dans Matlab.
+<h4>
+A partir d'un fichier.</h4>
+La fonction d'importation de donn&eacute;es g&eacute;n&eacute;rale convient
+pour tout. Cependant, pour certains types de fichiers (surtout neutrons)
+on peut choisir une autre routine d'importation plus efficace.
+<ul>
+<li>
+Cliquez sur le bouton 'New...' du champ 'Data File' (ou menu 'File/Load
+new Data'). Une boite de s&eacute;lection s'ouvre.</li>
+
+<li>
+Choisissez votre fichier.</li>
+
+<li>
+Matlab lance le programme <a href="looktxt.html">looktxt</a> qui analyse
+votre fichier. Le processus d'analyse est affich&eacute;, ainsi que le
+d&eacute;but des diff&eacute;rentes zones trouv&eacute;es.</li>
+
+<li>
+Si votre fichier comprend de nombreux blocs de donn&eacute;es, une boite
+vous propose de choisir celui/ceux qui vous convienent.</li>
+
+<li>
+Une fois l'assemblage des donn&eacute;es effectu&eacute;e, vous choisisez
+les colonnes correspondant aux donn&eacute;es X,Y et optionnellement erreur
+et moniteur de normalisation (donn&eacute;es neutrons par exemple).</li>
+
+<li>
+finallement une fenetre contenant vos donn&eacute;es s'ouvre.</li>
+</ul>
+La fenetre de selection de colonnes permet aussi de pr&eacute;ciser un
+facteur de normalisation (par exemple 'norm(y)' ou '5') et une &eacute;ventuelle
+zone de fichier suivie d'options. Par exemple l'option 'setpar' pour les
+scans ILL permet de transferer les param&egrave;tres principaux vers Mfit/Rescal.
+<h4>
+Directement</h4>
+Pour l'importation directe, selectionnez 'Direct User Data entry' comme
+LoadRoutine. Puis 'File/Reload' ou 'File/Load' ou le bouton 'New'. Une
+boite de dialogue s'ouvre, et vous demande les donn&eacute;es X,Y et optionnellement
+l'erreur. Vous pouvez alors entrer n'importe quelle expression, contenant
+vos variables matlab. Ca &eacute;vite de passer par un fichier. On peut
+aussi envoyer des donn&eacute;es &agrave; MFit &agrave; partir cd la fenetre
+Matlab avec la fonction : tomfit(x,y,err,selected,p,fixed); Elle fait le
+contraire de 'fromfit' ci-dessous.
+<h4>
+Exportation de donn&eacute;es</h4>
+D&eacute;j&agrave;, vous pouvez sauver &agrave; chaque &eacute;tape param&egrave;tres
+et donn&eacute;es dans un fichier ('temp.mft' par d&eacute;faut) en cliquant
+sur 'Save'. De plus, la fonction 'fromfit' permet de tout r&eacute;cuperer
+dans la fenetre Matlab. Sa syntaxe est : <b>[x,y,err,selected,fit,p,dp,fixed]=fromfit;</b>
+Elle fait le contraire de 'tomfit' ci-dessus.&nbsp;<a NAME="3"></a>
+<h2>
+3) Le fit</h2>
+Vous avez la possibilit&eacute; de choisir votre m&eacute;thode de fit
+:
+<ul>
+<li>
+<b>Levenberg-Marquardt</b> est une m&eacute;thode &agrave; gradient adaptatif.
+Elle a l'avantage de (presque) toujours converger, mais parfois vers un
+minimum local.</li>
+
+<li>
+<b>Simplex</b> est une m&eacute;thode g&eacute;om&eacute;trique, qui scrute
+un ensemble de solutions. Elle est plus lente que les m&eacute;thodes &agrave;
+gradients, mais permet de touver (souvent) la meilleure solution</li>
+</ul>
+En g&eacute;n&eacute;ral, on pourra jongler entre ces deux m&eacute;todes.
+Maintenant que vous avez vos donn&eacute;es, s&eacute;lectionnez votre
+fonction de fit dans le menu 'Fit Functions'. Une boite 'Parametres' apparait.
+Cliquez sur 'Guess' et suivez les instructions dans la fenetre 'MFIT:Control'.
+En gros, la fonction de fit d&eacute;termine les param&egrave;tres de fit
+d'apr&egrave;s vos clics souris... Vous pouvez fixer des param&egrave;tres
+en enfoncant les petis boutons &agrave; gauche de chaque param&egrave;tre.
+Il ne reste plus qu'&agrave; cliquer sur 'Fit', et tout se fait. Une version
+graphique de la routine de fit permet de voir le fit se faire sur le graphe.
+La qualit&eacute; du fit se mesure avec le coefficient de correlation,
+la variance r&eacute;siduelle (qualit&eacute; de determination pour les
+donn&eacute;es) et le Chi carr&eacute; (qualit&eacute; de determination
+pour les param&egrave;tres). Le premier doit etre proche de 1, les autres
+minimum. Pour les fits plus compliqu&eacute;s, avec plusieurs fonctions,
+ou faisant des multiplications, puissances, convolutions, etc... de fonctions,
+j'ai cr&eacute;&eacute; pour vous le <b><blink>MultiFit</blink></b> (prononcez
+'Moultifit').&nbsp;<a NAME="4"></a>
+<h2>
+4) Le fit de pro : le MultiFit</h2>
+S&eacute;lectionnez dans le menu 'Fit Function' le 'MutliFunctions...'.
+Une fenetre s'ouvre. Les lignes <b>'y</b>n<b>='</b> doivent contenir des
+noms de fonction Mfit, ou des noms de variables &agrave; vous (celles que
+vous utilisez dans la fenetre Matlab). La ligne du bas contient une expression
+combinant les champs 'yn'. Lors du premier appel, deux champs sont propos&eacute;s.
+Changez le nombre de fonction, puis cliquez sur 'Make Function' ou re-s&eacute;lectionnez
+'MutliFunctions...' dans le menu. Le nombre de champs est mis &agrave;
+jour. Le nom des fonctions est obtenu par 'help funcs', a moins que ce
+ne soit une de vos fonctions (cf <a href="#5">Faire une fonction pour Mfit</a>).
+Le champ 'constrain' permet de specifier des instructions matlab &agrave;
+executer avant vos fonctions. Ca pourra etre par exemple 'p(1) = 0' ou'p(2)
+= p(3)*2; p(6) = 1'. NB : Cette contrainte s'applique de fa&ccedil;on interne
+&agrave; la fonction, donc n'apparait pas dans la fenetre de parametres,
+par contre elle s'applique !
+<h4>
+Exemple</h4>
+Vous avez dans votre fenetre Matlab une variable 'yappn' contenant une
+fonction d'appareil. Vous voulez fitter vos donn&eacute;es par, disons,
+2 gaussiennes au carr&eacute;, plus le produit de 2 lorentzienne, le tout
+convolu&eacute; par votre fonction d'appareil.
+<ul>
+<li>
+Tapez '5' dans le champ 'Number of functions' de la fenetre MultiFunction.</li>
+
+<li>
+Cliquez sur 'Make Function' ou re-s&eacute;lectionnez 'MutliFunctions...'
+dans le menu.</li>
+
+<li>
+Entrez dans les champs 'yn' les expressions :</li>
+
+<ul>
+<li>
+yappn (pour y5)</li>
+
+<li>
+gauss2 (pour y4)</li>
+
+<li>
+gauss2 (pour y3)</li>
+
+<li>
+lorz (pour y2)</li>
+
+<li>
+lorz (pour y1)</li>
+</ul>
+
+<li>
+Dans le champ <b>'Final y='</b>tapez : <b>convlv( y1.*y2 + y3 + y4, y5,
+2)</b></li>
+
+<li>
+Cliquez sur 'Make Function'.</li>
+</ul>
+<blink>Attention</blink>, la fonction d'appareil 'yappn' doit etre centr&eacute;e
+! S'affiche alors &agrave; l'&eacute;cran la fonction matlab &eacute;quivalente,
+que vous pouvez copier &agrave; la souris si &ccedil;a vous chante. Le
+bouton 'Guess' fonctionne comme d'habitude, et le fit aussi. Vous voyez
+que tout est possible. On peut utiliser toute fonction matlab dans l'expression
+finale.&nbsp;<a NAME="5"></a>
+<h2>
+5) Faire une fonction pour Mfit</h2>
+Une fonction Mfit sait faire des calculs, comme toute fonction que vous
+avez l'habitude d'utiliser. Elle sait donner son nom, le nom des param&egrave;tres
+et les pars de d&eacute;part(<b>flag = 1</b>). Elle sait demander des actions
+&agrave; la souris (<b>flag = 2</b>). Si vous voulez simplement utiliser
+vos fonctions f(x,p) sans vous embeter, ajoutez les lignes suivantes &agrave;
+la fin de votre fichier .m :
+<p><b>if (nargin>2)</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y=[];</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name='my_function';</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnames=str2mat('Amplitude','Centre','Width','Background');
+% params names</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pin=[0 0 1 0];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+% default parameters</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if flag==2</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mf_msg('This function cannot handle Guess feature.');&nbsp;&nbsp; % user
+asking section</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</b>
+<br><b>end</b>
+<p>et changez la premi&egrave;re ligne de votre fonction en ajoutant
+<i>',flag'</i>
+dans la liste de parametres d'entr&eacute;e, et <i>', name, pnames, pin'</i>
+dans la liste des parametres de sortie. Par exemple :
+<blockquote><b>function y=toto( x, p )</b></blockquote>
+devient
+<blockquote><b>function [y, name, pnames, pin]=toto( x, p, flag )</b></blockquote>
+<i>pnames </i>donne le nom de vos parametres (donc autant de noms que de
+parametres).
+<i>pin </i>donne les parametres par defaut (donc autant que
+de parametres). Ca va ? Une vraie fonction Mfit a la forme :
+<br><b>function [y, name, pnames, pin]=gauss( x, p, flag )</b>
+<br><b>% help section</b>
+<br><b>if (nargin==2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+% compute section</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y= p(4)+p(1)*exp(-0.5*((x-p(2))/p(3)).^2);</b>
+<br><b>else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+% Mfit section</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y=[];</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name='my_function';</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnames=str2mat('Amplitude','Centre','Width','Background');
+% params names</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pin=[0 0 1 0];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+% default parameters</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if flag==2</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mf_msg('Click on peak');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % user
+asking section</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[cen amp]=ginput(1);</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mf_msg('Click on width');</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[width y]=ginput(1);</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+width=abs(width-cen);</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mf_msg('Click on background');</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[x bg]=ginput(1);</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+amp=amp-bg;</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pin=[amp cen width bg]; % guess paramaters</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</b>
+<br><b>end</b>
+<br><a NAME="6"></a>
+<h2>
+Conclusion</h2>
+Voila, c'est pas trop compliqu&eacute; et ca permet de faire tous les fits
+&agrave; la souris, tout en travaillant simultanement dans la fenetre Matlab
+(lissages, interpolations, etc...). Les autres possibilit&eacute;s de MFit
+:
+<ul>
+<li>
+Automatisation des fits en utilisant l'AutoGuess dans un fichier batch
+(format MFT)</li>
+
+<li>
+Controle du multifit par un fichier batch</li>
+
+<li>
+Utilisation avec Rescal/trix pour les fits de donn&eacute;es neutrons (fonction
+d'appareil &agrave; 4D)</li>
+</ul>
+Vers <a href="octaveintro.html">Introduction &agrave; Octave</a>
+<p>Vers <a href="octaveldv.html">Traitement de donn&eacute;es avec Octave/Matlab
+<hr><a href="http://www.ill.fr/tas/welcome.html" target="_top"><img SRC="left_motif.jpg" height=34 width=37 align=CENTER></a></a>[
+<a href="http://www.ill.fr/tas/welcome.html" target="_top">Back to ILL/TAS
+Home Page</a> ][ <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">Back
+to ILL/TAS Matlab Page</a> ]
+<br>&nbsp;
+<br>&nbsp;
+<address>
+<a href="mailto:farhi@ill.fr">farhi@ill.fr </a>Nov 1999.</address>
+
+</body>
+</html>

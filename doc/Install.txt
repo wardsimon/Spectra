@@ -1,0 +1,288 @@
+Matlab libraries
+Date    : Wed May 25 10:23:00 CEST 2005 
+Author  : E. Farhi <farhi@ill.fr>
+Site    : http://www.ill.fr/tas/doc/
+Content : Mfit4, Rescal5, Mview4 SSym1 for Matlab 5
+          SpectralTools for Matlab 4 or higher
+Copyright (C) 1998-2005  Zinkin, McMorrow, Tennant, Farhi, and Wildes.
+see licence terms at the end of this file (GPL).
+======================================================
+
+Hello,
+
+Well done, we are proud to present you our freeware data analysis package.
+Please find History section, followed by Install and Licence sections below.
+Description of each library part is supplied in each package directory, and in
+HTML help pages (doc directory).
+
+This file contains the following sections
+        A- History
+        B- Install procedure
+        C- Licence and Contacts
+
+Curent versions are now :
+	MFit  4.3.1	
+        Mview 4.2.1
+	Rescal 5.1
+
+====================================================
+A- History :
+
+April 2005
+	* Compatibility from Matlab 6.5 to Matlab 7 solved
+        * MView now displays legend on overlay plots
+        * MView now displays subplot overviews
+        * Many tooltips added (Mview, Rescal, MFit)
+        * a new multiple file selector for MView
+        * some bugs solved, color defaults changed
+	* MFit:Multifunction is now easier to use (selection of functions based
+ 	  on their real name, and not anymore on their Matlab function name)
+	* Standalone versions are now available for Windows and Linux
+	* WINDOWS: the file selector can not access directly the network, 
+	  but requires to map a disk letter (e.g. Z:) on the ressource
+
+Jul 2000
+	* looktxt v0.91 seems ok. New options -S and -H.
+	* Corrected mxRealloc bug in texmex.c
+
+Jan 2000
+	* passed load/ffind Mex to matlab function. No more compiling needed.
+        * added View buttons in MFit:control
+	* zoom reset acts on selected points
+	* autoguess now keeps fixed parameters
+	* corrected old bug in Mfit:data window mouse handling (mf_rbbox)
+	* corrected bugs in load:ffind.m, specdata.m
+
+Dec 1999
+	* New help pages for Mfit 4.2. updated install procedure
+	* touched mf_batch
+
+Oct 1999
+	* corrected a bug in SpectralTools (leasqr,simplex,findpeaks,interpsp)
+          (EF)
+	* New documentation for MFit (KD)
+
+June 1999
+	* corrected small bug for isolated num near =,: or / char in looktxt
+          (v0.89, EF)
+	* corrected small bug in multidata.m. General Load is really cool (EF).
+	* Multifunc now enables to plot each contribution separately (KD).
+	* Corrected 50 params as default in 'n params' functions. (EF)
+
+April 1999
+	* looktxt v0.88 is now a Mex function (texmex.c in load routines)
+          (KD/EF).
+
+March 1999
+	* mfit tested on Matlab 5.3 (R11): no problems (EF).
+	* corrected minor bugs in looktxt -g (v.88). Added option -k (EF)
+
+Jan 1999
+	* rewrite parameter estimates uncertainties (EF, nllsq/mf_sig). Revised
+          err=0 case in MFit/mf_gdata and nllsq/mf_dfdp. ExecAfterLoad data
+          saving in mf_gdata (EF).
+	* corrected funcs/trix/mcint2, and made mcint3 (EF/ARW).
+
+Oct/Nov 1998
+	* corrected dp != 0 bug in mf_simplx, redraw in tomfit and Batch Line
+          option (EF).
+	* add polarisation analysis in ILL load routines (ARW). revised
+          mf_coldg,illdata,illbatch (EF).
+
+Setp 1998
+	* revised parameters uncertainty estimates in mf_sig (DFM)
+	* zoom list is now kept when reploting (at last !) in Mfit/mf_gdata (EF)
+	* corrected a stupid bug in SSym/sp_pars that caused perpetual
+          recomputation  (EF)
+
+July 1998
+	* can now retreive params stored in .mft (EF)
+	* Minor correction in ILL batch load routine, mf_rbbox, mf_save (EF)
+	* speed up by 50 % multifunc with external temporary function (can be
+          pre-compiled by matlab) (EF)
+
+May 1998 (MFit 4.2)
+	* a batch command field is now directly available. Press 'DoIt' button
+          to execute. Type help mf_batch, or help in batch line (EF).
+	* multifunc now supports 'user' parameters and optional short ID in 
+          fn = func ID.
+          type help multifunc (EF)
+	* multifunc now saves its parameters when changing fit function (EF)
+	* fit parameters revert now possible (EF)
+
+April 1998
+	* fit control is now in 'Option' menu of main MFit window (EF).
+	* when saving MFit config file, also save startup section for Multifunc,
+          params,  ... (EF)
+	* stuff fixing in : mf_uplot, dwin, gdata, illdata, 'batch' load
+          routines (EF)
+	* 'Change X axis' (mf_chgx) now part of MFit. Called by SSym (EF)
+	* MFit Links to other Applications (EF)
+	* MFit configuration variables can be changed by user (Links Menu) (EF)
+	* SSym tested. Seems ok today. (EF)
+	* SSym 0.1 beta version for Brillouin/Raman... spectrum. (EF)
+	* Axis rescaling for Mfit and SSym. (EF)
+	* MFit Extensions with mf_ExecAfter{Load|Fit} objetcs(04/98) (EF)
+	* transform data feature in Mfit:Graph/Data menu (EF)
+	* MFit free/fix all params in Mfit:Graph/Data menu (EF)
+
+Marsh 1998
+	* Added key accelerators and corrected some minor bugs (04/98) (EF)
+          in Mfit/Rescal
+	* Modified verbosity using in SpectraTools function.  (EF)
+		No more global variable. Additional parameter (see leasqr)
+	* fixed minor bugs in Mview (mv_intp, mv_cut,...) (DFM)
+
+Feb 1998
+	* AutoSave feature installed (parameters are saved before loading new
+          data). (EF)
+	* AutoGuess is now ok. (EF)
+
+Jan 1998 : 
+	* corrected index shift in SpectralTools/convlv (EF)
+	* corrected 'std' error in nllsq/mf_simplx (EF)
+	* corrected bug in mfit/mf_autogs (EF)
+
+December 1997 
+	* revised SpectralTools/findpeaks (EF)
+	* revised SpectralTools/leasqr and simplex (EF)
+	* revised func/dho (EF)
+	* revised nllsq/mf_simplx, mf_flsqr and mf_glsqr (EF)
+	* made nllsq/mf_sig (EF)
+
+September 1997 (Mfit 4.1 from DAT/MZ)
+	* re-designed whole Mfit + Rescal (EF)
+	* port from Matlab 4 to Matlab 5. remove all warnings. (EF)
+
+====================================================	
+B- Install procedure :
+
+1- go into your Matlab or Octave directory (personal or 'root' shared). It can be obtained with the matlabroot' command under matlab.
+   Usually, you should then be in something like .../matlab/toolbox/local/ 
+   (I shall call it ILLROOT now)
+
+2- uncompress with 
+     'gunzip *.gz' (Unix), 'WinZip/PkZip' (for PC's) or MacGZip (Mac)
+3- unarchive with (in ILLROOT)
+     'tar xvf *.tar' (Unix), 'WinZip/PkZip' (for PC's) or MacGZip (Mac)
+       Some directories will be created :
+             mfit4, rescal5, mview4, ssym1
+             funcs, nllsq, load, @spec1d
+             SpectralTools, MiscTools, FileTools
+       The PackList.txt file shows our local file structure, here at ILL.
+4- Edit and add necessary directories into Matlab:ILLROOT/startup.m
+             Our startup.m and octaverc files are provided as examples.
+             In fact, you just need to modify the 'libroot' path at the begining
+             of 'startup.m' file.
+5- The General Load Routine (load/multibatch) uses the 'looktxt' program.
+   To install it, go into the ILLROOT/load directory.
+   Compiling the source:
+     Under Unix/Linux:
+       compile program with a command like 'cc -O -o looktxt looktxt.c'.
+       Then copy the 'looktxt' executable file into your ~/bin directory, or ask
+       system administrator to copy it into the /usr/local/bin/ directory.
+       Note: under Unix/HP, use rather 'cc -Aa +O2 -o looktxt looktxt.c'.
+       Then type from terminal prompt 'rehash', and try 'looktxt looktxt.c'.
+     Under PC:
+       You may have to change the Unix end-of-line characters (\n) into PC ones 
+       (\n\r). This can be done with unix2dos.
+       Use your standard compiler (I used MS Visual C++ 5.0 without problems).
+       copy the resulting executable file 'Looktxt.exe' into C:\DOS or C:\Command.
+     Under Mac:
+       You may have to change the Unix end-of-line characters (\n) into Mac ones
+       (\n\r).  This can be done with unix2dos.
+       Use your standard compiler (I did not try this !).
+   Getting pre-compiled executables:
+     Our Web page <http://www.ill.fr/tas/doc/matprgs.html> provides some ready to 
+     use executables.
+     Copy them into ~/bin or /usr/local/bin under Unix/Linux, or into C:\Command under
+     PC/Windows.
+
+	NB : looktxt.c uses /usr/include/sys/ librairies.
+	WARNING : if your compiler doesn't automatically include 'stdlib' and
+             'ctype' libraries, you have to make thoses lines active in
+             looktxt.c (see begining of source code).
+
+6- To speed-up looktxt from Matlab, a Mex function 'texmex' has been written.
+   It converts the normal looktxt.c into a MeX library. 
+     To install it, go into the 'ILLROOT/load' directory and type 
+
+		in load: mex -O -output looktxt texmex.c
+	     
+	     This can be done from Matlab or system terminal and will create 
+	     a 'looktxt.mex???' file.
+     Compilation into Mex file was succefull under Unix:HP-UX and SunOS systems.   
+     
+     IMPORTANT NOTE FOR PC USERS: The Mex file does not seem to work correctly under PC platforms
+     (Windows and Linux/SuSe). I do not know why. Remove any ILLROOT/load/looktxt.dll or
+     looktxt.mexlx file. The normal looktxt or looktxt.exe program will be used by Matlab (if found
+     by the system !).
+		
+7- If you want to boost the importation of some specific data files (e.g. SPEC
+    ILL and TASCOM...) you can optionally use the ffind MEX-function.
+    Move to the 'ILLROOT/load' dir, and type (on terminal prompt):
+
+		in load: mex -O ffind.c
+		
+   Otherwise the normal (slower) ffind.m routine is used.
+
+8- If you plan to use the trix function (for TAS 4D-convolution through Rescal),
+   you also need to create the MEX files for trix (4D neutron) routines.
+        To install it, go into the 'funcs/trix' directory and type in Matlab:
+
+		in funcs/trix: mex -O mcint.c    or    mex -O mcint2.c
+
+        This will create a 'mcint.mex???' files.
+	
+9- For Mfit4, Mview4 and Rescal5, there are some .ini files that should be 
+   adapted to your system (load routines, fit functions, default pathes...).
+   This defines for instance the MFit and Mview menus and variables. 
+	Look at the provided example files.
+	Some 'whatsnew' files are provided in each archive for these programs.
+
+
+Check our site regularly as I often correct/modify files at your request.
+E-mail me for any trouble. Bugs are usually very easy and fast to correct.
+
+====================================================
+Licence : 
+
+Those libraries are protected through the GNU GENERAL PUBLIC LICENSE
+which is detailed in 'licence.gpl' files in each part of libraries.
+
+Copyright (C) 1995-99  Zinkin, McMorrow, Tennant, Farhi, and Wildes.
+
+    Thoses programs are free softwares; you can redistribute them and/or modify
+    them under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Thoses programs are distributed in the hope that they will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+If you ever have some modifications to be made, send us an e-mail about what you
+ would like to be implemented. I don't guaranty anyway that it'll be done
+ tomorrow !
+Please contact one of us for collaborations, using code or more informations by
+ e-mail :
+ 
+E. Farhi      (farhi@ill.fr)                    alias EF    MFit >= 4
+A.R. Wildes   (wildes@ill.fr)                   alias ARW   Mview
+Des. McMorrow (des.mcmorrow@risoe.dk)           alias DFM   Mview, Spec1d
+M. Zinkin     (m.zinkin1@physics.ox.ac.uk)      alias MZ    MFit < 4, Mview, Rescal
+D.A. Tennant  (d.tennant1@physics.oxford.ac.uk) alias DAT   MFit < 4, Mview, Rescal
+K. Dabertran  (contact farhi)                   alias KD    MFit
+
+or by paper mail at :
+
+    Matlab libraries developpement team
+    TAS-Group, Institut Laue-Langevin (ILL), Grenoble 
+    6, rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France
+
+Thanks to X.Maillart, D. Rideau, K. Dabertran, B. Hehlen, E. Rat, C. Clementin, L. Arzel... for using and testing thoses programs.

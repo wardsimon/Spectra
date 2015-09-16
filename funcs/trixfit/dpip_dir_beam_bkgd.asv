@@ -1,0 +1,8 @@
+function [bcgd]=trixfit_bkgd(x,p)
+%
+% TRIXFIT function to define the background
+% 
+% Des McMorrow, June 2001
+%
+[Hsc Ksc 
+bcgd=p(11)+p(12)./absx.^2;

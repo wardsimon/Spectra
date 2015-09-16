@@ -1,0 +1,434 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title> LDV:EF: Octave.LDV </title>
+</head>
+<body>
+
+<h1>
+Traitement de donn&eacute;es avec Octave/Matlab</h1>
+
+<hr><i>Sujet : Nouvelles fonctions pour Octave/Matlab.</i>
+<br><i>Date : 25/07/96 rev. 24/01/97</i>
+<br><i>By : Farhi Entertainments</i>
+<p><i>Fichier : ~manuf/public_html/octaveldv.html</i>
+<hr>
+<h2>
+AVERTISSEMENT :</h2>
+Ce qui est expos&eacute; ci-dessous est une alternative &agrave; APL, mais
+aussi de fa&ccedil;on plus g&eacute;n&eacute;rale, une liste de fonctions
+utiles pour le traitement du signal. Je ne fais que proposer des outils
+qui, me semble-t-il sont plus pratiques. D'autre part, Octave est compatible
+MatLab (qui se trouve tr&egrave;s couramment) et ne necessite pas de ressources
+graphiques sp&eacute;cifiques qui allourdissent le systeme et provoquent
+des plantages (cf pertes d'espaces de travail avec APL), ce qui permet
+d'executer des calculs &agrave; partir de n'importe quelle machine dans
+le monde... Pour toute remarque sur ce travail, cliquez <a href="mailto:manuf@ill.fr">ICI</a>.
+<hr>
+<h3>
+Sommaire :</h3>
+<a href="#0">Introduction</a>
+<br>1) <a href="#1">Possibilites d'Octave. Remarques.</a>
+<br>2) <a href="#2">Importation de donn&eacute;es.</a>
+<br>3) <a href="#3">Traitement de donn&eacute;es.</a>
+<br>4) <a href="#5">Autres outils.</a>
+<br>5) <a href="#5">Fonctions de fit. </a><a href="#4">Conclusion.</a>
+<br>--O+O--&nbsp;<a NAME="0"></a>
+<h2>
+Introduction</h2>
+<i><b>Objet :</b> octave, aide en ligne, sauvegarde d'espaces de travail.</i>
+Ce fichier traite des nouvelles fonctions ax&eacute;es sur l'importation
+de fichiers ASCII (donn&eacute;es avec ou sans commentaires) et le traitement
+de spectres. Elles sont situ&eacute;es dans : /vsr2/octave-2.0.4/share/octave/site/m
+(version 2.0 sur IBMs) /usr/local/GNU/octave-2.0.4/share/octave/site/m
+(version 2.0 sur athena et heracles) et /usr/local/MatLab/toolbox/local
+(version 5.0) et sont disponibles en standard (donc pas besoin de s'inquieter
+et de les copier chez soi) sur Jullien, Tran, les terminaux X, Anglaret,
+Foret, Vacher, Athena. Pour lancer octave et matlab : 'octave' ou 'matlab'
+De fa&ccedil;on g&eacute;n&eacute;rale, toutes ces fonctions ont une aide
+integr&eacute;e, que l'on invoque en tapant : help D'autre part, des aides
+g&eacute;n&eacute;rales sont disponibles pour les biblioth&egrave;ques
+que j'ai programm&eacute; : help SpectralTools help FileTools help MiscTools
+help funcs La plupart des fonctions utilis&eacute;es permettent de r&eacute;cuperer
+les r&eacute;sultats de la fonction dans des variables au choix de l'utilisateur.
+Consultez les aides des differentes fonctions pour cela. Pour une introduction
+&agrave; Octave/Matlab, on pourra se referer a l'aide en ligne (lancez
+'tkinfo &amp;' a partir d'un terminal X, puis selectionnez Octave dans
+le menu) ou au manuel d'utilisation (pages Web). A partir d'Octave et Matlab
+vous pouvez taper 'doc' pour consulter la documentation officielle, et
+'ldvintro' ou 'ldv' pour avoir les deux pages Web relatives aux outils
+'maison'. Ces deux pages sont concises. <b><blink>LISEZ-LES.</blink></b>
+Notons qu'&agrave; tout moment il est possible de sauvegarder/charger tout
+ou partie des variables utilis&eacute;es avec les commandes 'save' et 'load'.
+Par exemple pour sauvegarder l'&eacute;quivalent d'un espace de travail
+APL, on tapera 'save nom_de_fichier' (toutes les variables en cours sont
+sauvegard&eacute;es), et pour sauver une variable seule 'save nom_de_fichier
+variable'. Il est possible d'activer une sauvegarde automatique de la session
+Octave/Matlab ("log file") en tapant 'diary on' ou 'diary nom_fichier'.&nbsp;<a NAME="1"></a>
+<h2>
+1) Pr&eacute;sentation rapide d'Octave/Matlab</h2>
+Vers <a href="octaveintro.html">introduction &agrave; Octave/Matlab. </a>.
+Je rappele &agrave; titre indicatif qu'Octave/Matlab permet de r&eacute;aliser
+toutes les op&eacute;rations math&eacute;matiques habituelles sur des variables
+de toutes sortes (comme APL, MatLab, Mathematica, Mapple ...). Il est tres
+facile de selectionner une partie d'un vecteur, un intervalle (':') simple
+ou d&eacute;fini d'apres une condition donn&eacute;e ('find')... Le r&eacute;sultat
+des fonctions appel&eacute;es est r&eacute;cup&eacute;rable dans des variables
+au choix de l'utilisateur. ex : la fonction 'leasqr' peut s'utiliser simplement,
+ou bien en r&eacute;cuperant les donn&eacute;es du fit avec : [p,r2,covp,corp,ss,f,iter,kvg]
+= leasqr(x,y,Pin,'myfunc');&nbsp;<a NAME="2"></a>
+<h2>
+2) Biblioth&egrave;que FileTools</h2>
+<i><b>Objet :</b> importation de fichiers textes/ascii.</i> Cette biblioth&egrave;que
+contient des fonctions permettant l'importation facile de fichiers textes
+(ASCII) tels que ceux g&eacute;n&eacute;r&eacute;s par les spectros Raman,
+Brillouin... En pratique on utilisera la fonction : looktxt('<i>filename</i>')
+pour importer ce fichier. Il se cr&eacute;e alors un fichier 'filename.m',
+dont on prend les donn&eacute;es en tapant au prompt Octave/Matlab <tt>filename</tt>
+Les variables g&eacute;n&eacute;r&eacute;es ont pour nom filename_nXX o&ugrave;
+XX est un nombre. On peut voir le d&eacute;tail de l'importation en utilisant
+plutot looktxt('-v filename'). Il est possible d'importer aussi les champs
+ASCII avec looktxt('-a filename'). L'aide rapide de looktxt s'obtient par
+looktxt('-h'). Pour de plus amples informations sur l'utilisation de 'looktxt',
+cliquez sur <b><a href="looktxt.html">Utilisez looktxt. </a></b>. Note:
+looktxt est un programme C qui marche aussi sur un terminal Unix. On peut
+faire 'looktxt -v -a <i>filename</i>'. Parfois il est necessaire de pr&eacute;ciser
+certaines options d'importation. Avec looktxt, on peut indiquer :
+<ul>
+<li>
+la nature du point (point par d&eacute;faut ou virgule)</li>
+
+<li>
+la nature des s&eacute;parateurs de nombres (espaces, tabulations...)</li>
+
+<li>
+la nature des fins de lignes (Unix ou PC)</li>
+
+<li>
+le type de fichier de sortie (.m par d&eacute;faut, .oct ou .txt)</li>
+
+<li>
+les identificateurs de commentaires (# et % par d&eacute;faut)</li>
+
+<li>
+s'il on veut un mode de fonctionnement avec importation des champs de charact&egrave;res
+('no ascii' par defaut)</li>
+
+<li>
+s'il on veut un mode de fonctionnement avec groupement autant que possible
+des donn&eacute;es num&eacute;riques ('no group' par d&eacute;faut)</li>
+
+<li>
+s'il on veut des noms de variables Octave/Matlab courts ('nXX' au lieu
+de 'fichier_nXX')</li>
+
+<li>
+la taille minimale des matrices &agrave; importer</li>
+</ul>
+En gros ca doit marcher &agrave; tous les coups. S'il est necessaire de
+modifier l&eacute;g&egrave;rement un fichier, on peut utiliser la fonction
+'ascii_reshape' (voir l'aide avec 'help ascii_reshape').
+<h4>
+<blink>Les conseils de Maitre Manu</blink></h4>
+:
+<ul>
+<li>
+Si tu utilises Octave, tu importeras tes donn&eacute;es avec l'option <tt>-o="oct"
+</tt>puis
+<tt>load <i>fichier.oct</i> </tt>. C'est plus rapide &agrave; lire.</li>
+
+<li>
+De fa&ccedil;on g&eacute;n&eacute;rale, tu stockeras tes donn&eacute;es
+en format mat-binary <tt>save -mat-binary filename.mat [variables] </tt>avec
+Octave <tt>save filename [variables] </tt>avec Matlab</li>
+
+<li>
+Pour charger un fichier '.mat' en m&eacute;moire, tu taperas : <tt>load
+filename.mat [variables] </tt>avec Octave <tt>load filename [variables]
+</tt>avec
+Matlab</li>
+
+<li>
+Si tu utilises de gros fichiers (+ de 500 ko), tu importeras tes donn&eacute;es
+avec Octave (looktxt -o="oct" ...), puis tu les sauveras en mat-binary
+(save -mat-binary toto.mat)</li>
+</ul>
+<a NAME="3"></a>
+<h2>
+3) Biblioth&egrave;que SpectralTools</h2>
+<i><b>Objet :</b> * <a href="#a">axisrescale</a> : modifier un axe des
+x (non lin&eacute;arite du balayage) * <a href="#b">convlv</a> : convolution/deconvolution
+* <a href="#c">derivative</a> : d&eacute;rivation de signal * <a href="#d">interp</a>
+: interpolation polynomiale (Lagrange) * <a href="#e">leasqr</a> : fit
+non lin&eacute;aire (Marquardt-Levenberg) * <a href="#f">findpeaks</a>
+: recherche rapide de pics * <a href="#g">removepeak</a> : supprime des
+pics et spikes * <a href="#h">smooth</a> : lissage (Savitzky-Golay) * <a href="#i">trapez</a>
+: int&eacute;gration de signal</i> Cette biblioth&egrave;que contient des
+fonctions de traitement du signal. Ce sont en g&eacute;n&eacute;ral des
+signaux &eacute;chantillon&eacute;s representant des donn&eacute;es experimentales
+ou calcul&eacute;es.&nbsp;<a NAME="a"></a>
+<h3>
+a) axisrescale : <i>modifier un axe des x (non lin&eacute;arit&eacute;
+du balayage)</i></h3>
+Cette fonction est utilis&eacute;e lorsque l'on connait par exemple la
+position du pic &eacute;lastique et de 2 ghosts (ou 2 autres ordres), et
+que l'on d&eacute;sire transformer le num&eacute;ro des canaux en fr&eacute;quence,
+sans suivre necessairement une loi lin&eacute;aire. En effet, le balayage
+en fr&eacute;quence n'est pas forcement parfait. Connaisant plusieurs points
+de r&eacute;ference (par exemple [canal, fr&eacute;quence]), on demande
+&agrave; la fonction de calculer l'axe des x correspondant en utilisant
+une interpolation polynomiale d'ordre parametrable (ordre 2 par defaut).
+La syntaxe est <b>[new_x, p] = axisrescale(x, pmat, {order =2})</b> avec
+x : (vecteur) axes des x initial (canaux par ex.) pmat : matrice [ x_initial
+x_final] (par exemple [canal_de_ref frequence_ref]) order : (opt.) ordre
+de l'interpolation (2 si non precis&eacute;) retourne new_x : nouvel axe
+des x avec interpolation p : polynome utilise pour l'interpolation&nbsp;<a NAME="b"></a>
+<h3>
+b) convlv : <i>convolution/d&eacute;convolution</i></h3>
+Cette fonction r&eacute;alise une convolution ou une d&eacute;convolution
+de 2 signaux. La signification du parametre optionnel 'op' est :
+<ul>&nbsp;
+<li>
+op=1 : convolution standard. Effets de bords non trait&eacute;s.</li>
+
+<li>
+op=-1 : d&eacute;convolution brute (et dans ce cas, il est fortement conseill&eacute;
+de lisser les signaux avant avec 'smooth')</li>
+
+<li>
+op=2 : convolution en r&eacute;duisant les effets de bords par extension
+du signal.</li>
+</ul>
+En pratique, cette fonction est utilis&eacute;e pour tenir compte de la
+fonction d'appareil lors des fits. Notons que dans ce cas, la convolution
+se fera dans la fonction de fit utilis&eacute;e par 'leasqr', et fera appel
+&agrave; une variable globale contenant la fonction d'appareil. Voir la
+fonction 'leasqr' ci-dessous. La syntaxe est <b>[y,D,R] = convlv ( data,
+respns, {op=1} ) ou convlv(data)</b> avec data : (vecteur) signal &agrave;
+convoluer respns : (vecteur) signal convoluant (fonction de 'r&eacute;ponse
+impulsionnelle') op : (opt.) op&eacute;ration (1=conv par defaut, 2 pour
+conv speciale, -1 pour la d&eacute;conv) NB : avec un seul argument d'entr&eacute;e,
+on obtient l'autoconvolution. retourne y : signal &lt;data * respns> D,R
+: FFTs de data et respns&nbsp;<a NAME="c"></a>
+<h3>
+c) derivative : <i>d&eacute;rivation de signal</i></h3>
+Cette fonction calcule la d&eacute;riv&eacute;e d'un signal par la methode
+des differences finies (Gregory-Newton forward). Un lissage du signal est
+conseill&eacute; avant ce calcul. La syntaxe est <b>[deriv, dif_table]
+= derivative(x,y,{order=1}) ou derivative(y)</b> avec x,y : (vecteurs)
+signal &agrave; d&eacute;river order : (opt.) ordre &agrave; utiliser dans
+la formule (1 par defaut) NB : avec un seul parametre, donne la d&eacute;riv&eacute;e
+avec x=1:n retourne deriv : deriv&eacute;e dif_table : tables des differences
+finies&nbsp;<a NAME="d"></a>
+<h3>
+d) interp : <i>interpolation polynomiale (Lagrange)</i></h3>
+Cette fonction r&eacute;alise l'interpolation polynomiale par la m&eacute;thode
+de Lagrange. Cela consiste &agrave; prendre 'nb_of_pts' valeurs autour
+du point &eacute;tudi&eacute; dans la courbe (x,y) pour d&eacute;terminer
+les coefficients du polynome d'ordre 'order' qui approxime le mieux la
+courbe, puis &agrave; en d&eacute;duire de nouvelles valeurs d'interpolation
+aux valeurs 'new_x' de l'axe x. Certains cas particuliers sont interessants
+:
+<ul>
+<li>
+new_x = x Il n'y a pas d'interpolation entre les points initiaux, mais
+un lissage polynomial.</li>
+
+<li>
+order = 0 Cela correspond &agrave; une moyenne brute.</li>
+
+<li>
+order = 1, nb_of_pts = 2 Interpolation lin&eacute;aire sans lissage (la
+droite d'interpolation n'est d&eacute;termin&eacute;e qu'avec 2 points).</li>
+</ul>
+En pratique, on utilisera cette fonction pour d&eacute;terminer les coefficients
+d'un polynome, augmenter le nombre de points dans un signal (interpolation
+entre les points) ou comme alternative au lissage 'smooth'. Notons que
+cette fonction est par exemple utilis&eacute;e par 'removepeak' lorsque,
+ayan supprim&eacute; un pic dans le signal (x,y), on desire conserver le
+nombre de points et l'on interpole le signal entre les bornes de la zone
+supprim&eacute;e. La syntaxe est la suivante : <b>[itrp, p] = interp(x,y,
+{new_x=x, nb_of_pts, order=1}) ou interp(y)</b> avec (x,y) : (vecteurs)
+signal &agrave; interpoler new_x : (opt.) nouvel axe x. new_x = x par d&eacute;faut.
+nb_of_pts : (opt.) nb de points utilis&eacute;s pour le calcul du polynome
+approximant. order : (opt.) ordre du polynome. NB : avec un seul parametre,
+r&eacute;alise un lissage d'ordre 1. retourne : itrp : signal interpol&eacute;.
+p : coefficients du polynome&nbsp;<a NAME="e"></a>
+<h3>
+e) leasqr : <i>fit non lin&eacute;aire (Marquardt-Levenberg)</i></h3>
+Cette fonction r&eacute;alise un 'fit' non lin&eacute;aire, multivariable,
+&agrave; fonction math&eacute;matique au choix. La m&eacute;thode utilis&eacute;e
+est celle de 'Marquardt-Levenberg', i.e minimisation de l'erreur au carr&eacute;
+en suivant un gradient adaptable. Pour r&eacute;aliser un fit, il faut
+d&eacute;finir la fonction de fit dans un fichier texte. Cette fonction
+doit etre de la forme f(x,p), avec x variable courante et 'p' vecteur de
+parametres. Une telle fonction retourne un vecteur de valeurs y=f(x,p).
+Un exemple d'utilisation de 'leasqr' s'obtient en tapant : <b>leasqrexamp</b>
+Par exemple on ecrira dans le fichier 'myfunc.m' (l'extension .m est obligatoire)
+: &lt;&lt; <b>function y = myfunc(x,p) % myfunc est un exemple de fonction
+d'appareil pour le SHR %p = [ amplitude d&eacute;calage finesse bruit ]
+y = p(1)./(1 + 1600.*(sin((x-p(2))./p(3)).^2)).^2 + abs(p(4)); end </b>>>
+Evidement, tout est possible dans une telle fonction : * convolution par
+une fonction d'appareil experimentale * utilisation de nombres complexes
+(i) * appel d'autres fonctions * ... Dans le cas de la convolution par
+une fonction d'appareil exp&eacute;rimentale, supposons que le vecteur
+convoluant soit stock&eacute; dans la variable 'app'. Si on desire l'utiliser
+dans la fonction 'myfunc', il faut pr&eacute;ciser que 'app' est une variable
+externe &agrave; la fonction. Pour cela, on doit d&eacute;clarer 'app'
+comme variable globale en tapant : <b>global app</b> puis, dans le corps
+de la fonction 'myfunc' on indique que l'on utilise 'app'. Deux possibilit&eacute;s
+vous sont offertes. Si la fonction est connue de facon analytique, on peut
+&eacute;tendre l'axe des 'x' avant et le r&eacute;duire apres : exemple
+:<b> &lt;&lt; function y = myfunc(x,p) %y = myfunc(x,p) % % fonction de
+x et p=[ x_offset width intensity noise ] % avec extension/reduction de
+l'axe 'x' global app; % indique l'utilisatiuon de la variable globale %
+'app' : fcn d'appareil normalis&eacute;e x=extend_x_axis(x,length(app));
+% etend l'axe 'x' symetriquement pour la convolution y = lorentz(x,p(1:3))+p(4);
+% lorentzienne avec du bruit y = convlv(y,app); % convolue le signal 'y(x,p)',
+calcul&eacute; dans les lignes % precedantes, par la variable globale 'app'.
+y=shorten_x_axis(y,length(app)); % reduit l'axe 'x' symetriquement pour
+la convolution end >></b> Une autre possibilit&eacute; est de laisser 'convlv'
+traiter les effets de bords : exemple :<b> &lt;&lt; function y = myfunc(x,p)
+%y = myfunc(x,p) % % fonction de x et p=[ x_offset width intensity noise
+] global app; % indique l'utilisatiuon de la variable globale % 'app' :
+fcn d'appareil normalis&eacute;e y = lorentz(x,p(1:3))+p(4); % lorentzienne
+avec du bruit y = convlv(y,app,2); % convolue le signal 'y(x,p)', calcul&eacute;
+dans les lignes % precedantes, par la variable globale 'app'. % effets
+de bords trait&eacute;s. end >></b> Une fois que la fonction de fit 'func'
+est d&eacute;finie et que l'on a une idee des parametres initiaux 'Pin',
+il suffit de taper : <b>leasqr(x,y,Pin,Func) soit par exemple leasqr(x,y,[
+1 1 1 1 ], 'myfunc')</b> ce qui affiche le resultat du fit et la variance
+r&eacute;siduelle (entre autre). La syntaxe de 'leasqr' est : <b>[p,r2,covp,corp,ss,f,iter,kvg]
+= leasqr(x,y,Pin,'Func',{wt,dp,dfdp,stol,niter,options})</b> avec (x,y)
+: (vecteurs) donn&eacute;es &agrave; fitter Pin : (vecteur) valeurs initiales
+des parametres Func : <b>(chaine)</b> nom de la fonction f(x,p) &agrave;
+utiliser et optionnellement wt : (scalaire ou vecteur) poids statistiques
+( par d&eacute;faut = 1/sqrt(abs(y+1)) ) dp : (scalaire ou vecteur) increment
+pour les d&eacute;riv&eacute;es partielles. utilisez la valeur 0 dans le
+vecteur pour fixer un parametre. niter : nombre maximal d'it&eacute;rations
+(20) retourne p : valeurs finalles des parametres r2 : coefficient de correlation
+covp : mtrice des variances <b>(erreurs sur p = sqrt(diag(covp)))</b> et
+plein d'autre choses en entr&eacute;e et sortie, que l'on d&eacute;couvre
+avec 'help leasqr'.&nbsp;<a NAME="f"></a>
+<h3>
+f) findpeaks : <i>recherche rapide de pics</i></h3>
+Cette fonction permet de r&eacute;aliser un fit rapide des pics d'un signal,
+et affiche la position, l'intensit&eacute; et la largeur estim&eacute;e
+de chacun. Ces valeurs peuvent servir pour d&eacute;terminer les parametres
+initiaux lors de l'utilisation de 'leasqr' pour un ajustement plus fin.
+Les signaux liss&eacute;s (par 'smooth') avec ses d&eacute;riv&eacute;es
+1 et 2 sont aussi retourn&eacute;s, ainsi que des mesures du bruit statistique
+moyen pour chacun. Note : vu l'utilisation de 'smooth', il est preferable
+que l'&eacute;chantillonage soit r&eacute;gulier. On pourra utiliser 'interp'
+pr&eacute;alablement. En pratique, le seuil se situe entre 0.1 et 10 (par
+defaut 1). Pour voir de petits pics, on precisera la zone d'&eacute;tude,
+on choisira un seuil bas, ou on eliminera les grands pics avec 'removepeaks'
+La syntaxe est : <b>[peakmat,pmax,sy,ny,sdy,ndy,sddy,nddy] = findpeaks(x,y,{threshold=1,
+pos, width}) ou findpeaks(y)</b> avec x,y : (vecteur) signal &agrave; analyser.
+threshold: (opt.) sieul de d&eacute;tection de pic (en unit&eacute; de
+bruit). e.g 0.1 &agrave; 10. pos : (opt.) position particuli&egrave;re
+&agrave; &eacute;tudier sur x. width : (opt.) largeur de la zone &agrave;
+&eacute;tudier autour de 'pos'. retourne peakmat : matrice de lignes [
+index left_width right_width max_pos Intensity Width ] donnant l'index
+dans x, les largeurs, la position des pics en valeur 'x' et l'intensit&eacute;
+de chaque pic. pmax : vecteur bool&eacute;en (0 et 1) donnant les maximums
+des pics sy,ny,sdy,ndy,sddy,nddy : signaux liss&eacute;s et bruits&nbsp;<a NAME="g"></a>
+<h3>
+g) removepeak : <i>supprime des pics et spikes</i></h3>
+Cette fonction permet de retirer des pics d'un signal. Elle fait appel
+&agrave; 'findpeaks', puis demande &agrave; l'utilisateur le num&eacute;ro
+des pics &agrave; retirer. Les donn&eacute;es correspondantes sont :
+<ul>&nbsp;
+<li>
+supprim&eacute;es dans le signal de sortie (new_x, new_y), qui est donc
+&agrave; la fin de la procedure plus petit que (x,y) et comprend des lacunes.</li>
+
+<li>
+remplac&eacute;es par une droite, tout en conservant la longueur du signal
+(x,y).</li>
+</ul>
+Le signal 'new' permet de r&eacute;aliser des fits uniquement sur les valeurs
+de (x,y) en dehors des pics selectionn&eacute;s, sans introduire de valeurs
+supplementaires. Par contre, le signal avec interpolation lin&eacute;aire
+modifie le signal initial. Il est utile pour la comparaison directe avec
+(x,y). En pratique cette proc&eacute;dure est tr&egrave;s efficace, et
+supprime en particulier les 'spikes' et autres artefacts. Le seuil se situe
+entre 0.1 et 10 (par defaut 1). Pour voir de petits pics, on precisera
+la zone d'&eacute;tude, on choisira un seuil bas, ou on utilisera une premiere
+fois la fonction pour retirer les grands pics. Note : vu l'utilisation
+de 'smooth' dans la fonction 'findpeaks', il est preferable que l'&eacute;chantillonage
+soit r&eacute;gulier. On pourra utiliser 'interp' pr&eacute;alablement.
+La syntaxe est : <b>[new_x,new_y,interpolated_y,smoothed_y] = removepeak(x,y,{thr=1,
+pos, width}) ou new_y = removepeak(y)</b> avec (x,y) : (vecteur) signal
+&agrave; analyser thr : (opt.) seuil de detection des pics, comme dans
+'findpeaks'. pos : (opt.) position particuli&egrave;re &agrave; &eacute;tudier
+sur x. width : (opt.) largeur de la zone &agrave; &eacute;tudier autour
+de 'pos'. retourne new_x, new_y : signal (x,y) sans les pics. interpolated_y
+: signal (x,y) avec des droites &agrave; la place des pics. smoothed_y
+: signal y liss&eacute; par 'smooth'.&nbsp;<a NAME="h"></a>
+<h3>
+h) smooth : <i>lissage (Savitzky-Golay)</i></h3>
+Cette fonction r&eacute;alise un lissage du signal 'y' par la methode de
+Savitzky-Golay. Cela suppose que 'y' soit un signal r&eacute;gulierement
+&eacute;chantillonn&eacute;. Ce lissage est tr&egrave;s rapide est remarquablement
+&eacute;fficace. Il supprime le bruit statistique sans d&eacute;former
+le signal porteur, et conserve donc la forme des pics (sauf pour les pics
+tr&egrave;s brusques). Si l'on compare 'smooth' au lissage par 'interp',
+ce dernier est beaucoup plus lent, et necessite une interpolation d'ordre
+au moins 2 pour avoir des r&eacute;sultats comparables. En pratique, on
+essayera d'abord un lissage par 'smooth', et en cas d'echec une 'interp'
+avec un ordre 2 ou 3. <b>NB </b>: Si le signal 'y' n'a pas &eacute;t&eacute;
+&eacute;chantillonn&eacute; correctement, le lissage marche aussi, mais
+aux points de discontinuit&eacute;, des bizarreries apparaissent. Pour
+&eacute;viter cela, on pourra d'abord re-&eacute;chantillonner 'y' &agrave;
+partir d'un signal 'new_x' r&eacute;gulier en utilisant : y2 = interp(old_x,
+y, new_x); % calcule 'y' aux positions 'new_x' La syntaxe est : <b>[smoothed_y,
+coefs] = smooth(y,{N,M})</b> avec y : (vecteur) signal &agrave; lisser
+N : (opt.) nombre de points &agrave; prendre pour le lissage. M : (opt.)
+ordre des coefficients de Savitzky-Golay &agrave; utiliser (2 par d&eacute;faut).
+retourne smoothed_y : le signal liss&eacute;. coefs : coefficients de Savitzky-Golay.&nbsp;<a NAME="i"></a>
+<h3>
+i) trapez : <i>int&eacute;gration de signal</i></h3>
+Cette fonction calcule l'int&eacute;grale du signal &eacute;chantillonn&eacute;
+(x,y) par la m&eacute;thode des trap&egrave;zes entre les bornes d'int&eacute;gration
+si elles sont pr&eacute;cis&eacute;es. La syntaxe est : <b>q = trapez(x,y,{a,b})
+ou q = trapez(y)</b> avec x,y : signal &agrave; int&eacute;grer. a,b :
+bornes d'int&eacute;gration pour x. retourne q : valeur de l'aire sous
+le signal.&nbsp;<a NAME="5"></a>
+<h2>
+3) Biblioth&egrave;que MiscTools</h2>
+<b>print ('-Pprinter_name') ou print('filename')</b> : impression du graphe
+courant sur "printer_name" ou dans un fichier.&nbsp;<a NAME="6"></a>
+<h2>
+5) Biblioth&egrave;que de fonctions de fit</h2>
+Il existe d&eacute;ja une biblioth&egrave;que de fonctions math&eacute;matiques
+f(x,p) pour les fits par 'leasqr'. La liste complete s'obtient par 'help
+funcs'. Fit functions (support MFIT package) airyfp : Airy for Fabry Perot
+bose : bose cusp : Power law cusp. dho : Damped harmonic oscillator expon
+: Exponential decay gauss : Gaussian gauss2 : Gaussian Squared gaussn :
+Gaussian Power n gaussx2 : 2 gaussians green : green lorzx2 : 2 lorentzians
+lorgss : Lorentzian + gaussian lorz : Lorentzian lorz2 : Lorentzian squared
+lorzn : Lorentzian Power n multifunc : Multi Function handler ngauss :
+N gaussians nlorz : N lorentzians pow : Power law y=0 x>x0 pow1 : Power
+law y=0 x
+<h2>
+Conclusion</h2>
+J'esp&egrave;re que ces fonctions sont suffisamment compl&egrave;tes pour
+vous inciter &agrave; utiliser Octave/Matlab. Si vous pensez avoir besoin
+d'outils supplementaires pour passer &agrave; Matlab, communiquez moi un
+'cahier des charges' et je verrai ce que je peux faire. Vers <a href="octaveintro.html">Introduction
+&agrave; Octave</a> Vers <a href="mfitldv.html">Mode d'emploi de Mfit pour
+Matlab 5
+<hr><a href="http://www.ill.fr/tas/welcome.html" target="_top"><img SRC="left_motif.jpg" height=34 width=37 align=CENTER></a></a>[
+<a href="http://www.ill.fr/tas/welcome.html" target="_top">Back
+to ILL/TAS Home Page</a> ][ <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">Back
+to ILL/TAS Matlab Page</a> ]
+<br>&nbsp;
+<br>&nbsp;
+<address>
+<a href="mailto:farhi@ill.fr">farhi@ill.fr </a>Nov 1999.</address>
+
+</body>
+</html>

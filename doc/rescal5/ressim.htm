@@ -1,0 +1,154 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.77 [en] (X11; U; Linux 2.4.4-4GB i686) [Netscape]">
+   <meta name="AUTHOR" content="Cowley Group">
+   <meta name="Microsoft Border" content="tb, default">
+   <title>Simulations using Rescal</title>
+</head>
+<body>
+
+<center>
+<h3>
+<i>These help pages were designed at the <a href="http://xray.physics.ox.ac.uk/">Clarendon
+Laboratory</a>, <a href="http://www.physics.ox.ac.uk/">Department of Physics</a>,
+<a href="http://www.ox.ac.uk/">Oxford University</a>, U.K.</i></h3></center>
+
+These help pages were designed at the <a href="">Clarendon
+Laboratory</a>, <a href="">Department of Physics</a>,
+<a href="">Oxford University</a>, U.K.
+
+<center><i>by </i>A. Tennant and D. McMorrow.</center>
+
+<center>
+<h3>
+<img SRC="reslogo.gif" height=189 width=226 align=BOTTOM>&nbsp;</h3></center>
+
+<h2>
+Monte Carlo simulations of scans for neutron triple-axis spectrometers.</h2>
+One of the options on the <a href="resmeth.htm">menu bar</a> of the "Rescal:
+Parameters" window is labelled "<b>simulation</b>". Clicking on it causes
+an <i>extra window</i> to a appear entitled "<b>Rescal: Simulation</b>".
+In order to make a simulation, a dispersion and line-shape need to be defined.
+At the moment the program is set up for sinusoidal dispersions with an
+energy gap at the zone centre. The current line-shape is Lorentzian and
+a detailed balance and 1/energy structure factor for antiferromagnetic
+line-shapes has been included. Details of how to modify the program are
+given in the final section of this web page. The simulation takes full
+account of the changes in the resolution at each point in the scan and
+also corrects for changes in resolution volume, counts by monitor etc.&nbsp;
+<h4>
+Entering parameters for the simulation</h4>
+Parameters defining the scan, dispersion, and linewidth are given in the
+"<b>Rescal: Simulation</b>" window generated on clicking on the "<b>simulation</b>"
+button on the menu bar of the "Rescal: Parameters" window. The "Rescal:
+Simulation" window (a screen-shot will be added later) consists of a title
+bar ("Rescal: Simulation"), menu bar with options&nbsp;
+<br>
+<hr>
+<ul>
+<li>
+Exit: exits out of the simulation level of <b>RESCAL for MATLAB</b> and
+closes the "Rescal: Simulation" window and plot.</li>
+
+<li>
+Parameters: a pull-down menu giving the choice of "Get Parameters" or "Save
+Parameters" which allows the user to read/save <i>simulation</i> parameters
+from/to a file.</li>
+
+<li>
+Run: which runs the specified simulation. The 4D Monte Carlo convolution
+is calculated and displayed on a new figure (screen-shot to be added) along
+with plot of unconvoluted line-shape.</li>
+
+<br>
+<hr>
+<p>the final component of the "Rescal: Simulation" window is the set of
+parameter boxes. This consists of nine parameters describing the scan&nbsp;
+<br>
+<hr>
+<li>
+Hstart, Kstart, Lstart &amp; Estart: starting point values of H,K,L &amp;
+E, in r.l.u. and meV respectively, for the scan.</li>
+
+<li>
+Hend, Kend, Lend &amp; Estart: final values of H,K,L &amp; E, in r.l.u.
+and meV respectively, for the scan.</li>
+
+<li>
+NSC: number of points in the scan including the starting and finishing
+points.</li>
+
+<br>
+<hr>
+<p>a parameter for the number of Monte Carlo points in the integration&nbsp;
+<br>
+<hr>
+<li>
+NMC: number of Monte Carlo points in the integration (typically of order
+3000).</li>
+
+<br>
+<hr>
+<p>ten parameters describing the dispersion of the excitations&nbsp;
+<br>
+<hr>
+<li>
+Hzb, Kzb, Lzb &amp; Egap: these are the (H,0,0), (K,0,0), (L,0,0) zone-boundary
+energies and energy gap at the zone-centre respectively (all in meV).</li>
+
+<li>
+Hzero, Kzero &amp; Lzero: the three r.l.u. coordinates of the zone-centre
+point.</li>
+
+<li>
+Hphase, Kphase &amp; Lphase: these are the parameters defining the repetition
+rate of the sinusoidal dispersion in the principle directions (H,K,L).
+The values are 2 for an antiferromagnetic repitition and 1 for a ferromagnetic
+repetition.</li>
+
+<br>
+<hr>
+<p>and the final two parametrs are&nbsp;
+<br>
+<hr>
+<li>
+Gamma: the full-width-half-maximum (FWHM) of the Lorentzian line-shape.</li>
+
+<li>
+T(K): temperature in degrees Kelvin.</li>
+
+<h4>
+Modifying the dispersion and line-shape</h4>
+As remarked earlier, the program has been set up to calculate scattering
+for a sinusoidal dispersion and Lorentzian line-shape. Both of these can
+be tailored for specific purposes. The dispersion and lineshape are defined
+in the macro mc_sqw.m. This consists of a definition of <i>wq</i> - the
+dispersion as a function of Q(r.l.u.) - and <i>s</i> - the scattering from
+the line-shape. The definitions of <i>wq</i> and <i>s</i> are self evident
+form mc_sqw.m, however there is a fundamental difference in the definition
+of the functions from that using Fortran. Matlab uses matrices as it's
+basic unit rather than scalars. Because of this <i>wq</i> and <i>s</i>
+should be viewed as array equalities and functions. One ramification of
+this is that the normal arithmetic operators (+,-,*,/,^) are matrix operations
+and other operators between scalars and matrices or element-by-element
+operations must be prfixed by a dot i.e. .*,./ or .^.&nbsp;
+<p><a href="rescal.htm">RETURN TO HOME PAGE</a>
+<address>
+(c) A. Tennant D. McMorrow November 29 1995&nbsp;</address>
+</ul>
+
+<center>
+<p><br><img SRC="line6.gif" height=21 width=623></center>
+
+<center>
+<address>
+<b><font color="#804000">These pages&nbsp; were last updated on January
+30, 1999</font><font color="#800000">&nbsp;</font></b></address></center>
+
+<center>
+<br><b><font color="#800000">[mirrored to ILL March 25th, 2002]</font></b></center>
+
+</body>
+</html>

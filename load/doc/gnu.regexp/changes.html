@@ -1,0 +1,208 @@
+<HTML>
+<HEAD>
+<TITLE>package gnu.regexp - Regular Expressions for Java</TITLE>
+</HEAD>
+<BODY BGCOLOR=WHITE TEXT=BLACK>
+<FONT SIZE="+2"><B><CODE>package gnu.regexp;</CODE></B><HR NOSHADE>
+Change History</FONT><BR>
+<FONT SIZE="-1">This page was last updated on 21 October 2001</FONT>
+<P>
+<B>1.1.4 (21 October 2001)</B><BR>
+Patch to Makefile to include language resource files in the applet JAR. (Andrew G. Hammond)<BR>
+Updates to gnu.regexp.util.Grep to add "-z" option, expand ZIP files. (Ulf Dittmer)<BR>
+Some updates and clarifications to Javadoc, especially for substitute() methods. (Wes Biggs)<BR>
+Fix to RE constructor for some uses of alternation operator failing due to minimumLength being set incorrectly. (Marcus Abels)<BR>
+Added UncheckedRE subclass to provide constructors that are declared without exceptions (useful for static initializers). (Wes Biggs)<BR>
+The getMatchEnumeration() methods that took an integer index offset resulted in REMatch objects with incorrect values for their start and end indices (the correct text was matched, but the values from getStartIndex() and getEndIndex() methods were incorrect).  This has been fixed. (Wes Biggs)<BR>
+
+<P>
+<B>1.1.3a (18 June 2001)</B><BR>
+No code changes; distribution was missing a file.<BR>
+<P>
+<B>1.1.3 (18 June 2001)</B><BR>
+Change method signatures in REFilterReader to correctly override the Reader interface.  Patch from Doug Seifert.<BR>
+Fixed a bug in getMinimumLength() for expressions using alternation; because of this and the optimization introduced in 1.1.2, some matches were failing. (Wes Biggs)<BR>
+Il8n support: all error messages are now stored in MessagesBundle.properties (Alan Moore)<BR>
+Lookaheads, both positive and negative, are now supported, thanks to a patch from Shashank Bapat.<BR>
+Parse intervals more in accordance with POSIX, i.e., if they don't exactly match one of {n}, {n,}, or {n,m}, the characters are matched literally. (Alan Moore)<BR>
+Throw more exceptions when quantifiers (?, *, +, {}) appear in places where they are invalid, e.g., after a zero-width assertion (word boundary, lookahead), or after another quantifier. (Alan Moore)<BR>
+Fixed two instances where incomplete patterns would cause ArrayIndexOutOfBoundsExceptions instead of REExceptions. (Alan Moore)<BR>
+ASCII escapes \n, \r, and \t in [] lists are now supported. (Alan Moore)<BR>
+<P>
+<B>1.1.2 (11 April 2001)</B><BR>
+Fix REMatchEnumeration handling zero-length matches.<BR>
+Declare classes "final" as much as possible, for speed.<BR>
+Optimize match loop by checking remaining buffer against minimum length.<BR>
+Fix '\b' and '\<' support to work correctly if before any consuming operators in the RE.  Thanks to Alan Moore for identifying the problem and a fix.<BR>
+Correct support for '^' in multiline match mode when used with an InputStream or Reader.  Thanks to James Flynn for his suggestions and contributions.<BR>
+Code cleanup to get rid of some bizarre variable names and so forth.<BR>
+
+<P>
+<B>1.1.1 (16 February 2001)</B><BR>
+Better leftmost longest support (re-fixes alternation isMatch() issue).<BR>
+Fix for over-consuming behavior of character class/alternation.<BR>
+Fixed subexpression index reporting.<BR>
+Support for '\b', '\B', '\<' and '\>'.<BR>
+<P>
+
+<B>1.1.0 (6 February 2001)</B><BR>
+Many internal changes should result in speed increases.<BR>
+Fixed an issue where subexpression indices would not be correctly saved, causing StringIndexOutOfBoundsExceptions to be thrown from REMatch.<BR>
+Fixed a bug where subexpressions would not be found when nested and combined with alternation. (For example, "((A)B|(C)D)" would match "AB", but would not report subexpression #2.)<BR>
+Fixed a bug compiling expressions of the form "(())a".<BR>
+Fixed a problem where using the empty string as replacement text within a REFilterInputStream would throw an exception.<BR>
+Added a FAQ in the docs directory.  Added known bugs to the TODO.<BR>
+Added REG_NO_INTERPOLATE execution bit, which allows substitution text to include $1-$9 without being interpolated.  Suggested by Daniel Lescohier.<BR>
+Lee Sau Dan submitted support for using Readers, providing both CharIndexedReader and REFilterReader classes.  As a consequence, this version is no longer compatible with JDK 1.0.  However, Readers provide much better support for reading text in various encodings, and the use of InputStream to do the same has been deprecated.<BR>
+Clarified (in the javadoc) the semantics of getAllMatches() and substituteAll() when combined with REs that may match the empty string.<BR>
+RE constructors and match functions will convert any unrecognized Object input to a String using the class's toString() method, so it is no longer possible to get IllegalArgumentExceptions.  Suggested by Nic Ferrier.<BR>
+Regular expressions are now serializable.  Of course, it may be nearly as efficient to send the pattern string and recompile the RE on the other side.<BR>
+Incorporated a patch from Oleksandr Lytvyn to allow RE.isMatch() to return true if any alternation in the pattern allows the full input to be matched, not just the first alternation.<BR>
+Altered the [:print:] character class to correctly match all printable characters and space, not just alphanumerics.  Caught by Richard Trahan.<BR>
+The alphanumeric match sequence (\w) now matches the underscore (_) character.  Thanks to Aryaguna for pointing out the discrepancy.<BR>
+The start (^) and end ($) tokens, when used in multiline mode, now recognize multi-character newline sequences.  In related news, you can override the platform-dependent line separator string by calling the setLineSeparator() method on RESyntax.  REApplet has been modified to use this approach.<BR>
+Predefined RESyntax objects are now immutable, and attempts to modify them throw IllegalAccessErrors.  User-defined syntaxes can also be made immutable by calling the makeFinal() method.<BR>
+RESyntax.clear(int) has been introduced as a parallel to RESyntax.set(int).<BR>
+CharIndexed is now a public interface, enabling developers to provide their own implementations that may be passed into getMatch().  Suggested by Ernie Rael.<BR>
+Expressions ending with an open subexpression token ('(') now correctly throw compilation exceptions.<BR>
+Noted in the documentation for REMatch.toString(int) that the index is one-based.  Thanks to Daniel Rall for bringing it to attention.<BR>
+Fixed documentation note error regarding REG_DOT_NEWLINE.  Thanks to Christophe Vigny for pointing this out.<BR>
+Deprecated getSub(Start|End)Index(int) in favor of the new get(Start|End)Index(int) overloading.  Added a note in the JavaDoc that these are zero-based indices, per a suggestion by Chris Cobb.<BR>
+Fixed a bug where the regular expression "^$" would not match an empty string (or empty line, in multiline mode). Many thanks to James Jensen.<BR>
+Added better file condition error handling code to Grep utility, courtesy of Jon Schewe.<BR>
+The license (COPYING.LIB) has been changed to the GNU Lesser General Public License (the successor of the Library GPL).  The change is only in name.<BR>
+
+<P>
+<B>1.0.8</B> (21 March 1999)<BR>
+Fixed handling of POSIX character classes (not used in default syntax).<BR>
+Added Tap, the evil water droplet, to the home page (thanks to Jim Blair, corvus@gnu.org).<BR>
+Changed the demo applet to support selectable syntax.<BR>
+<P>
+<B>1.0.7</B> (3 March 1999)<BR>
+Fixed NullPointerException when compiling expressions starting with '+' or '*'.<BR>
+Fixed reporting of subexpression start indices in certain cases.<BR>
+Removed static initializer in REToken.java to aid in compiling on non-compliant platforms.<BR>
+Fixed endless loop caused by array read in REFilterInputStream.<BR>
+Fixed ArrayIndexOutOfBoundsExceptions that could be thrown from REMatch.toString(int).<BR>
+Updated all doc comment versions to 1.0.7.<BR>
+Added a few tests to the test cottage (it's not big enough to be a suite).<BR>
+
+<P>
+
+<B>1.0.6</B> (18 November 1998)<BR>
+Fixed bug in subexpression position reporting.<BR>
+Fixed some bugs with zero-length regular expressions.<BR>
+More documentation for gnu.regexp.util classes.<BR>
+Makefile changes for Cygwin compatibility.<BR>
+Added credits.html file.<BR>
+Fixed paths to API docs in HTML.<BR>
+
+<P>
+
+<B>1.0.5</B> (8 November 1998)<BR>
+Added gnu.regexp.REFilterInputStream class.<BR>
+New directory structure for distribution.<BR>
+Added gnu.regexp.util.Tests class, a limited testsuite.<BR>
+Fixed bug in backreferences (\1, \2...) introduced in 1.0.4.<BR>
+Fixed bug in handling of literal '-' within bracketed lists.<BR>
+Changes to Makefile to work with Cygnus/Win32 systems.<BR>
+General enhancements to Makefile.<BR>
+Added TODO and CONTENTS files to distribution.<BR>
+Added support for Perl5 escapes (\w,\d,\s, etc.) within bracketed lists.<BR>
+Added matching syntax bit, RE_CHAR_CLASS_ESC_IN_LISTS.<BR>
+
+<P>
+
+<B>1.0.4</B> (8 October 1998)<BR>
+Added getMinimumLength method.<BR>
+Added Makefile to distribution.<BR>
+Added HTML to distribution.<BR>
+Added gnu/regexp/util/REApplet.java demo applet to distribution.<BR>
+Added support for pure grouping (?:...) operator.<BR>
+Added support for comment (?#...) operator.<BR>
+Minor changes for compatibility with guavac compiler.<BR>
+Fixed some quirks with including dashes in lists.<BR>
+Fixed some documentation errors.<BR>
+Fixed 1.0.3 bug in REMatch reporting skipped subexpressions.<BR>
+Fixed some major problems with alternation nested in subexpressions.<BR>
+Fixed some pathological cases that would cause infinite loops.<BR>
+
+<P>
+
+<B>1.0.3</B> (19 August 1998)<BR>
+Added REMatchEnumeration and getMatchEnumeration methods.<BR>
+Added support for compiling patterns from StringBuffers.<BR>
+Added support for matching, substituting, searching against StringBuffer, char[] and InputStream.<BR>
+Added toString(int) to REMatch to get subexpression matches easily.<BR>
+Added getMatch() with StringBuffer argument to save contents leading up to a match.<BR>
+substitute() and substituteAll() can now take $0 - $9 metacharacters.<BR>
+General optimizations.<BR>
+Source code cleanup, toward GNU coding standards.<BR>
+More and better javadoc documentation.<BR>
+getAllMatches() now returns non-overlapping matches as it should.<BR>
+All classes in 1.0.3 are JDK 1.0.2 compatible and should work in applets.<BR>
+
+RETest is no longer in the JAR as it is not needed in an execution
+environment.  Source code is provided in the gnu/regexp/util
+directory.<BR>
+
+gnu/regexp/util also contains a pure-Java implementation of GNU grep
+and egrep, for your amusement and use on non-GNU operating systems
+which lack such rudimentary text processing facilities.  Grep and
+Egrep require <A HREF="http://www.urbanophile.com/arenn/hacking/download.html">gnu.getopt</A>
+to compile and run.<BR>
+
+Note that due to certain API changes, you will need to recompile any source code that uses gnu.regexp against the 1.0.3 classes.  No code changes are necessary.<BR>
+
+<P>
+
+<B>1.02a</B> (23 July 1998)<BR>
+No code changes.  Added README, changed LICENSE to LGPL and changed
+copyright messages on source files.  JAR file compiled with -O flag.
+
+<P>
+
+<B>1.02</B> (15 June 1998)<BR>
+Support for nested subexpressions.  More debugging support.
+Fixed bug when escaping braces with a backslash.
+<P>
+
+<B>1.01</B> (1 June 1998)<BR>
+Fixed bug in list operator ( [...] ) which was causing the RE compiler to
+interpret the closing ']' as a literal.
+
+<P>
+
+<B>1.00</B> (22 May 1998)<BR>
+New API using RESyntax.  New framework for "multiline" and "single
+line" matching.  Default support for most Perl 5 constructs, including
+the following operators: \A, \d, \D, \w, \W, \s, \S, \Z, stingy
+matching (*?, ??, +?). Some string optimizations should speed up most
+matches.  REG_NEWLINE wasn't working correctly in 0.07, it's gone and
+replaced by REG_MULTILINE (semantics matching Perl's "/m"
+operator). Support for POSIX character classes such as [:alpha:]
+within lists.  General code cleanup and added comments.
+
+<P>
+
+<B>0.07</B> (10 April 1998)<BR>
+Added more default-argument versions of methods; added REG_ANCHORINDEX flag for substring processing; fixed bug in isMatch() for expressions with top-level branches; fixed bug in getMatch() for zero-length input never matching.
+
+<P>
+
+<B>0.06</B> (3 March 1998)<BR>
+First general release.
+
+<P>
+
+<FONT SIZE="-1">
+<A HREF="index.html">[gnu.regexp]</A>
+<A HREF="syntax.html">[syntax and usage]</A>
+<A HREF="api/index.html">[api documentation]</A>
+<A HREF="reapplet.html">[test applet]</A>
+<A HREF="faq.html">[faq]</A>
+<A HREF="credits.html">[credits]</A>
+</FONT>
+</BODY>
+</HTML>
+

@@ -1,0 +1,169 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title> LDV:EF: Looktxt.LDV </title>
+</head>
+<body>
+
+<h1>
+commande 'looktxt'</h1>
+
+<hr><i>Sujet : Importation de donn&eacute;es textes. Version 0.91 du (26/07/2000).</i>
+<br><i>Date : 15/08/2000</i>
+<br><i>By : Farhi Entertainments.&nbsp;<a href="http://www.ill.fr/tas/matlab/doc/looktxt.html"><img SRC="anglais.jpg" ALT="UK" BORDER=0 height=32 width=32></a><a href="http://www.ill.fr/tas/matlab/doc/looktxt.html">
+English version</a></i>
+<br><i>Fichier : ~manuf/public_html/looktxtfr.html</i>
+<hr>
+<pre>&nbsp; La commande unix 'looktxt' permet d'analyser un fichier texte (ASCII), et g&eacute;n&egrave;re&nbsp;
+un fichier de sortie dans lequel les donn&eacute;es num&eacute;riques (et optionnellement de type
+charact&egrave;res) sont isol&eacute;es et identifi&eacute;es.
+En gros, le programme lit le fichier source 'filename' et cherche des zones num&eacute;riques
+sous forme de vecteurs et matrices.
+On peut extraire les champs ayant une certaine taille uniquement (option -l=X).
+Les zones de charact&egrave;res et de commentaires sont aussi vues.
+Une matrice 'table' contenant les informations relatives aux champs trouv&eacute;s est cr&eacute;e &agrave;
+la demande (option -t).
+Ses lignes sont de la forme :
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ id&nbsp; type&nbsp; start_pos&nbsp; end_pos&nbsp; rows&nbsp; columns ]
+
+avec type = 1 pour les nombre, 3 pour les textes, 64 pour les commentaires...
+
+
+<hr>
+<b><blink>NOTE:</blink></b> Cette commande fonctionne aussi sous Octave/Matlab, avec la syntaxe :
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; looktxt('<i>parametres</i>')
+
+
+<hr>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+La syntaxe est la suivante
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; looktxt [-vagrftlSH] [-{pscnoF}="<i>preferences</i>"] filename
+
+Ce qui veut dire que l'on desire analyser le fichier filename avec les options sp&eacute;cifi&eacute;es.
+
+</pre>
+
+<h4>
+Options simples :</h4>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -v (Verbose) : displays
+all process steps. useful.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -a (Ascii)&nbsp;&nbsp; : if
+you also want to import character (ascii/text) fields.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -g (Group)&nbsp;&nbsp; : groups
+numerical fields as possible.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -r (noRoot)&nbsp; : use short
+names for numerical fields labeling.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -f (Force)&nbsp;&nbsp; : forces
+output file writting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -t (Table)&nbsp;&nbsp; : extracts
+a 'table' matrix<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Its lines are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>[ id&nbsp; type&nbsp; start_pos&nbsp; end_pos&nbsp; rows&nbsp; columns
+]<br>
+</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+with&nbsp; type = 1 for numbers, 3 for text, 64 for comments...</tt>
+<h4>
+Options complexes :</h4>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -p= (point)&nbsp; : specifies
+the numerical 'point' symbol(s) (such as in 12.3).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -s= (s&eacute;par.)
+: specifies the numerical separator(s) (equivalent to spaces).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -c= (comment): specifies
+the comment lines character(s).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Comment finishes at end of line.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -n= (newline): specifies
+end of line characters (equivalent to '\n').</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -o= (output) : specifies
+the file output type.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-o="oct" "m" or "txt".</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -l=X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extracts fields of at least X numbers.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -F="filename": precises
+the output file name.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extract as a Matlab structure (with -o="m")</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: extract ascii header preceeding numerics</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: help</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: DEBUG mode</tt>
+<h4>
+Notes :</h4>
+
+<ul>
+<li>
+Les commentaires sont des lignes enti&egrave;rement ignor&eacute;es (permet
+de supprimer des valeurs)</li>
+
+<li>
+Les charact&egrave;res sp&eacute;ciaux utilisables avec les options '-s'
+et '-n' sont : \t : tabulation horiziontale (HT) \v : tabulation verticale
+(VT) \f : saut de page (Form Feed) \r : retour chariot (Carriage Return)
+\n : nouvelle ligne (New Line)</li>
+
+<li>
+Les fichiers de sorties diff&egrave;rent par les entetes de champs. * Un
+fichier '.oct' est du style : # name: toto # type: scalar 2.349 # name...
+Il est importable <b>tr&egrave;s rapidement </b>avec Octave en utilisant
+'load fichier.oct' * Un fichier '.m' est du style toto = [ 2 3.645 7 ];
+... Il est importable directement depuis Matlab et Octave en tapant 'fichier'
+(pas de .m !!) Par contre, c'est <b>assez lent</b> pour les gros fichiers
+et les champs textes sont modifi&eacute;s. (Pas de charact&egrave;res sp&eacute;ciaux)
+* Un fichier '.txt' est compos&eacute; uniquement des valeurs num&eacute;riques,
+pour exportation vers d'autres applications (Excel, Word...). Il est du
+style : 2 3.56 1 5.6 2 1 ...</li>
+</ul>
+
+<h4>
+Exemples :</h4>
+<tt>looktxt foo.txt looktxt -v -l=5 foo.txt </tt><i>uniquement les champs
+ayant au moins 5 nombres, en mode verbose</i>
+<br><tt>looktxt -p="," -s="\t\v.; " -c="#" -o="oct" -F="toto" foo.txt</tt>
+<i>le fichier de sortie est <b>toto.oct</b>.</i>
+<h3>
+Sous Matlab/Octave :</h3>
+Tapez "looktxt('filename')", ce qui cr&eacute;e le fichier <i>filename.m</i>
+sur votre compte. Puis tapez '<b>filename</b>' pour importer les donn&eacute;es
+(pas d'extension .m !). Vers <a href="http://www.ill.fr/tas/matlab/doc/octaveintro.html">Introduction
+&agrave; Octave/Matlab</a>
+<p>&nbsp;R&eacute;cup&eacute;rer <a href="http://www.ill.fr/tas/matlab/ftp/looktxt.c">looktxt.c
+</a>pour
+le compiler chez vous.
+<p>Et des versions pr&eacute;compil&eacute;es :
+<center><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.exe">[ PC ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.HP-UX">[
+HP-UX ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.IRIX64">[
+SGI IRIX 64 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.OSF1">[
+Dec OSF1 ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.SunOS">[
+Sun Solaris ]
+</a><a href="http://www.ill.fr/tas/matlab/ftp/looktxt.AIX">[
+IBM AIX ]</a></center>
+
+<ul>
+<div align=right>
+<hr ALIGN=LEFT WIDTH="100%"><a href="http://www.ill.fr/tas/matlab/doc/mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="http://www.ill.fr/tas/matlab/doc/mfit.html">M<i>fit</i>
+user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<address>
+<a href="mailto:farhi@ill.fr">farhi@ill.fr </a>March 1999.</address>
+</ul>
+
+</body>
+</html>

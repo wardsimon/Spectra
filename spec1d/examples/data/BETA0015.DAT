@@ -1,0 +1,13 @@
+
+#fdt     /usr/users/tascom/data/wildes/beta0015.dat  7/04 1998    9:31:57
+
+#txt     MnPS3 Beta, 14.4 meV 40-pg-30-sample-30-pg-psd, Andrew Wildes
+#cmd     orderp
+
+#com     File head parameters:
+#fih            H            K            L       EF      EM      EA         2TM         OMM         2TA         OMA A_SPEED   CXTH   PTTH   CATH 
+
+#fhp            0      1.84982  0.000670146 14.40000  -0.008   0.001      41.636      20.812      41.625      20.812   10170   2060   1016    516
+#com     File parameters:
+#fip            H            K            L        I      MON       TIM          2T          OM      IW1      IW2      IW3         SEAR    XTEM     PTEM    CTEM     PCEM 
+                0      1.84982  0.000670146        6     6500    10.001     -24.272     167.864        6        5        2          375  75.309   75.561 999.999   75.500 

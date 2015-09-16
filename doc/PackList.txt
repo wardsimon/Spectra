@@ -1,0 +1,82 @@
+---------------------------------
+(c) ILL : see Install.txt file
+Directory contents of ./matlab
+Thu Jan 13 16:16:25 CET 2000
+---------------------------------
+.:
+total 471
+drwxr-xr-x   3 matroot  tas          1024 Jan 13 16:08 ./
+drwxr-xr-x  14 matroot  tas           512 Jan 13 15:55 ../
+-rw-r--r--   1 matroot  tas           308 Jan  4 19:11 HOME.GIF
+-rw-r--r--   1 matroot  tas          9451 Jan 13 15:44 Install.txt
+-rw-r--r--   1 matroot  tas           159 Jan 13 16:10 PackList.txt
+-rw-r--r--   1 matroot  tas          1412 Jan  4 19:07 anglais.jpg
+-rw-r--r--   1 matroot  tas          1222 Jan  4 19:07 francais.jpg
+-rw-r--r--   1 matroot  tas           333 Jan  4 14:33 greenbal.gif
+-rw-r--r--   1 matroot  tas          1235 Jan  4 14:29 left_motif.jpg
+-rw-r--r--   1 matroot  tas          1162 Jan  4 15:48 leftarrow.jpg
+-rw-r--r--   1 matroot  tas         18556 Jan  4 14:29 licence.gpl
+-rw-r--r--   1 matroot  tas         14573 Jan  4 14:29 logo21.jpg
+-rw-r--r--   1 matroot  tas          6867 Jan  4 19:11 looktxt.html
+-rw-r--r--   1 matroot  tas          5588 Jan  4 19:12 looktxtfr.html
+-rw-r--r--   1 matroot  tas         13227 Jan  6 15:07 matprgs.html
+drwxr-xr-x   2 matroot  tas          1024 Jan 13 15:54 mfit4/
+-rw-r--r--   1 matroot  tas        186248 Jan 13 16:08 mfit4_doc.tar.gz
+-rw-r--r--   1 matroot  tas        110462 Jan  4 14:29 mfit9908.ps.gz
+-rw-r--r--   1 matroot  tas         16307 Jan  4 15:40 mfitldv.html
+-rw-r--r--   1 matroot  tas         15535 Jan  4 15:49 octaveintro.html
+-rw-r--r--   1 matroot  tas         24946 Jan  4 15:52 octaveldv.html
+-rw-r--r--   1 matroot  tas           813 Jan  4 14:29 redball.jpg
+-rw-r--r--   1 matroot  tas          2983 Jan  4 14:29 rescal.html
+-rw-r--r--   1 matroot  tas          6765 Jan  4 14:29 spec1d.tex
+-rw-r--r--   1 matroot  tas          6885 Jan  4 15:53 spec1d.txt
+
+mfit4:
+total 363
+drwxr-xr-x   2 matroot  tas          1024 Jan 13 15:54 ./
+drwxr-xr-x   3 matroot  tas          1024 Jan 13 16:08 ../
+-rw-r--r--   1 matroot  tas          3671 Jan  5 16:39 006555
+-rw-r--r--   1 matroot  tas          4085 Jan  4 14:29 Colsel.gif
+-rw-r--r--   1 matroot  tas          5747 Jan  5 17:33 Conwin1.gif
+-rw-r--r--   1 matroot  tas          5561 Jan  4 14:29 Conwin2.gif
+-rw-r--r--   1 matroot  tas          5515 Jan  4 14:29 Conwin3.gif
+-rw-r--r--   1 matroot  tas          8115 Jan  4 14:29 Datwin.gif
+-rw-r--r--   1 matroot  tas          8431 Jan  4 14:29 Datwin2.gif
+-rw-r--r--   1 matroot  tas          7331 Jan  4 14:29 Getfile.gif
+-rw-r--r--   1 matroot  tas           308 Jan  4 14:29 HOME.GIF
+-rw-r--r--   1 matroot  tas          2218 Jan  4 14:29 LOGO.GIF
+-rw-r--r--   1 matroot  tas          8400 Jan  4 14:29 Outfile.gif
+-rw-r--r--   1 matroot  tas          4459 Jan  4 14:29 Parwin2.gif
+-rw-r--r--   1 matroot  tas         18966 Jan  6 11:09 batch.html
+-rw-r--r--   1 matroot  tas          5558 Jan  6 13:49 chgx1.gif
+-rw-r--r--   1 matroot  tas          5390 Jan  6 13:49 chgx2.gif
+-rw-r--r--   1 matroot  tas          2882 Jan  6 14:07 choosefit.html
+-rw-r--r--   1 matroot  tas          6149 Jan  6 13:06 colsel.html
+-rw-r--r--   1 matroot  tas          3896 Jan  4 17:31 directdata.gif
+-rw-r--r--   1 matroot  tas          4812 Jan 13 15:54 download.html
+-rw-r--r--   1 matroot  tas          2900 Jan  6 11:27 fitctrl.gif
+-rw-r--r--   1 matroot  tas          6328 Jan  4 17:39 fitfunc.html
+-rw-r--r--   1 matroot  tas          2927 Jan  6 11:47 fitrout.html
+-rw-r--r--   1 matroot  tas          9854 Jan  6 11:46 fitting.html
+-rw-r--r--   1 matroot  tas           333 Jan  4 14:29 greenbal.gif
+-rw-r--r--   1 matroot  tas          3971 Jan 12 17:52 index.html
+-rw-r--r--   1 matroot  tas         14817 Jan  6 14:03 inifile.html
+-rw-r--r--   1 matroot  tas          6523 Jan  4 16:59 loadfunc.html
+-rw-r--r--   1 matroot  tas          6332 Jan  6 14:06 loading.html
+-rw-r--r--   1 matroot  tas          6370 Jan  6 13:54 manipdata.html
+-rw-r--r--   1 matroot  tas          5093 Jan  6 13:57 mfit.html
+-rw-r--r--   1 matroot  tas          4481 Jan  4 18:27 mfit.ini
+-rw-r--r--   1 matroot  tas          5832 Jan  4 14:29 mfpar1.gif
+-rw-r--r--   1 matroot  tas          5967 Jan  4 14:29 mfpar2.gif
+-rw-r--r--   1 matroot  tas          9166 Jan  5 17:02 multidata.gif
+-rw-r--r--   1 matroot  tas          4953 Jan  5 17:18 multifunc.gif
+-rw-r--r--   1 matroot  tas         13163 Jan  6 14:29 multifunc.html
+-rw-r--r--   1 matroot  tas          3031 Jan  4 17:07 multiload.gif
+-rw-r--r--   1 matroot  tas         16312 Jan  4 17:12 multiloadtty.gif
+-rw-r--r--   1 matroot  tas          8923 Jan  5 17:03 multipar.gif
+-rw-r--r--   1 matroot  tas          4146 Jan  4 14:29 parwin.gif
+-rw-r--r--   1 matroot  tas          5235 Jan  6 13:42 rescale.gif
+-rw-r--r--   1 matroot  tas          2860 Jan  4 14:29 savewhat.gif
+-rw-r--r--   1 matroot  tas          9175 Jan  4 16:44 saving.html
+-rw-r--r--   1 matroot  tas         75411 Jan  5 16:47 tita5.0
+-rw-r--r--   1 matroot  tas          3881 Jan  6 13:25 transform.gif

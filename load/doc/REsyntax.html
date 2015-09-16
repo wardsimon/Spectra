@@ -1,0 +1,345 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (X11; U; Linux 2.4.18-4GB i686) [Netscape]">
+   <title>package gnu.regexp - Regular Expressions for Java</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF">
+
+<center><b><i><font size=+2>Regular Expressions: usage, examples and syntax</font></i></b>
+<br><b><i><font size=+2>Matlab Utilities:load</font></i></b>
+<p><b><i><tt>This documentation is partly extracted from:</tt></i></b>
+<br><b><i><tt>&lt;<a href="http://www.cacas.org/java/gnu/regexp/">http://www.cacas.org/java/gnu/regexp/</a>></tt></i></b>
+<br><b><tt><font size=+2>package gnu.regexp;</font></tt></b><img SRC="drop-1.jpg" height=89 width=127 align=ABSCENTER></center>
+
+<hr NOSHADE><font size=+2>Syntax and Usage Notes</font>
+<br><font size=-1>This page was last updated on 22 June 2001</font>
+<p><b>Brief Background</b>
+<br>A regular expression consists of a character string where some characters
+are given special meaning with regard to pattern matching. Regular expressions
+have been in use from the early days of computing, and provide a powerful
+and efficient way to parse, interpret and search and replace text within
+an application.&nbsp; Regular expressions are for instance used by the
+<tt>grep</tt>
+system command, or when searching pattern matches in strings with<tt> perl</tt>.
+<p>This help page provides extensive description of the supported syntax,
+both for <a href="#Supported Syntax">full regular expression support</a>
+and <a href="#Simplified">simplified syntax</a> for pure <b>Matlab</b>
+implementation (when 'regexp' built-in or mex function is not available,
+and Java is not available). Some usefull
+<a href="#Examples">examples</a>
+can also be found.
+<p>
+<hr WIDTH="100%">
+<br><b><font size=+1>What is a regular expresion ?</font></b>
+<p>You may already be familiar with some <a href="#Simplified">simple regular
+expressions</a> when using the '<b><tt>*</tt></b>' and '<b>?</b>' wildcards
+in file names, e.g. '<tt>ls a*.m</tt>'.
+<br>The '<b>*</b>' and '<b>?</b>' wildcards then mean:
+<ul>
+<li>
+'<b>*</b>' any number of any character</li>
+
+<li>
+'<b>?</b>' any character, only once</li>
+</ul>
+In fact, the exact corresponding regular expression when you use '*' and
+'?' in file pathes and names is to preceed the symbol by a dot '.' meaning
+'any character', and the existing dots in your search (usually the file
+extensions) should be changed into '<tt>\.</tt>' for the search (see the
+example below).
+<br>When available(MeX, Matlab built-in or Java classes), full Regular
+Expressions provide a very efficient and flexible way to search for a pattern
+in a character string.
+<br>Mostly, you may be interested in specifying:
+<ul>
+<li>
+the position of your search (start/end of line/word)</li>
+
+<li>
+the characters to search either precisely, within a specified set (use
+the brackets '[...]')or by family (alphabetic, digit, ...)</li>
+
+<li>
+different alternatives for a match (use the '|' symbol which is usually
+associated to the OR operator)</li>
+
+<li>
+and much more</li>
+</ul>
+
+<hr WIDTH="100%">
+<center><a href="http://www.cacas.org/java/gnu/regexp/">[gnu.regexp home]</a><a href="#Supported Syntax">[syntax]</a><a href="#Simplified">[simplified
+syntax]</a><a href="#Unsupported Syntax">[unsupported syntax]</a><a href="#Reference Material">[references]</a></center>
+
+<p><a NAME="Examples"></a><b>Examples</b>
+<ul>
+<li>
+To search file names starting by 'sv4' folowed by 3 characters, plus an
+extension, use the simplified RegExp 'sv4???.*' (valid for path and file
+names), or the normal RegExp 'sv4.?.?.?\..*'</li>
+</ul>
+
+<ul>
+<li>
+To search for a filename that starts by 'sv' followed by a number within
+the range 4500 to 4700 plus any extension, use the RegExp '<tt>sv4[5-7].?.?\..*</tt>'.</li>
+</ul>
+
+<blockquote>This will match files just as the 'ls sv4[5-7]??.*' command.</blockquote>
+
+<ul>
+<li>
+RegExp '\w*x\w*' means match words that contain an 'x' character</li>
+
+<br>str = 'regexp helps you relax';
+<br>Applying RegExp '\w*x\w*' on 'str' will match 'regexp' and 'relax'</ul>
+
+<ul>
+<li>
+RegExp 'c[aeiou]+t' means find a 'c' folowed by one or more voyels 'aeiou'
+and
+then a 't'</li>
+
+<br>str = 'bat cat can car coat court cut ct caoueouat';
+<br>Applying RegExp 'c[aeiou]+t' on 'str' will match 'cat','coat','cut',
+and 'caoueouat'</ul>
+
+<blockquote>
+<li>
+RegExp 'c.*' means find a 'c' followed by any character zero, one or more
+times.</li>
+
+<br>str= 'bat cat can car coat court cut ct caoueouat';
+<br>Applying RegExp 'c.*' on 'str' will match the full string starting
+from the first 'c' : 'cat can car coat court cut ct caoueouat'</blockquote>
+
+<ul>
+<li>
+RegExp 'at*' means find an 'a' and then zero, one or more times a 'c' character.</li>
+
+<li>
+RegExp 'at.*' means find an 'a', a 't', and then zero, one or more times
+any character.</li>
+
+<li>
+RegExp 'c?' means find all 'c' characters that are repeated zero or once.</li>
+
+<li>
+RegExp 'c.?' means find all 'c' characters that are followed by zero or
+one instance of any character.</li>
+</ul>
+
+<p><br><a NAME="Simplified"></a><b>Simplified Syntax (pure Matlab function)</b>
+<p>When the 'regexp' Matlab function does not exists (appeared in Matlab
+6.5), grep <a href="grep_mex.c">MeX</a> function is not available and <a href="http://www.cacas.org/java/gnu/regexp/">Java</a>
+is not active/available (appeared in Matlab 6.0, inactive with the '<tt>matlab
+-nojvm</tt>' start command), you still may use the simplified syntax, using
+the usual '*' and '?' wildcards. Anyway, no other regular expression token
+may be used, e.g. the brackets containing a character interval....
+<p><a NAME="Supported Syntax"></a><b>Supported Syntax (Regular expressions)</b>
+<br>Within a regular expression, the following characters have special
+meaning:
+<ul>
+<li>
+<b><i>Positional Operators</i></b></li>
+
+<blockquote><tt>^</tt> matches at the beginning of a line<sup><a href="#note1">1</a></sup>
+<br><tt>$</tt> matches at the end of a line<sup><a href="#note2">2</a></sup>
+<br><tt>\A</tt> matches the start of the entire string
+<br><tt>\Z</tt> matches the end of the entire string
+<br><tt>\b</tt> matches at a word break (Perl5 syntax only)
+<br><tt>\B</tt> matches at a non-word break (opposite of \b) (Perl5 syntax
+only)
+<br><tt>\&lt;</tt> matches at the start of a word (egrep syntax only)
+<br><tt>\></tt> matches at the end of a word (egrep syntax only)</blockquote>
+
+<li>
+<b><i>One-Character Operators</i></b></li>
+
+<blockquote><tt>.</tt> matches any single character<sup><a href="#note3">3</a></sup>
+<br><tt>\d</tt> matches any decimal digit
+<br><tt>\D</tt> matches any non-digit
+<br><tt>\n</tt> matches a newline character
+<br><tt>\r</tt> matches a return character
+<br><tt>\s</tt> matches any whitespace character
+<br><tt>\S</tt> matches any non-whitespace character
+<br><tt>\t</tt> matches a horizontal tab character
+<br><tt>\w</tt> matches any word (alphanumeric) character
+<br><tt>\W</tt> matches any non-word (alphanumeric) character
+<br><tt>\<i>x</i></tt> matches the character <i>x</i>, if <i>x</i> is not
+one of the above listed escape sequences.</blockquote>
+
+<li>
+<b><i>Character Class Operator</i></b></li>
+
+<blockquote><tt>[<i>abc</i>]</tt> matches any character in the set <i>a</i>,
+<i>b</i>
+or <i>c</i>
+<br><tt>[^<i>abc</i>]</tt> matches any character not in the set <i>a</i>,
+<i>b</i>
+or <i>c</i>
+<br><tt>[<i>a-z</i>]</tt> matches any character in the range <i>a</i> to
+<i>z</i>,
+inclusive
+<br>A leading or trailing dash will be interpreted literally.</blockquote>
+Within a character class expression, the following sequences have special
+meaning if the syntax bit RE_CHAR_CLASSES is on:
+<blockquote><tt>[:alnum:]</tt> Any alphanumeric character
+<br><tt>[:alpha:]</tt> Any alphabetical character
+<br><tt>[:blank:]</tt> A space or horizontal tab
+<br><tt>[:cntrl:]</tt> A control character
+<br><tt>[:digit:]</tt> A decimal digit
+<br><tt>[:graph:]</tt> A non-space, non-control character
+<br><tt>[:lower:]</tt> A lowercase letter
+<br><tt>[:print:]</tt> Same as graph, but also space and tab
+<br><tt>[:punct:]</tt> A punctuation character
+<br><tt>[:space:]</tt> Any whitespace character, including newline and
+return
+<br><tt>[:upper:]</tt> An uppercase letter
+<br><tt>[:xdigit:]</tt> A valid hexadecimal digit</blockquote>
+
+<li>
+<b><i>Subexpressions and Backreferences</i></b></li>
+
+<blockquote><tt>(<i>abc</i>)</tt> matches whatever the expression <i>abc</i>
+would match, and saves it as a subexpression. Also used for grouping.
+<br><tt>(?:<i>...</i>)</tt> pure grouping operator, does not save contents
+<br><tt>(?#<i>...</i>)</tt> embedded comment, ignored by engine
+<br><tt>\<i>n</i></tt> where 0 &lt; <i>n</i> &lt; 10, matches the same
+thing the <i>n-</i>th subexpression matched.</blockquote>
+
+<li>
+<b><i>Branching (Alternation) Operator</i></b></li>
+
+<blockquote><tt><i>a</i>|<i>b</i></tt> matches whatever the expression
+<i>a</i>
+would match, or whatever the expression <i>b</i> would match.</blockquote>
+
+<li>
+<b><i>Repeating Operators</i></b></li>
+
+<br>These symbols operate on the previous atomic expression.
+<blockquote><tt>?</tt> matches the preceding expression or the null string
+<br><tt>*</tt> matches the null string or any number of repetitions of
+the preceding expression
+<br><tt>+</tt> matches one or more repetitions of the preceding expression
+<br><tt>{<i>m</i>}</tt> matches exactly <i>m</i> repetitions of the one-character
+expression
+<br><tt>{<i>m</i>,<i>n</i>}</tt> matches between <i>m</i> and <i>n</i>
+repetitions of the preceding expression, inclusive
+<br><tt>{<i>m</i>,}</tt> matches <i>m</i> or more repetitions of the preceding
+expression</blockquote>
+
+<li>
+<b><i>Stingy (Minimal) Matching</i></b></li>
+
+<br>If a repeating operator (above) is immediately followed by a
+<tt>?</tt>,
+the repeating operator will stop at the smallest number of repetitions
+that can complete the rest of the match.
+<li>
+<b><i>Lookahead</i></b></li>
+
+<br>Lookahead refers to the ability to match part of an expression without
+consuming any of the input text. There are two variations to this:
+<br>&nbsp;
+<br>&nbsp;
+<blockquote><tt>(?=<i>foo</i>)</tt> matches at any position where <i>foo</i>
+would match, but does not consume any characters of the input.
+<br><tt>(?!<i>foo</i>)</tt> matches at any position where <i>foo</i> would
+not match, but does not consume any characters of the input.</blockquote>
+</ul>
+<a NAME="Unsupported Syntax"></a><b>Unsupported Syntax</b>
+<br>Some flavors of regular expression utilities support additional escape
+sequences, and this is not meant to be an exhaustive list. In the future,
+<tt>gnu.regexp</tt>
+may support some or all of the following:
+<blockquote><tt>(?<i>mods</i>)</tt> inlined compilation/execution modifiers
+(Perl5)
+<br><tt>\G</tt> end of previous match (Perl5)
+<br><tt>[.<i>symbol</i>.]</tt> collating symbol in class expression (POSIX)
+<br><tt>[=<i>class</i>=]</tt> equivalence class in class expression (POSIX)
+<br><tt>s/foo/bar/</tt> style expressions as in sed and awk <i>(note: these
+can be accomplished through other means in the API)</i></blockquote>
+<a NAME="Java Integration"></a><b>Java Integration</b>
+<br>In a Java environment, a regular expression operates on a string of
+Unicode
+characters, represented either as an instance of
+<tt>java.lang.String</tt>
+or as an array of the primitive
+<tt>char</tt> type. This means that the
+unit of matching is a Unicode character, not a single byte. Generally this
+will not present problems in a Java program, because Java takes pains to
+ensure that all textual data uses the Unicode standard.
+<p>Because Java string processing takes care of certain escape sequences,
+they are not implemented in <tt>gnu.regexp</tt>. You should be aware that
+the following escape sequences are handled by the Java compiler if found
+in the Java source:
+<blockquote><tt>\b</tt> backspace
+<br><tt>\f</tt> form feed
+<br><tt>\n</tt> newline
+<br><tt>\r</tt> carriage return
+<br><tt>\t</tt> horizontal tab
+<br><tt>\"</tt> double quote
+<br><tt>\'</tt> single quote
+<br><tt>\\</tt> backslash
+<br><tt>\<i>xxx</i></tt> character, in octal (000-377)
+<br><tt>\u<i>xxxx</i></tt> Unicode character, in hexadecimal (0000-FFFF)</blockquote>
+In addition, note that the <tt>\u</tt> escape sequences are meaningful
+anywhere in a Java program, not merely within a singly- or doubly-quoted
+character string, and are converted prior to any of the other escape sequences.
+For example, the line
+<br><tt>gnu.regexp.RE exp = new gnu.regexp.RE("\u005cn");</tt>
+<br>would be converted by first replacing <tt>\u005c</tt> with a backslash,
+then converting <tt>\n</tt> to a newline. By the time the RE constructor
+is called, it will be passed a String object containing only the Unicode
+newline character.
+<p>The POSIX character classes (above), and the equivalent shorthand escapes
+(<tt>\d</tt>, <tt>\w</tt> and the like) are implemented to use the <tt>java.lang.Character</tt>
+static functions whenever possible. For example, <tt>\w</tt> and
+<tt>[:alnum:]</tt>
+(the latter only from within a class expression) will invoke the Java function
+<tt>Character.isLetterOrDigit()</tt>
+when executing. It is
+<i>always</i> better to use the POSIX expressions
+than a range such as
+<tt>[a-zA-Z0-9]</tt>, because the latter will not
+match any letter characters in non-ISO 9660 encodings (for example, the
+umlaut character, "<tt>&uuml;</tt>").
+<p><a NAME="Reference Material"></a><b>Reference Material</b>
+<ul>
+<li>
+<b><i>Print Books and Publications</i></b></li>
+
+<br>Friedl, Jeffrey E.F., <i><a href="http://www.oreilly.com/catalog/regex/">Mastering
+Regular Expressions</a></i>. O'Reilly &amp; Associates, Inc., Sebastopol,
+California, 1997.
+<li>
+<b><i>Software Manuals and Guides</i></b></li>
+
+<br>Berry, Karl and Hargreaves, Kathryn A., <a href="http://www.cs.utah.edu/csinfo/texinfo/regex/regex_toc.html">GNU
+Info Regex Manual Edition 0.12a</a>, 19 September 1992.
+<br><a href="http://www.cacas.org/java/gnu/regexp/">GNU RegExp Java</a>
+package.
+<br><tt>perlre(1)</tt> man page (Perl Programmer's Reference Guide)
+<br><tt>regcomp(3)</tt> man page (GNU C)
+<br><tt>gawk(1)</tt> man page (GNU utilities)
+<br><tt>sed(1)</tt> man page (GNU utilities)
+<br><tt>ed(1)</tt> man page (GNU utilities)
+<br><tt>grep(1)</tt> man page (GNU utilities)
+<br><tt>regexp(n)</tt> and <tt>regsub(n)</tt> man pages (TCL)</ul>
+<b>Notes</b>
+<br><a NAME="note1"></a><sup>1</sup> but see the REG_NOTBOL and REG_MULTILINE
+flags
+<br><a NAME="note2"></a><sup>2</sup> but see the REG_NOTEOL and REG_MULTILINE
+flags
+<br><a NAME="note3"></a><sup>3</sup> but see the REG_MULTILINE flag
+<br>
+<hr WIDTH="100%">
+<center><a href="http://www.cacas.org/java/gnu/regexp/">[gnu.regexp home]</a><a href="#Supported Syntax">[syntax]</a><a href="#Simplified">[simplified
+syntax]</a><a href="#Unsupported Syntax">[unsupported syntax]</a><a href="#Reference Material">[references]</a></center>
+
+</body>
+</html>

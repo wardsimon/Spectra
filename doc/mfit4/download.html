@@ -1,0 +1,120 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.10 ppc) [Netscape]">
+   <title>Mfit Home Page : install</title>
+</head>
+<body>
+
+<center><img SRC="LOGO.GIF" height=88 width=263>
+<br>Version <b>4.2</b>. (1999)</center>
+
+<hr>
+<h1>
+<b>How to obtain and install <font color="#008080">M</font><i><font color="#000080">fit</font></i></b></h1>
+<b>M</b><i>fit</i> consists of about 40 Matlab .m functions, as well as
+the load functions, fitting functions, and fitting routines. To install
+<b>M</b><i>fit</i>
+on your system, you need to download an archived version, unpack it, and
+set up the configuration file. Follow the steps below:
+<p>This installation only considers <b>M</b><i>fit</i>. For the whole package
+look at <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html">http://www.ill.fr/tas/matlab/doc/matprgs.html</a>
+<h3>
+1. Download the archives below</h3>
+
+<ul><img SRC="greenbal.gif" ALT="*" height=14 width=14>The <a href="http://www.ill.fr/tas/matlab/ftp/Install.txt">Install.txt</a>
+file (containing descriptions, installation procedures and Whatsnew).
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14><a href="http://www.ill.fr/tas/matlab/ftp/mfit4.tar.gz">Mfit
+4.2</a> - tar gzip compressed archive
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14>the sublibraries
+for&nbsp; <b>M</b><i>fit</i>.
+<ul><a href="http://www.ill.fr/tas/matlab/ftp/load.tar.gz">load</a> Load
+routines for <b>M</b><i>fit</i> and Mview (with looktxt as Mex)
+<br><a href="http://www.ill.fr/tas/matlab/ftp/funcs.tar.gz">funcs</a> Fit
+functions for <b>M</b><i>fit</i> (with <tt>trix</tt> and <tt><a href="multifunc.html#advanced sub-functions combinaisons">convlv</a></tt>)
+<br><a href="http://www.ill.fr/tas/matlab/ftp/nllsq.tar.gz">nllsq</a> Fit
+methods for <b>M</b><i>fit</i> (simplex and adapatative gradient)</ul>
+</ul>
+
+<h3>
+2. Unpack the archives</h3>
+
+<blockquote><img SRC="greenbal.gif" ALT="*" height=14 width=14><tt>cd</tt>
+to the directory in which you want to install <b>M</b><i>fit</i>, e.g.
+<tt>c:\matlab</tt>,
+<tt>/usr/local/matlab5/toolbox/local</tt>
+or <tt>~/matlab</tt>
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14>type<b><tt> tar -xzf
+mfit4.tar.gz</tt></b> to extract the tar gz archive. Winzip can handle
+this on PC's, or MacGzip on Macintosh
+<p>Unpacking archive will create&nbsp; subdirectories called:
+<blockquote><tt>mfit4</tt> for the main function files
+<br><tt>load</tt>, <tt>funcs</tt> and <tt>nllsq</tt> for the load functions,
+fitting functions, and fitting routines.
+<br>The <tt>trix</tt> subdirectory is included in <tt>funcs</tt> for TAS
+4-D neutron data fits, but requires to install the <i><a href="http://www.ill.fr/tas/matlab/ftp/rescal5.tar.gz">Rescal</a></i>
+package..</blockquote>
+</blockquote>
+
+<h3>
+3. Create the required Mex files ffind and texmex</h3>
+
+<blockquote><img SRC="greenbal.gif" ALT="*" height=14 width=14> The <a href="colsel.html#General Load routine">General
+Load Routine</a> (load/multibatch) uses a Mex function 'texmex'
+<br>&nbsp;&nbsp; including the 'looktxt' C code.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+To install it, go into the '<tt>load</tt>' directory and type in Matlab:
+<blockquote><tt>>> mex -O -output looktxt texmex.c</tt></blockquote>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+This will create a 'looktxt.mex???' file.
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14> The ffind routine
+exists in two versions (.m and .mex) in the load directory
+<blockquote>If you want to boost the importation of some specific data
+files (e.g. SPEC
+<br>ILL and TASCOM...) you can optionally use the ffind MEX-function.
+<br>Move to the '<tt>load</tt>' dir, and type (on terminal prompt):
+<p><tt>>> mex -O ffind.c</tt></blockquote>
+Otherwise the normal (slower) ffind.m routine is used.
+<p><img SRC="greenbal.gif" ALT="*" height=14 width=14> Optionally, if you
+plan to install Rescal, you will need also (in <tt>funcs/trix</tt>) to
+type
+<blockquote><tt>>> mex -O mcint.c&nbsp;&nbsp;&nbsp; </tt>or<tt>&nbsp;&nbsp;&nbsp;
+mex -O mcint2.c</tt></blockquote>
+This is needed if you want to perform some 4D fits of neutron scattering
+data acquired on a TAS instrument.</blockquote>
+
+<h3>
+4. Edit <a href="inifile.html">the Mfit configuration file</a> to match
+your installation location</h3>
+
+<h3>
+5. Add the <b>M</b><i>fit</i> directory to your Matlab path</h3>
+
+<ul>
+<li>
+See your Matlab manual.and the example <a href="http://www.ill.fr/tas/matlab/ftp/startup.m">startup.m</a>
+file.</li>
+</ul>
+
+<h3>
+6. Run <b>M</b><i>fit</i></h3>
+
+<ul>
+<li>
+Type '<tt>mfit</tt>' at the Matlab command prompt</li>
+</ul>
+
+<div align=right><a href="mfit.html"><img SRC="HOME.GIF" HSPACE=10 height=24 width=59 align=CENTER></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b>
+<br><font size=+0>Back to </font><a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></div>
+
+<hr>
+<address>
+(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+13, 2000.</address>
+
+</body>
+</html>

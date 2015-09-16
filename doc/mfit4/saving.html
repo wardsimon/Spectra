@@ -1,0 +1,298 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<title>Mfit Home Page : Saving results</title>
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:36.0pt'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><img width=263
+height=88 id="_x0000_i1025" src=LOGO.GIF><br>
+Version <b>4.2</b>. (1999)</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p class=MsoNormal align=center style='text-align:center'>[ <a
+href="#Set the output file">Set the output file</a> ][ <a
+href="#Save the results">Save the results</a> ][ <a href="#Saving automatically">Saving
+automatically</a> ][ <a href="#ResultsFormat">Mfit results file format</a> ]</p>
+
+<h1>Saving data</h1>
+
+<p class=MsoNormal><b>M</b><i>fit</i> allows you to save the results of your
+fitting. You can save the fit paramaters and uncertainties, but you can also
+save the fitted curve (to import into a graphing program for instance), and you
+can re-save your data. This last feature provides a convenient way to use <b>M</b><i>fit</i>'s
+load functions to convert special format data to standard x, y, error column
+ascii format. that can be easily read by, for example, graphing and spreadsheet
+programs.Saving results </p>
+
+<h3><img border=0 width=14 height=14 id="_x0000_i1027" src=greenbal.gif
+align=BOTTOM><a name="Set_the_output_file"></a>Set the output file</h3>
+
+<p class=MsoNormal><b>M</b><i>fit</i> appends saved data to the end of the
+current output file. The current output file name is displayed in the control
+window 'Output File' field: </p>
+
+<p align=center style='text-align:center'><img border=0 width=508 height=218
+id="_x0000_i1028" src=Conwin2.gif alt="Control window - load function menu"><br>
+Fig 1 : <b>M</b><i>fit</i> : control window</p>
+
+<p>You can set the output file in one of three ways: </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo3;tab-stops:list 36.0pt'>Press the 'New...' button
+     to the right of the output file name in the control window.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo3;tab-stops:list 36.0pt'>Choose 'Set output file...'
+     from the control window 'File' menu</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo3;tab-stops:list 36.0pt'>Edit the output file name
+     displayed in the control window (this is quick, but you can't change
+     directory)</li>
+</ul>
+
+<p class=MsoNormal>If you use either of the first two methods, <b>M</b><i>fit</i>
+displays a dialog that lets you choose a directory and file. It looks something
+like this: </p>
+
+<p align=center style='text-align:center'><img border=0 width=333 height=406
+id="_x0000_i1029" src=Outfile.gif></p>
+
+<p>You can either select an existing file to which the saved information is
+appended, or enter a new file name, in which case a new output file is created.
+</p>
+
+<h3><img border=0 width=14 height=14 id="_x0000_i1030" src=greenbal.gif
+align=BOTTOM><a name="Save_the_results"></a>Save the results</h3>
+
+<p class=MsoNormal>If you select the Press the 'Save...' item of the File menu
+in the Control window, this brings up a dialog like that below, which allows
+you to choose what to save. </p>
+
+<p><span style='mso-ignore:vglayout'>
+ <table cellpadding=0 cellspacing=0>
+  <tr>
+   <td width=343 height=0></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td><img src="savewhat.gif" v:shapes="_x0000_s1026"></td>
+  </tr>
+ </table>
+ </span><![endif]><br
+style='mso-ignore:vglayout' clear=ALL>
+You can check one or more options, then click ok. </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'>Fit parameters - save the
+     fit parameters in <a href="saving.html#ResultsFormat">standard M<i>fit</i>
+     format</a>.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'>Data - saves your data as a
+     x, y, error ascii file</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'>Fitted curve - saves the
+     fitted curve as an x,y ascii file. If the &#8216;Data&#8217; button is not checked
+     then the x limits and number of points can be specified in the boxes
+     provided. If the &#8216;Data&#8217; button is checked then the fitted curve is
+     evaluated with the same x values as the data and saved with the data in a
+     four-column x, y, error, fitted curve ascii file. </li>
+</ul>
+
+<p><br>
+Pressing the 'Save' button at the bottom right corner of the Control window
+will save results directly with whichever options are currently selected in the
+&#8216;Save what&#8217; window.<br>
+&nbsp; </p>
+
+<h3><img border=0 width=14 height=14 id="_x0000_i1032" src=greenbal.gif
+align=BOTTOM><a name="Saving_automatically"></a>Saving automatically</h3>
+
+<p><br>
+The '<b>AutoSave</b>' feature enables to save automatically the fit results in
+the active output file just before loading a new data file. This assumes that
+the last parameter set is the good one, and all fit results of the fitting
+session are stored in a single file. You can then use the <a
+href="colsel.html#The Mfit parameter file importation"><i>Mfit parameter file</i>
+load routine </a>to analyze these results. <br>
+&nbsp; <br>
+&nbsp; </p>
+
+<p class=MsoNormal align=right style='text-align:right'><a href="mfit.html"><span
+style='text-decoration:none;text-underline:none'><img border=0 width=59
+height=24 id="_x0000_i1033" src=HOME.GIF hspace=10 align=CENTER></span></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b></p>
+
+<p><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<h2>M<i>fit</i> results file format<a name=ResultsFormat></a></h2>
+
+<p class=MsoNormal>The Mfit results file format is designed to be complete and easily
+readable, both by you and by <b>M</b><i>fit</i>. In addition to the parameter
+values and errors, <b>M</b><i>fit</i> records the save date and time, the data
+file, the output file, the fit function, load function, and fit routine, and
+chi squared for the fit. </p>
+
+<h3>Example:</h3>
+
+<p class=MsoNormal style='margin-left:36.0pt'><tt><span style='font-size:10.0pt;
+font-family:"Courier New"'>%MFIT Date 3.1.2000&nbsp; Time 16:46:51</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% Section : Vars -
+Data : 006555 - Function : gauss .</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>DataFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 006555</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>DataDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= /usr/illdata/data/in20/</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitFuncName&nbsp;&nbsp;&nbsp;&nbsp;
+= Gaussian</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitFuncFile&nbsp;&nbsp;&nbsp;&nbsp;
+= gauss</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitFuncDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= /home/tas/matroot/matlab/funcs</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>OutFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= temp.mft</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>OutDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>LoadRoutineName =
+ILL data (new format) GUI</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>LoadRoutineFile =
+illgui</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>LoadRoutineDir&nbsp;
+= /home/tas/matroot/matlab/load</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitRoutineName&nbsp;
+= Levenberg Marquardt gradient (Fast)</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitRoutineFile&nbsp;
+= mf_flsqr</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>FitRoutineDir&nbsp;&nbsp;
+= /home/tas/matroot/matlab/nllsq</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% [006555] is :
+[A4&nbsp;&nbsp; T=0.00 K (mn=50.0)] versus [CNTS (per 1 Mon)*1].</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>load</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% Section :
+Parameters (4) - Data : 006555 - Function : gauss .</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>par&nbsp;&nbsp; 1
+Amplitude&nbsp;&nbsp;&nbsp; 4.127740e+01&nbsp;&nbsp; 3.661250e+00&nbsp;&nbsp; 0</span></tt>
+<br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>par&nbsp;&nbsp; 2
+Centre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.602750e+01&nbsp;&nbsp;
+3.606060e-02&nbsp;&nbsp; 0</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>par&nbsp;&nbsp; 3
+Width&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.595580e-01&nbsp;&nbsp;
+2.926780e-02&nbsp;&nbsp; 0</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>par&nbsp;&nbsp; 4
+Background&nbsp;&nbsp; 9.725880e+00&nbsp;&nbsp; 0.000000e+00&nbsp;&nbsp; 1</span></tt>
+<br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% CorCoef 0.317 --
+RV 4.249 -- ChiSq 4.957 -- Q ChiSq 0.000</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% Section : Data
+(21)- Data : 006555 - Function : gauss .</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+err:y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yfit</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.460100e+01
+1.500000e+01 3.872983e+00 9.725891e+00</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.470500e+01
+9.000000e+00 3.000000e+00 9.725975e+00</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.479800e+01
+1.300000e+01 3.605551e+00 9.726434e+00</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.529800e+01
+3.400000e+01 5.830952e+00 1.052099e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.540300e+01
+2.600000e+01 5.099020e+00 1.200974e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.550100e+01
+4.800000e+01 6.928203e+00 1.500107e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.559500e+01
+4.100000e+01 6.403124e+00 2.002488e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.570500e+01
+6.100000e+01 7.810250e+00 2.880159e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.579800e+01 4.300000e+01
+6.557439e+00 3.764786e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.589700e+01
+5.100000e+01 7.141428e+00 4.610236e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.600100e+01
+4.900000e+01 7.000000e+00 5.078871e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.610000e+01
+5.000000e+01 7.071068e+00 4.942405e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.619900e+01
+4.700000e+01 6.855655e+00 4.290854e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.629800e+01
+2.900000e+01 5.385165e+00 3.370708e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.640200e+01
+2.700000e+01 5.196152e+00 2.430259e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.649600e+01
+2.200000e+01 4.690416e+00 1.782146e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.660000e+01
+1.700000e+01 4.123106e+00 1.335075e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.669900e+01
+1.700000e+01 4.123106e+00 1.117912e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.679800e+01
+2.000000e+01 4.472136e+00 1.022962e+01</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.690200e+01
+1.100000e+01 3.316625e+00 9.867387e+00</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>5.699600e+01
+1.400000e+01 3.741657e+00 9.764999e+00</span></tt> <br>
+<tt><span style='font-size:10.0pt;font-family:"Courier New"'>% End of Data 21
+lines, 4 columns</span></tt></p>
+
+<p class=MsoNormal>The format for the parameters is parameter number, parameter
+name, value, and uncertainty. An uncertainty of 0 indicates that the paramter
+was fixed during the fit. This information is also given by the last column (0
+: free, 1 : fixed). </p>
+
+<p>Mfit results files are also <a href="batch.html">batch</a> files. You can
+run them by clicking the 'Batch' button in the control window. </p>
+
+<p><b>See also</b>: <b><a href="batch.html">M<i>fit</i> batch files</a></b> , <b><a
+href="colsel.html#The Mfit parameter file importation">Mfit parameter file load
+routine</a></b> <br>
+&nbsp; </p>
+
+<p class=MsoNormal align=right style='text-align:right'><a href="mfit.html"><span
+style='text-decoration:none;text-underline:none'><img border=0 width=59
+height=24 id="_x0000_i1035" src=HOME.GIF hspace=10 align=CENTER></span></a>Back
+to the <b><a href="mfit.html">M<i>fit</i> user guide page</a></b> <br>
+Back to <a href="http://www.ill.fr/tas/matlab/doc/matprgs.html" target="_top">ILL/TAS
+Matlab Page</a></p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<address>(c) Martin Zinkin. June 14 1996. Revised <a href="mailto:farhi@ill.fr">E.
+Farhi</a> and <a href="mailto:des.mcmorrow@risoe.dk">D. McMorrow</a>. January
+3, 2000.</address>
+
+</div>
+
+</body>
+
+</html>
