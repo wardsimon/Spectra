@@ -272,10 +272,10 @@ for i=1:length(s)
     end
     
     % Remove error and fit from legend
-    try
+    if ishg2
         % HG2 Way
         hle.LegendDisplay = 'off';
-    catch
+    else
         try 
             % The undocumented way
             hasbehavior(hle,'legend',0)

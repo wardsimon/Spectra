@@ -10,7 +10,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     % Simon Ward, based on the work of Des McMorrow and Henrik Ronnow
     c = onCleanup(@cleanup);
     global multifit_ind x_per_spec
-
+    
     %--- Parse the inputs and set defaults
     p = inputParser;
     p.CaseSensitive = false;
@@ -33,6 +33,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     p.addParamValue('method','lsquare',@ischar)
     p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@length,x)==2))
     p.addParamValue('parallel',0,@(x) x==0 | x == 1)
+    p.addParamValue('criteria','least_square',@(x) ischar(x))
     p.addParamValue('verbose',0,@(x) isnumeric(x) | islogical(x))
     if length(varargin) ~= 1
         p.parse(s1,func,pin,notfixed,varargin{:});
@@ -96,7 +97,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
             all_data{i}{2}(isnan(all_data{i}{3}) | isinf(all_data{i}{3}) | all_data{i}{3}==0) = [];
             all_data{i}{3}(isnan(all_data{i}{3}) | isinf(all_data{i}{3}) | all_data{i}{3}==0) = [];
             % Do we have a fitting window
-            if ~isempty(options.window) && options.window ~= 0 
+            if ~isempty(options.window) && options.window ~= 0
                 all_data{i}{3} = all_data{i}{3}(all_data{i}{1}>=options.window{i}(1) & all_data{i}{1}<=options.window{i}(2));
                 all_data{i}{2} = all_data{i}{2}(all_data{i}{1}>=options.window{i}(1) & all_data{i}{1}<=options.window{i}(2));
                 all_data{i}{1} = all_data{i}{1}(all_data{i}{1}>=options.window{i}(1) & all_data{i}{1}<=options.window{i}(2));
@@ -168,17 +169,24 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
                 x = x(x>=options.window(1) & x<=options.window(2));
             end
             
-            %----- Fit data
-            switch  options.method
-                case 'lsquare'
-                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
-                case 'samin'
-                    error('This has not been implemented yet, Sorry!')
-                otherwise
-                    warning('Fitting method is not implemented or not understood. Using lsquare')
-                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
+            if sum(notfixed)==0
+                yfit = feval(func,x,pin);
+                p = pin;
+                r = corrcoef([y(:),yfit(:)]);
+                RSq = r(1,2).^2;
+                sig = zeros(size(p));
+            else
+                %----- Fit data
+                switch  options.method
+                    case 'lsquare'
+                        [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
+                    case 'samin'
+                        error('This has not been implemented yet, Sorry!')
+                    otherwise
+                        warning('Fitting method is not implemented or not understood. Using lsquare')
+                        [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
+                end
             end
-            
             %----- Goodness of fit
             v = length(y)-sum(logical(notfixed));
             ChiSq = sum(((y-yfit)./e).^2 )/v;
