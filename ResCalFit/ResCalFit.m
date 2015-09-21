@@ -31,7 +31,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         % What frame are we in? Only recompute every scan, not point! (Errors will crop up otherwise...)
         if iter_l ~= iter_mem
             for i=multifit_ind
-                ResFitScn(i) = ResLibCal(ResFitScn(i),'script');
+                ResFitScn(i) = ResLibCal(ResFitScn(i),'compute');
             end
             iter_mem = iter_l;
         end
