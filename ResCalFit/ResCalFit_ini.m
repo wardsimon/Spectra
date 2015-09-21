@@ -81,7 +81,7 @@ function scan = ResCalFit_ini(file,varargin)
         scan(i).EXP.QK = Q(i,2);
         scan(i).EXP.QL = Q(i,3);
         scan(i).EXP.W  = Q(i,4);
-        scan(i) = ResLibCal(scan(i),'script');
+        scan(i) = ResLibCal(scan(i),'compute');
     end
     
     % Make configuration available for ResCalFit 

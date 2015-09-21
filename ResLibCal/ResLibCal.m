@@ -6,6 +6,8 @@ function out = ResLibCal(varargin)
 % To compute directly the resolution function, sending an EXP ResLib-like
 %   configuration structure, use:
 %   out = ResLibCal(EXP);
+% To convolve an iFunc model with a 4D resolution function, use:
+%   out = ResLibCal(model);
 % To use ResLibCal from the command line, use:
 %   out = ReslibCal(command, arguments...);
 % where 'command' is one of:
@@ -30,6 +32,8 @@ function out = ResLibCal(varargin)
 %   bragg   print-out the Bragg widths a la RESCAL
 %   list    print-out the RESCAL parameter list
 %   config  return the current configuration (ResLib EXP)
+%   hkle    return the current HKLE location. Set it back with ResLibCal(hkle{:});
+%   silent  use silent computation (no plot/display) for further arguments
 %   <PAR>=<VALUE> sets a parameter value, e.g. 'DM=3.355'
 %
 % To compute the resolution at a given HKLW location, using the current settings
@@ -48,12 +52,46 @@ function out = ResLibCal(varargin)
 %
 % when changing any value in the main GUI:
 % * Method and Scan parameters, Instrument parameters
-% any opened view is updated after a recomputation of the resolution
+% any opened view is updated after a re-computation of the resolution.
 %
 % The 2D and 3D views can be closed without ending the application.
 % When the main window is closed, or Exit is selected all views are closed
 %
-% Version: $Date: Thu Jul 23 14:01:21 2015 +0200$
+% Convolution in 4D for TAS ----------------------------------------------------
+%
+%   The 4D convolution syntax allow to simulate a TAS scan from a parametrised 
+% dispersion. In the following example, we simulate a scan through a cubic crystal
+% dispersion, and show the ideal S(q,w) as well as the measured, broadened 
+% measurement. Then, the simulated scan is inserted in a representation of the 
+% S(q,w), to visualise the scan trajectory and simulated signal.
+% To use this tool, you need to input a 2D or 4D dispersion model (iFunc).
+% The dispersion is either a 2D model S(|q|,w) or a 4D model S(qh,qk,ql,w).
+% The axes of the dispersion are in the lattice reciprocal space, in r.l.u.
+%
+%   s=sqw_cubic_monoatomic; % create a 4D S(q,w) for a cubic pure material
+%   t=ResLibCal(s);         % convolute it with a TAS resolution, and open ResLibCal.
+%   w=linspace(0.01,20,50); qh=0.3*ones(size(w)); qk=0*qh; ql=qk; % a scan
+%   signal1=iData(t, [], qh,qk,ql,w);
+%   signal0=iData(s, [], qh,qk,ql,w);
+%   figure; plot(squeeze([signal1 signal0*100])); % plot the dispersion and simulated measurement
+%   % now plot the 4D dispersion with the scan in it, for fun
+%   qh=linspace(0.01,.5,50);qk=qh; ql=qh; w=linspace(0.01,10,51); % a 4D grid
+%   f=iData(s,[],qh,qk,ql,w); % evaluate the model on the 4D grid
+%   figure; surf(log(f(:,:,1,:)),'half'); hold on;  % plot dispersion, and scan
+%   scatter3(log(signal1(:,:,1,:)),'filled');
+%
+% input: any combination of:
+%   command: string among those listed above, which can be followed by any other
+%            allowed parameter.
+%   qh,qk,ql,w: 4 vectors or 4D matrices which delimit a region in the reciprocal
+%            space where the TAS resolution function should be computed.
+%   model:   an iFunc model which is to be convolved with the TAS response.
+%   EXP:     a structure holding a ResLibCal, ResCal or ResLib configuration.
+% output:
+%   a ResLibCal configuration with e.g. 'resolution' field, or a 4D convoluted model.
+%
+% Version: $Date$
+% See also iFunc/conv
 
 % Contributions:
 % ResCal5: rc_cnmat rc_popma rc_int rc_focus rc_bragg rc_bragghklz
@@ -86,7 +124,8 @@ function out = ResLibCal(varargin)
 % ResLibCal_UpdateTauPopup(handle, EXP)
 
 out = [];
-ResLibCal_version = [ mfilename ' 1.2 ($Date: Thu Jul 23 14:01:21 2015 +0200$)' ];
+silent_mode = 0;
+ResLibCal_version = [ mfilename ' 1.2.1 ($Date$)' ];
 
 persistent fig
 
@@ -94,28 +133,21 @@ if nargin == 0
   % nargin == 0
 
   % open or create the main GUI
-  feval(mfilename, 'create'); % load last configuration
-  out = ResLibCal_Compute;
+  out = feval(mfilename, 'create'); % load last configuration, and Compute
   out = ResLibCal_ViewResolution(out,2);  % open/raise View Res2
   out = ResLibCal_UpdateViews(out); % when they exist
+elseif nargin == 1 && isa(varargin{1}, 'iFunc')
+  out = tas_conv4d(varargin{1});
+  return
 end
 % menu actions:
 while ~isempty(varargin)
-  if ishandle(varargin{1})
+  if isscalar(varargin{1}) && ishandle(varargin{1}) ...
+    && (numel(varargin) == 2 && ~isnumeric(varargin{2}))
+    % used to update the Table 'collimators'
     varargin = [ {'update_handle'} varargin ];
   end
   if ischar(varargin{1})
-    % check if the application window exists, else open it
-%    fig=findall(0, 'Tag','ResLibCal');
-%    if length(fig) > 1
-%      delete(fig(2:end)); % remove duplicated windows
-%      fig=fig(1);
-%    end
-%    if isempty(fig) || ~ishandle(fig)
-%      fig = openfig('ResLibCal'); % open the main ResLibCal figure.
-%      feval(mfilename, 'create'); % load last configuration
-%    end
-
     action = varargin{1};
     switch lower(action)
     % menu items ---------------------------------------------------------------
@@ -124,9 +156,17 @@ while ~isempty(varargin)
       if isfield(EXP,'EXP'), EXP = EXP.EXP; end
       if length(varargin) <= 1, varargin{2} = ''; end
       if length(varargin) <= 2, varargin{3} = EXP; end
-      out = ResLibCal_Open(varargin{2:3});  % (filename, EXP)
+      EXP = ResLibCal_Open(varargin{2:3});  % (filename, EXP)
+      out=ResLibCal_GetConfig;
+      if ~isfield(EXP,'EXP')
+        % add current EXP to out.EXP;
+        out.EXP=mergestruct(out.EXP, EXP);
+      else
+        % add current EXP to out
+        out=mergestruct(out,EXP); 
+      end
       out = ResLibCal_Compute(out);
-      out = ResLibCal_UpdateViews(out);
+      if ~silent_mode, out = ResLibCal_UpdateViews(out); end
       varargin(2:3) = [];
     case 'file_open_instr'
       p = fileparts(which(mfilename));
@@ -161,9 +201,11 @@ while ~isempty(varargin)
     case {'file_saveas','saveas'}
       % save configuration
       ResLibCal_Saveas(out); % (filename, EXP)
+      return;
     case {'file_print','print'}
       fig = ResLibCal_fig;
       printdlg(fig);
+      return;
     case {'file_export','export'}
       [filename, pathname] = uiputfile( ...
          {'*.pdf',  'Portable Document Format (*.pdf)'; ...
@@ -196,20 +238,21 @@ while ~isempty(varargin)
     case {'view_resolution2','view2'}
       if length(varargin) > 1, v=varargin{2}; varargin(2) = []; else v=[]; end
       out = ResLibCal_ViewResolution(v,2);  % open/raise View Res2
-      out = ResLibCal_UpdateViews(out);
+      out = ResLibCal_UpdateViews(out, 'force');
     case {'view_resolution3','view3'}
       if length(varargin) > 1, v=varargin{2}; varargin(2) = []; else v=[]; end
       out = ResLibCal_ViewResolution(v,3);  % open/raise View Res2
-      out = ResLibCal_UpdateViews(out);
+      out = ResLibCal_UpdateViews(out, 'force');
     case {'view_tas','geometry','tas'}
       if length(varargin) > 1, v=varargin{2}; varargin(2) = []; else v=[]; end
       out = ResLibCal_ViewResolution(v,1);  % open/raise View TAS
-      out = ResLibCal_UpdateViews(out);
+      out = ResLibCal_UpdateViews(out, 'force');
     case {'help_content','help'}
       link = fullfile(fileparts(which(mfilename)), 'doc', [ mfilename '.html' ]);
       disp([ mfilename ': opening help from ' link ])
       web(link);
       out = link;
+      return;
     case 'version'
       message = [ ResLibCal_version ' compute and display the triple-axis ' ...
         'resolution function obtained from e.g. Cooper-Nathans and Popovici ' ...
@@ -218,6 +261,7 @@ while ~isempty(varargin)
         'Contributions from: A. Zheludev, A. Tennant, D. Mc Morrow, J. Ollivier, B. Hennion, Hargreave,Hullah, N. Moshtagh' ];
 
       out = message;
+      return;
     case {'help_about'}
       % get the ILL logo from object
       fig = ResLibCal_fig;
@@ -247,7 +291,7 @@ while ~isempty(varargin)
         out = ResLibCal_Compute;
       end
       ResLibCal_ViewResolution(out,2); % if not opened, open at least the 2D view
-      ResLibCal_UpdateViews(out);
+      ResLibCal_UpdateViews(out, 'force');
     case {'view_autoupdate','autoupdate'}
       status = '';
       if numel(varargin) > 1 && ischar(varargin{2})
@@ -268,7 +312,7 @@ while ~isempty(varargin)
       status = get(ResLibCal_fig('View_ResolutionRLU'), 'Checked');
       if strcmp(status,'on'), status = 'off'; else status = 'on'; end
       set(ResLibCal_fig('View_ResolutionRLU'), 'Checked', status);
-      ResLibCal_UpdateViews;
+      ResLibCal_UpdateViews([],'force');
     case {'view_resolutionxyz','zw'}
       status = get(ResLibCal_fig('View_ResolutionXYZ'), 'Checked');
       if strcmp(status,'on'), 
@@ -279,18 +323,34 @@ while ~isempty(varargin)
         set(ResLibCal_fig('View_ResolutionXYZ'), 'Label','Resolution in [Qx,Qy,Qz]');
       end
       set(ResLibCal_fig('View_ResolutionXYZ'), 'Checked', status);
-      ResLibCal_UpdateViews;
+      ResLibCal_UpdateViews([],'force');
     case 'view_resolution_cloud'
       status = get(ResLibCal_fig('View_Resolution_Cloud'), 'Checked');
       if strcmp(status,'on'), status = 'off'; else status = 'on'; end
       set(ResLibCal_fig('View_Resolution_Cloud'), 'Checked', status);
-      ResLibCal_UpdateViews;
+      ResLibCal_UpdateViews([],'force');
+    case {'view_nmc','nmc','monte-carlo'}
+      if isfield(out,'EXP'), EXP=out.EXP; else EXP=out; end
+      if     isfield(EXP, 'NMC'),         NMC=EXP.NMC;
+      else
+        NMC=get(ResLibCal_fig('View_NMC'), 'UserData');
+      end
+      if isempty(NMC) || ~isnumeric(NMC), NMC  = 2000; end
+      NMC = inputdlg('Enter the number of Monte-Carlo iterations', ...
+        'ResLibCal: Monte-Carlo iterations ?',1,{ num2str(NMC) });
+      if ~isempty(NMC)
+        NMC=str2double(NMC{1});
+        if NMC > 0
+          if isfield(out,'EXP'), out.EXP.NMC=NMC; else EXP.NMC=NMC; end
+          set(ResLibCal_fig('View_NMC'), 'UserData', NMC);
+        end
+      end
     case {'view_close','close'}
       delete(findobj(0, 'Tag', 'ResLibCal_View1'));
       delete(findobj(0, 'Tag', 'ResLibCal_View2'));
       delete(findobj(0, 'Tag', 'ResLibCal_View3'));
       
-    % RESCAL actions
+    % RESCAL actions -----------------------------------------------------------
     case 'list'
       out = ResLibCal_Compute(out);
       disp('RESCAL parameters')
@@ -304,12 +364,13 @@ while ~isempty(varargin)
         L   = resolution{index}.HKLE(3); W=resolution{index}.HKLE(4);
         fprintf(1,'QH=%5.3g QK=%5.3g QL=%5.3g [rlu] E=%5.3g [meV]\n', H,K,L,W);
         disp('  BRAGG Widths, Radial,tangential, Vertical (HWHM) [ANG-1]');
-        FrameStr = strrep(resolution{index}.xyz.FrameStr,'\surd', 'sqrt');
+        FrameStr = resolution{index}.spec.frameStr;
         disp(['  Rad:along A=' FrameStr{1} '; Tang:along ' FrameStr{2} '; Vert:along ' FrameStr{3} ])
-        fprintf(1, '  DQR=%g DQT=%g DQV=%g\n', resolution{index}.xyz.Bragg(1:3)/2);
+        fprintf(1, '  DQR=%g DQT=%g DQV=%g\n', resolution{index}.spec.Bragg(1:3)/2);
         disp('  Energy Widths (HWHM) [meV]');
-        fprintf(1, '  DVN=%g DEE=%g\n', resolution{index}.xyz.Bragg([ 5 4 ])/2);
+        fprintf(1, '  DVN=%g DEE=%g\n', resolution{index}.spec.Bragg([ 5 4 ])/2);
         disp('----------------------------------------------------------');
+        out = resolution{index}.spec.Bragg;
       end
     case 'resol'
       out = ResLibCal_Compute(out);
@@ -319,22 +380,21 @@ while ~isempty(varargin)
         H   = resolution{index}.HKLE(1); K=resolution{index}.HKLE(2); 
         L   = resolution{index}.HKLE(3); W=resolution{index}.HKLE(4);
         fprintf(1,'QH=%5.3g QK=%5.3g QL=%5.3g [rlu] E=%5.3g [meV]\n', H,K,L,W);
-        disp('  Resolution Matrix, X-AXIS Along Q [ANGS-1] & [meV]')
-        FrameStr = strrep(resolution{index}.xyz.FrameStr,'\surd', 'sqrt');
-        disp(['  X:along A=' FrameStr{1} '; Y:along ' FrameStr{2} '; Z:along ' FrameStr{3} ])
-        disp(' ')
-        disp('    X        Y        Z        W')
-        disp(num2str(resolution{index}.xyz.RM,'%.1f '));
-        disp(' ');
-        disp('  Resolution Matrix, Axes WRT Recip. Lattice [R.l.u.] & [meV]')
-        FrameStr = strrep(resolution{index}.abc.FrameStr,'\surd', 'sqrt');
-        disp(['  X:along A=' FrameStr{1} '; Y:along ' FrameStr{2} '; Z:along ' FrameStr{3} ])
-        disp(' ')
-        disp('    X        Y        Z        W')
-        disp(num2str(resolution{index}.abc.RM,'%.1f '));
+        disp('----------------------------------------------------------');
+        % display the resolution matrix in all available frames
+        for frames={'rlu','spec'}  % others: 'cart','rlu_ABC','ABC'
+          frame = resolution{index}.(frames{1});
+          disp(' ');
+          disp([ 'Resolution Matrix [' frames{1} '] ' frame.README ]);
+          disp([ 'X:' frame.frameStr{1} '; Y:' frame.frameStr{2} '; Z:' frame.frameStr{3} ]);
+          disp('    X        Y        Z        W')
+          disp(num2str(frame.RM,'%.1f '));
+        end
         disp('----------------------------------------------------------');
       end
     % other actions (not menu items) -------------------------------------------
+    case 'silent'
+      silent_mode = 1;
     case 'default'  % factory default
       fig = ResLibCal_fig;
       if ~isempty(fig) && ishandle(fig)
@@ -343,7 +403,7 @@ while ~isempty(varargin)
       f=openfig('ResLibCal');
       out = ResLibCal_Compute;
       % close figure again if it was not there (pure batch mode)
-      if isempty(fig), delete(f); end
+      if isempty(fig) && numel(varargin) == 0, delete(f); end
     case 'reset'    % restore settings from ini file (when exists) or default
       filename = fullfile(prefdir, 'ResLibCal.ini');
       if exist(filename, 'file')
@@ -368,23 +428,20 @@ while ~isempty(varargin)
       out = ResLibCal_Compute;
     case 'update' % (this is called when changing the computational method in the GUI)
       % update all opened views with new computation (widget update)
-      fig = ResLibCal_fig;
       
       out = ResLibCal_Compute;
       
-      if ~isempty(fig) && strcmp(get(ResLibCal_fig('View_AutoUpdate'), 'Checked'), 'on')
-        out = ResLibCal_UpdateViews(out);
-      elseif isempty(fig)
-        out = ResLibCal_UpdateViews(out); % display result to stdout
+      if ~silent_mode
+        fig = ResLibCal_fig;
+        if ~isempty(fig)
+          out = ResLibCal_UpdateViews(out);
+        elseif nargout == 0
+          out = ResLibCal_UpdateViews(out, 'stdout'); % display result to stdout
+        end
       end
     case {'compute','resolution'}
       % only compute. No output except in varargout
-      fig = ResLibCal_fig;
-      % if no interface exists, load the last saved configuration before computing
-      out = ResLibCal_Compute(out);
-    case {'script'}
-      % only compute. No output except in varargout
-%       fig = ResLibCal_fig;
+      % fig = ResLibCal_fig;
       % if no interface exists, load the last saved configuration before computing
       out = ResLibCal_Compute(out);
     case 'update_d_tau'
@@ -411,18 +468,12 @@ while ~isempty(varargin)
           % revert invalid to previous data
           data(event.Indices(1),event.Indices(2)) = event.PreviousData;
           set(h,'Data',data);
-        else
-          out = feval(mfilename, 'update');
         end
         varargin(3)=[];
-      elseif strcmp(get(h,'Type'), 'uitable')
-        if any(strcmp(tag,{'EXP_mono_tau_popup','EXP_ana_tau_popup'}))
-          ResLibCal_UpdateDTau(h);
-        elseif any(strcmp(tag,{'EXP_efixed','EXP_Kfixed','EXP_Lfixed'}))
-          ResLibCal_UpdateEKLfixed(h);
-        end
-      elseif strcmp(get(h,'Type'), 'uimenu')
-        ResLibCal(get(h,'Tag'));
+      elseif any(strcmp(tag,{'EXP_mono_tau_popup','EXP_ana_tau_popup'}))
+        ResLibCal_UpdateDTau(h);
+      elseif any(strcmp(tag,{'EXP_efixed','EXP_Kfixed','EXP_Lfixed'}))
+        ResLibCal_UpdateEKLfixed(h);
       elseif any(strcmp(tag,{'EXP_mono_d','EXP_ana_d'}))
         ResLibCal_UpdateTauPopup;
       end
@@ -431,6 +482,12 @@ while ~isempty(varargin)
       feval(mfilename, 'update');
     case {'config','EXP'}
       out = ResLibCal_GetConfig;
+    case 'hkle'
+      out = { str2num(get(ResLibCal_fig('EXP_QH'),'String'))
+        str2num(get(ResLibCal_fig('EXP_QK'),'String'))
+        str2num(get(ResLibCal_fig('EXP_QL'),'String'))
+        str2num(get(ResLibCal_fig('EXP_W'),'String')) };
+      return;
     otherwise
       % open file name or list of parameters given as 'VAR=VAL; ...'  
       if numel(varargin) > 1 && isstruct(varargin{2})
@@ -444,50 +501,32 @@ while ~isempty(varargin)
         out = ResLibCal_GetConfig;
       end
       if numel(varargin) == 0
-        out = ResLibCal_Compute(out);                    % compute the resolution
-        ResLibCal_UpdateViews(out); % update views when they exist
+        out = ResLibCal_Compute(out); % compute the resolution
+        if ~silent_mode, 
+          ResLibCal_UpdateViews(out); % update views when they exist
+        end
       end
       
-    end % switch (action)
+    end % switch (action as a char command)
     
     varargin(1) = [];
     % end if varargin is char
   elseif isstruct(varargin{1})
     % read an out or EXP structure
     out = varargin{1};
-    try
-    if ~isfield(EXP,'EXP')
+    if ~isfield(out,'EXP')
       EXP=out; out=[];
       out.EXP = EXP; 
     end
-    catch
-        
-    end
     varargin(1) = [];
   elseif isnumeric(varargin{1}) && numel(varargin{1}) == 4
-    % read HKLE coordinates and compute resolution there
-    % get current config
-    out = ResLibCal_GetConfig;
-    if isfield(out,'EXP') EXP = out.EXP; else EXP=[]; end
-    if isempty(EXP) || ~isstruct(EXP), return; end
-    HKLE = varargin{1}; varargin(1)=[];
-    EXP.QH =HKLE(1);
-    EXP.QK =HKLE(2);
-    EXP.QL =HKLE(3);
-    EXP.W  =HKLE(4);
-    set(ResLibCal_fig('EXP_QH'),'String', mat2str(EXP.QH));
-    set(ResLibCal_fig('EXP_QK'),'String', mat2str(EXP.QK));
-    set(ResLibCal_fig('EXP_QL'),'String', mat2str(EXP.QL));
-    set(ResLibCal_fig('EXP_W'), 'String', mat2str(EXP.W));
-    out.EXP=EXP;
-    % compute
-    if isempty(varargin)
-      out = ResLibCal_Compute(EXP);
-      if ~isempty(fig), ResLibCal_UpdateViews(out); end % when they exist
-    end
+    % ResLibCal([qh qk ql w])
+    hkle = varargin{1};
+    varargin = { hkle(1) hkle(2) hkle(3) hkle(4) };
     
   elseif numel(varargin) >= 4 && isnumeric(varargin{1}) && isnumeric(varargin{2}) ...
-    && isnumeric(varargin{3}) && isnumeric(varargin{4}) 
+    && isnumeric(varargin{3}) && isnumeric(varargin{4})
+    % ResLibCal(qh, qk, ql, w)
     % read HKLE coordinates and compute resolution there
     % get current config
     out = ResLibCal_GetConfig;
@@ -503,7 +542,7 @@ while ~isempty(varargin)
     end
     if ~isempty(varargin) && isnumeric(varargin{1}) 
       if ~isempty(varargin{1}),
-        EXP.QK = varargin{1};
+        EXP.QK = varargin{1};;
         set(ResLibCal_fig('EXP_QK'),'String', mat2str(EXP.QK));
       end
       varargin(1)=[];
@@ -525,12 +564,19 @@ while ~isempty(varargin)
     out.EXP=EXP;
     if isempty(varargin)
       out = ResLibCal_Compute(EXP);
-      if ~isempty(fig), ResLibCal_UpdateViews(out); end % when they exist
+      if ~silent_mode, 
+        if ~isempty(fig), ResLibCal_UpdateViews(out); % when they exist
+        elseif nargout==0, ResLibCal_UpdateViews(out,'stdout'); end
+      end
     end
   elseif numel(varargin) >= 1 && isempty(varargin{1})
+    disp('ResLibCal([]) Config')
     out = ResLibCal_GetConfig;
     varargin(1)=[];
-    
+  else
+    disp([ mfilename ': unknown parameter of class ' class(varargin{1}) ' . Skipping.' ]);
+    disp(varargin{1});
+    varargin(1)=[];
   end % if type(varargin)
   
 end % end while nargin > 0
@@ -545,24 +591,32 @@ function filename = ResLibCal_Save
   filename = ResLibCal_Saveas(fullfile(prefdir, 'ResLibCal.ini'));
 
 % ==============================================================================
-function out = ResLibCal_UpdateViews(out)
+function out = ResLibCal_UpdateViews(out, mode)
 % ResLibCal_UpdateViews: update all views (only when already visible)
+% mode can be: 'force' (update all views) or 'stdout'
 %
   if nargin == 0, out = ''; end
+  if nargin < 2, mode=''; end
   if ~isstruct(out), out = ResLibCal_Compute; end
   fig = ResLibCal_fig;
-  if ~isempty(fig) 
-    if strcmp(get(ResLibCal_fig('View_AutoUpdate'), 'Checked'), 'on')
+  if ~isempty(fig) || strcmp(mode, 'force')
+    if strcmp(get(ResLibCal_fig('View_AutoUpdate'), 'Checked'), 'on') || strcmp(mode, 'force')
+      t=clock;
       out = ResLibCal_UpdateResolution1(out); % TAS geometry
       out = ResLibCal_UpdateResolution2(out); % 2D, also shows matrix
       out = ResLibCal_UpdateResolution3(out); % 3D
+      if ~strcmp(mode, 'force') && etime(clock, t) > 5
+        disp([ mfilename ': the time required to update all plots gets long.' ])
+        disp('INFO          Setting View/AutoUpdate to off.')
+        set(ResLibCal_fig('View_AutoUpdate'), 'Checked', 'off');
+      end
     end
     ResLibCal_MethodEnableControls(out);    % enable/disable widgtes depending on the chosen method
   end
   % if no view exists, send result to the console 
   % here unactivated in case we use it as a model for e.g. fitting
-  if isempty(fig) || isempty([ findobj(0, 'Tag','ResLibCal_View2') ...
-    findobj(0, 'Tag','ResLibCal_View3') ])
+  if isempty(fig) || strcmp(mode, 'stdout') ...
+  || isempty([ findobj(0, 'Tag','ResLibCal_View2') findobj(0, 'Tag','ResLibCal_View3') ])
 		% display result in the console
 		rlu = get(ResLibCal_fig('View_ResolutionRLU'), 'Checked');
 		if ~strcmp(rlu, 'on'), mode=''; else mode='rlu'; end
@@ -692,3 +746,45 @@ function ResLibCal_MethodEnableControls(out)
   
   % ==============================================================================
   
+function Res = mergestruct(A,B)
+%% Recursively merges fields and subfields of structures A and B to result structure Res
+% Simple recursive algorithm merges fields and subfields of two structures
+%   Example:
+%   A.field1=1;
+%   A.field2.subfield1=1;
+%   A.field2.subfield2=2;
+% 
+%   B.field1=1;
+%   B.field2.subfield1=10;
+%   B.field2.subfield3=30;
+%   B.field3.subfield1=1;
+% 
+%   C=mergestruct(A,B);
+%
+%  by Igor Kaufman, 02 Dec 2011, BSD
+% <http://www.mathworks.com/matlabcentral/fileexchange/34054-merge-structures>
+
+Res=[];
+if nargin>0
+    Res=A;
+end;
+if nargin==1 || isstruct(B)==0
+    return;
+end;    
+  fnb=fieldnames(B);
+  
+  for i=1:length(fnb)
+     s=char(fnb(i));
+     oldfield=[];
+     if (isfield(A,s))
+         oldfield=getfield(A,s);
+     end    
+     newfield=getfield(B,s);
+     if isempty(oldfield) || isstruct(newfield)==0
+       Res=setfield(Res,s,newfield);     
+     else
+       Res=setfield(Res,s,mergestruct(oldfield, newfield));  
+     end    
+  end    
+
+
