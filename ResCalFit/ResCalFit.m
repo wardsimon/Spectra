@@ -43,7 +43,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         for i = multifit_ind
             % Get the MC points and reshape them to observed Q
             %Q = [(ResFitScn(i).resolution.abc.hkl2Frame\[ResFitScn(i).resolution.abc.cloud{1:3}]')' ResFitScn(i).resolution.abc.cloud{4}];
-            Q = cell2mat(ResFitScn(i).resolution.rlu.cloud)
+            Q = cell2mat(ResFitScn(i).resolution.rlu.cloud);
             NMC = length(ResFitScn(i).resolution.rlu.cloud{1});
             % Calculate the cross section
             S = sum(feval(ResFitScn(i).SQW,Q,p))/NMC;
