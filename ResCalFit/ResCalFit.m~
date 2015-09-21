@@ -48,7 +48,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
             % Calculate the cross section
             S = sum(feval(ResFitScn(i).SQW,Q,p))/NMC;
             % Add on a background.
-            y(j) = S + feval(ResFitScn(i).BG,ResFitScn(i).resolution.HKLE,p);
+            y(j) = S + feval(ResFitScn(i).BG,[ResFitScn(i).EXP.QH ResFitScn(i).EXP.QK ResFitScn(i).EXP.QL ResFitScn(i).EXP.W],p);
             j = j+1;
         end
     else
