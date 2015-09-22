@@ -84,7 +84,7 @@ if isstruct(p)
   [q2c,q0]= rc_re2rc( [ EXP.sample.a EXP.sample.b EXP.sample.c ], ...
     [ EXP.sample.alpha EXP.sample.beta EXP.sample.gamma ] , ...
     [ EXP.QH EXP.QK EXP.QL ] );
-  QH=EXP.QH; QK=EXP.QK; QL=EXP.QL;
+%   QH=EXP.QH; QK=EXP.QK; QL=EXP.QL;
 elseif isvector(p)
 
   dm=p(1);            % monochromator d-spacing in Angs.
@@ -110,7 +110,7 @@ elseif isvector(p)
   bet3=p(18)*pit;     % vertical post-analyser collimation.
   w=p(34);            % energy transfer.
   
-  QH=p(31); QK=p(32); QL=p(33);
+%   QH=p(31); QK=p(32); QL=p(33);
 
   % _____________________Extra Parameters________________________________________
   offset=42;
@@ -339,7 +339,7 @@ D(8,13)=D(6,12);
 
 % Popovici inverse matrix
 K = S+T'*F*T;
-H = inv(D*inv(K)*D');
+H = inv(D/K*D');
 MI= B*A*( inv( H+G ) )*A'*B'; % including spatial effects.
 
 % Cooper and Nathans inverse matrix
