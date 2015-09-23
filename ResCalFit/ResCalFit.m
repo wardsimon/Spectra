@@ -31,7 +31,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         % What frame are we in? Only recompute every scan, not point! (Errors will crop up otherwise...)
         if iter_l ~= iter_mem
             for i=multifit_ind
-                ResFitScn(i) = ResLibCal(ResFitScn(i),'compute');
+                ResFitScn(i) = ResLibCal(ResFitScn(i),'clouds');
             end
             iter_mem = iter_l;
         end
@@ -44,7 +44,11 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
             % Get the MC points and reshape them to observed Q
             %Q = [(ResFitScn(i).resolution.abc.hkl2Frame\[ResFitScn(i).resolution.abc.cloud{1:3}]')' ResFitScn(i).resolution.abc.cloud{4}];
             Q = cell2mat(ResFitScn(i).resolution.rlu.cloud);
-            NMC = length(ResFitScn(i).resolution.rlu.cloud{1});
+            try
+                NMC = ResFitScn(i).EXP.NMC;
+            catch
+                NMC = length(ResFitScn(i).resolution.rlu.cloud{1});
+            end
             % Calculate the cross section
             S = sum(feval(ResFitScn(i).SQW,Q,p))/NMC;
             % Add on a background.

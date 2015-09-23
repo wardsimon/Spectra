@@ -444,6 +444,8 @@ while ~isempty(varargin)
       % fig = ResLibCal_fig;
       % if no interface exists, load the last saved configuration before computing
       out = ResLibCal_Compute(out);
+    case 'clouds'
+        out.resolution = ResLibCal_RM2clouds(out.EXP,out.resolution);
     case 'update_d_tau'
       % update d-spacing from a popup item
       ResLibCal_UpdateDTau(varargin{2});      % arg is popup handle
