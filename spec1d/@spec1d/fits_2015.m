@@ -194,14 +194,28 @@ function [sout,fitdata]=fits_2015(s1,func,pin,notfixed,varargin)
                 % we need to call the optimization method with the eval_criteria as FUN
                 % call minimizer ===============================================================
                 if abs(nargin(options.optimizer)) == 1 || abs(nargin(options.optimizer)) >= 6
-                    [p,yfit,message,output] = feval(options.optimizer, ...
-                        @(pars) eval_criteria(model, pars, options.criteria, a, varargin{:}), pars, options, constraints);
+                    [p,fval,message,output] = feval(options.optimizer, ...
+                        @(pars) eval_criteria(func, pars, options.criteria, a, varargin{:}), pars, options, constraints);
                 else
                     % Constraints not supported by optimizer
-                    [p,yfit,message,output] = feval(options.optimizer, ...
-                        @(pars) eval_criteria(model, pars, options.criteria, a, varargin{:}), pars, options);
+                    [p,fval,message,output] = feval(options.optimizer, ...
+                        @(pars) eval_criteria(func, pars, options.criteria, a, varargin{:}), pars, options);
                 end                
             end
+            
+              yfit = feval(func, p, x);
+              output.corrcoef   = eval_corrcoef(y, e, yfit);
+              output.residuals  = y - yfit;
+              Rwp  = sqrt(sum((output.residuals./e).^2)/sum((y./e).^2));
+              output.Rfactor    = Rwp;
+              Rexp = sqrt((length(y) - length(pars))./sum((y./e).^2));
+              GoF  = Rwp/Rexp;
+              if strcmp(options.Verbose)
+                  fprintf(1, ' Correlation coefficient=%g (closer to 1 is better)\n',  output.corrcoef);
+                  fprintf(1, ' Weighted R-factor      =%g (Rwp, smaller that 0.2 is better)\n', output.Rfactor);
+                  fprintf(1, ' Experimental R-factor  =%g (Rexp)\n', Rexp);
+              end
+  
             %----- Goodness of fit
             v = length(y)-sum(logical(notfixed));
             ChiSq = sum(((y-yfit)./e).^2 )/v;
@@ -287,63 +301,16 @@ if nargout > 3 || (isfield(options,'Diagnostics') && (strcmp(options.Diagnostics
     fprintf(1, ' WARNING: The fit result is BAD. You may improve it by setting %s.Error=1\n',...
       name);
   end
-  
-  if ~isempty(is_idata)
-    % make it an iData
-    b = is_idata;
-    % fit(signal/monitor) but object has already Monitor -> we compensate Monitor^2
-    if not(all(a.Monitor == 1 | a.Monitor == 0)) 
-      output.modelValue    = bsxfun(@times,output.modelValue, a.Monitor); 
-    end
-    setalias(b,'Signal', output.modelValue, model.Name);
-    b.Title = [ model.Name '(' char(b) ')' ];
-    b.Label = b.Title;
-    b.DisplayName = b.Title;
-    setalias(b,'Error', 0);
-    setalias(b,'Parameters', pars_out, [ model.Name ' model parameters for ' a.Name ]);
-    setalias(b,'Model', model, model.Name);
-    output.modelValue = b;
-  else
-    if length(a.Axes) == 1
-      output.modelAxes  = a.Axes{1};
-    else
-      output.modelAxes  = a.Axes(:);
-    end
-  end
-  output.model      = model;
-  
-  % set output/results
-  if ischar(message) | ~isfield(output, 'message')
-    output.message = message;
-  else
-    output.message = [ '(' num2str(message) ') ' output.message ];
-  end
-  output.parsNames  = model.Parameters;
-  % final plot when in OutputFcn mode
-  eval_criteria(model, pars_out, options.criteria, a, varargin{:});
-end
-if ~isempty(pars_isstruct)
-  % first rebuild the model parameter structure
-  pars_out = cell2struct(num2cell(pars_out(:)'), strtok(model.Parameters(:)'), 2);
-  % then add initial additional fields
-  if isstruct(pars_isstruct)
-    f = fieldnames(pars_isstruct);
-    for index=1:length(f)
-      pars_out.(f{index}) = pars_isstruct.(f{index});
-    end
-  end
-end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EMBEDDED FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % this way 'options' is available in here...
 
-  function c = eval_criteria(model, p, criteria, a, varargin)
+  function c = eval_criteria(model, p, criteria, x, varargin)
 
   % criteria to minimize
     if nargin<5, varargin={}; end
     % then get model value
-    Model  = feval(model, p, a.Axes{:}, varargin{:}); % return model values
+    Model  = feval(model, p, x, varargin{:}); % return model values
 
     % get actual parameters used during eval (in case of Constraints)
     p = model.ParameterValues;
@@ -369,11 +336,6 @@ end
       end
       
       options.funcCount = options.funcCount+1;
-      
-      if (options.funcCount < 50 && abs(etime(options.updated, clock)) > 0.5) ...
-       || abs(etime(options.updated, clock)) > 2
-        iFunc_private_fminplot(a,model,p,Model,options,c)
-      end
     end
     
   end % eval_criteria (embedded)
