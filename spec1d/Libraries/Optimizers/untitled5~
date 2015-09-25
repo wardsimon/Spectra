@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EMBEDDED FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% this way 'options' is available in here...
+
+  function c = eval_criteria(model, p, criteria, a, varargin)
+
+  % criteria to minimize
+    if nargin<5, varargin={}; end
+    % then get model value
+    Model  = feval(model, p, a.Axes{:}, varargin{:}); % return model values
+
+    % get actual parameters used during eval (in case of Constraints)
+    p = model.ParameterValues;
+    % send it back to input call
+    Model  = iFunc_private_cleannaninf(Model);
+    if isempty(Model)
+      error([ 'iFunc:' mfilename ],[ 'The model ' model ' could not be evaluated (returned empty).' ]);
+    end
+    
+    % compute criteria
+    c = feval(criteria, a.Signal(:), a.Error(:), Model(:));
+    % divide by the number of degrees of freedom
+    % <http://en.wikipedia.org/wiki/Goodness_of_fit>
+    if numel(a.Signal) > length(p)-1
+      c = c/(numel(a.Signal) - length(p) - 1); % reduced 'Chi^2'
+    end
+    
+    % overlay data and Model when in 'OutputFcn' mode
+    if (isfield(options, 'OutputFcn') && ~isempty(options.OutputFcn) && ~isscalar(a.Signal) && ndims(a.Signal) <= 2)
+      if ~isfield(options, 'updated')
+        options.updated   = -clock;
+        options.funcCount = 0;
+      end
+      
+      options.funcCount = options.funcCount+1;
+      
+      if (options.funcCount < 50 && abs(etime(options.updated, clock)) > 0.5) ...
+       || abs(etime(options.updated, clock)) > 2
+        iFunc_private_fminplot(a,model,p,Model,options,c)
+      end
+    end
+    
+  end % eval_criteria (embedded)
+
+end % fits
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRIVATE FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function r=eval_corrcoef(Signal, Error, Model)
+% correlation coefficient between the data and the model
+  
+  % compute the correlation coefficient
+  if isempty(Error) || isscalar(Error) || all(Error(:) == Error(end))
+    wt = 1;
+  else
+    wt = 1./Error;
+    wt(find(~isfinite(wt))) = 0;
+  end
+  r = corrcoef(Signal.*wt,Model.*wt);
+  r = r(1,2);                                     % correlation coefficient
+  if isnan(r)
+    r = corrcoef(Signal,Model);
+    r = r(1,2);
+  end
+end % eval_corrcoef

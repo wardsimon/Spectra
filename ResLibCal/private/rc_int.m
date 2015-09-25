@@ -11,9 +11,13 @@ function [r,mp]=rc_int(index,r0,m)
 % ResCal5/A.T.
 
 r=0; mp=[];
-if isempty(m), return; end
-
-r=sqrt(2*pi/m(index,index))*r0;
+% if isempty(m), return; end
+try
+    temp = m(index,index);
+catch
+    return
+end
+r=sqrt(2*pi/temp)*r0;
 
 % remove columns and rows from m
 % that contain the subscript "index".
@@ -23,6 +27,6 @@ b=m(:,index)+m(index,:)';
 b(index)=[];
 mp(index,:)=[];
 mp(:,index)=[];
-mp=mp-1/(4*m(index,index))*b*b';
+mp=mp-1/(4*temp)*(b*b');
 
 return

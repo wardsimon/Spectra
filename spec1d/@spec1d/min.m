@@ -11,7 +11,7 @@ function varargout = min(varargin)
     end
     
     for i=1:length(s)
-        [y_max, ind]=max(s.y);
+        [y_max, ind]=min(s.y);
         if nargout==1
             varargout{1}(i)=y_max;
         elseif nargout<=2

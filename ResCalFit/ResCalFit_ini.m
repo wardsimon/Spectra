@@ -81,9 +81,16 @@ function scan = ResCalFit_ini(file,varargin)
         scan(i).EXP.QK = Q(i,2);
         scan(i).EXP.QL = Q(i,3);
         scan(i).EXP.W  = Q(i,4);
-        scan(i) = ResLibCal(scan(i),'script');
+        scan(i) = ResLibCal(scan(i),'compute');
     end
     
+    % The new ResLibCal can except this. This is for the future....
+%     scan = cfg;
+%     cfg.EXP.QH = Q(1,1);
+%     cfg.EXP.QK = Q(1,2);
+%     cfg.EXP.QL = Q(1,3);
+%     cfg.EXP.W  = Q(:,4);
+%     scan = ResLibCal(scan,'compute');
     % Make configuration available for ResCalFit 
     ResFitScn = scan;
 end
