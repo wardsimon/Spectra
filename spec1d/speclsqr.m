@@ -315,7 +315,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
         nrm(msk) = 1 ./ sqrt (nrm(msk));
         prt = prt .* nrm(ones (1, m), :);
         nrm = nrm.';
-        % Matts change: svd(prt,0) was the original. Now we can fit more
+        % Matts change: svd(prt,0) was the original. Now we can have more
         % parameters than points!
         [prt,s,v] = svd(prt,'econ');
         s = diag(s);

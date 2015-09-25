@@ -34,6 +34,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@length,x)==2))
     p.addParamValue('parallel',0,@(x) x==0 | x == 1)
     p.addParamValue('criteria','least_square',@(x) ischar(x))
+    p.addParamValue('relations',{}, @iscell)
     p.addParamValue('verbose',0,@(x) isnumeric(x) | islogical(x))
     if length(varargin) ~= 1
         p.parse(s1,func,pin,notfixed,varargin{:});
