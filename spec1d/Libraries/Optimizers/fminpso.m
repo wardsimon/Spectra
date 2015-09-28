@@ -76,7 +76,7 @@ function [pars,fval,exitflag,output] = fminpso(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
@@ -84,8 +84,8 @@ if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options.SwarmC1=2.8;
   options.SwarmC2=1.3;
   options.PopulationSize=25;
-  options.algorithm  = [ 'Particle Swarm Optimization (by Donckels) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Particle Swarm Optimization (by Donckels) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

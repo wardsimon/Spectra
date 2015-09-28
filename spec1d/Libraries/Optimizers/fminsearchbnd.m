@@ -69,9 +69,9 @@ function [pars,fval,exitflag,output] = fminsearchbnd(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset('fminsearch');
-  options.algorithm  = [ 'Nelder-Mead simplex, with constraints [' mfilename ']' ];
-  options.optimizer = mfilename;
-  options.Display='';
+  options.About  = [ 'Nelder-Mead simplex, with constraints [' mfilename ']' ];
+%   options.optimizer = mfilename;
+  options.Display='off';
   pars = options;
   return
 end

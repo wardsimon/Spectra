@@ -93,14 +93,14 @@ if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % default structure
   options.TolFun =1e-3; % will also set StopFitness
   options.MaxIter=1000;
-  options.Display='';
+  options.Display='off';
   options.TolX   =1e-8;
   options.MaxFunEvals   =Inf;
   options.PopulationSize=opt.PopSize;
   options.SaveVariables ='off';
   options.Science       ='off';
-  options.algorithm = [ 'Evolution Strategy with Covariance Matrix Adaptation (CMA-ES by Hansen) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About = [ 'Evolution Strategy with Covariance Matrix Adaptation (CMA-ES by Hansen) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

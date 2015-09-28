@@ -64,15 +64,15 @@ function [pars,fval,exitflag,output] = fminsce(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
   options.MaxFunEvals=5000;
   options.PopulationSize=5;
   options.nITER_INNER_LOOP=30;
-  options.algorithm  = [ 'Shuffled Complex Evolution (by Donckels) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Shuffled Complex Evolution (by Donckels) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

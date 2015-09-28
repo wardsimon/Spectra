@@ -72,14 +72,14 @@ function [pars,fval,exitflag,output] = fminlm(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display  = [];        %   no print of iterations
+  options.Display  = 'off';        %   no print of iterations
   options.MaxIter  = 5000;       %   maximum number of iterations allowed
   options.ScaleD   = [];        %   automatic scaling by D = diag(diag(J'*J))
   options.TolFun   = 1e-6;      %   tolerace for final function value
   options.TolX     = 1e-4;      %   tolerance on difference of x-solutions
   options.MaxFunEvals=10000;
-  options.algorithm  = [ 'Levenberg-Maquardt (by Balda) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Levenberg-Maquardt (by Balda) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

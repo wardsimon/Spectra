@@ -9,13 +9,13 @@ function [sout, pout, dpin]=multifit_ini(s,pin,flag,sep)
 
 %----- Define global variables
 
-global  s_sep x_per_spec param_keep
+global  x_per_spec param_keep
 
-if length(sep)~=length(s)
-    error('There must be the same number of spec1d objects as separation points')
-end
-
-s_sep = sep;
+% if length(sep)~=length(s)
+%     error('There must be the same number of spec1d objects as separation points')
+% end
+% 
+% s_sep = sep;
 
 %----- Create a big spec1d file that contains, in order, all the smaller
 %      ones. Also, memorize the number of points per spec1d file so that

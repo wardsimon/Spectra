@@ -73,14 +73,14 @@ function [pars,fval,exitflag,output] = fminimfil(varargin)
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset;
   % add Matlab std options.
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
   options.MaxFunEvals=1000;
   options.Hybrid = 'BFGS';
-  options.algorithm  = [ 'Unconstrained Implicit filtering, version 1 (by Kelley) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Unconstrained Implicit filtering, version 1 (by Kelley) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

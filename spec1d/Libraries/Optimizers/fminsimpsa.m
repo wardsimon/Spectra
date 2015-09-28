@@ -71,15 +71,15 @@ function [pars,fval,exitflag,output] = fminsimpsa(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin,'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
   options.MaxFunEvals=5000;
   options.PopulationSize=50;
   options.nITER_INNER_LOOP=30;
-  options.algorithm  = [ 'simplex/simulated annealing (by Donckels) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'simplex/simulated annealing (by Donckels) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   options.TEMP_START=[];  % starting temperature (if none provided, an optimal one will be estimated)
   options.TEMP_END=1;     % end temperature
   options.COOL_RATE=10;   % small values (<1) means slow convergence,large values (>1) means fast convergence

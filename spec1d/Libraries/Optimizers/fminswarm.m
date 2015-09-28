@@ -80,8 +80,8 @@ function [pars,fval,exitflag,output] = fminswarm(fun, pars, options, varargin)
 if nargin == 0 || (nargin == 1 && strcmp(fun,'defaults'))
   options=fminswarmhybrid('defaults');
   options.Hybrid='none';
-  options.algorithm = [ 'Particle Swarm Optimizer (by Leontitsis) [fminswarm]' ];
-  options.optimizer = mfilename;
+  options.About = [ 'Particle Swarm Optimizer (by Leontitsis) [fminswarm]' ];
+%   options.optimizer = mfilename;
   pars=options;
   return
 end

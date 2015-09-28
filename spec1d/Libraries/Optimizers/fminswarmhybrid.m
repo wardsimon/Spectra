@@ -84,7 +84,7 @@ function [pars,fval,exitflag,output] = fminswarmhybrid(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-4;
   options.TolX   =1e-8;
   options.MaxIter=1000;
@@ -94,8 +94,8 @@ if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options.SwarmC2=2;
   options.SwarmW =0;
   options.PopulationSize=5;
-  options.algorithm = [ 'Hybrid Particle Swarm Optimizer (by Leontitsis) [fminswarmhybrid]' ];
-  options.optimizer = mfilename;
+  options.About = [ 'Hybrid Particle Swarm Optimizer (by Leontitsis) [fminswarmhybrid]' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

@@ -68,13 +68,13 @@ function [pars,fval,exitflag,output] = fminnewton(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter='10*numberOfVariables';
   options.MaxFunEvals=1000;
-  options.algorithm  = [ 'Steihaug Newton-CG-Trust (by Kelley) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Steihaug Newton-CG-Trust (by Kelley) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end
