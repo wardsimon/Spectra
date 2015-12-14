@@ -79,6 +79,11 @@ function [sout,fitdata]=fits_2015(s1,func,pin,notfixed,varargin)
             RSq = r(1,2).^2;
             sig = zeros(size(p));
         else
+            
+            % Algorithm
+            % Criteria
+            % User Function
+            
             % we need to call the optimization method with the eval_criteria as FUN
             % call minimizer ===============================================================
             if abs(nargin(options.Algorithm)) == 1 || abs(nargin(options.Algorithm)) >= 6
