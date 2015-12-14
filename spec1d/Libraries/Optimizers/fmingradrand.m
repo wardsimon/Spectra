@@ -71,13 +71,13 @@ function [pars,fval,exitflag,output] = fmingradrand(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
   options.MaxFunEvals=1000;
-  options.algorithm  = [ 'Random Gradient (by Belur) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Random Gradient (by Belur) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

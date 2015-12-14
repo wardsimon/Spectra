@@ -71,14 +71,14 @@ function [pars,fval,exitflag,output] = fminpowell(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter=1000;
   options.MaxFunEvals=5000;
   options.Hybrid = 'Coggins';
-  options.algorithm  = [ 'Powell Search (by Secchi) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Powell Search (by Secchi) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end

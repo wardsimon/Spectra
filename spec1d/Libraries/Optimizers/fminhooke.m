@@ -68,14 +68,14 @@ function [pars,fval,exitflag,output] = fminhooke(varargin)
 % default options for optimset
 if nargin == 0 || (nargin == 1 && strcmp(varargin{1},'defaults'))
   options=optimset; % empty structure
-  options.Display='';
+  options.Display='off';
   options.TolFun =1e-3;
   options.TolX   =1e-8;
   options.MaxIter='min(20,10*numberOfVariables)';
   options.MaxFunEvals=1000;
   options.Scales=2.^(-(0:8));
-  options.algorithm  = [ 'Hooke-Jeeves direct search (by Kelley) [' mfilename ']' ];
-  options.optimizer = mfilename;
+  options.About  = [ 'Hooke-Jeeves direct search (by Kelley) [' mfilename ']' ];
+%   options.optimizer = mfilename;
   pars = options;
   return
 end
