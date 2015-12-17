@@ -1,14 +1,16 @@
-%% SYSTEM ILL STARTUP FILE
+%% SPECTRA STARTUP FILE
 % File        : startup.m
 % Description : Matlab libraries startup file
 % Author      : Simon Ward
-% Date        : 10/04/2013
+% Date        : 17/12/2015
 % Changes     : Added Unix/Windows compatibilty
 %               try/catch renaming
 %               Use java as it is blind to your system.
 %               Robust path additions
+%               Preference adding.
+%               Logging question
 
-
+%% Get system information
 % Use Java, it's more reliable!
 st_home = cast(java.lang.System.getProperty('user.home'),'char');
 st_user = cast(java.lang.System.getProperty('user.name'),'char');
@@ -17,7 +19,8 @@ try
 catch
     st_comp = 'unavailable';
 end
-d = [st_home filesep 'Documents' filesep 'MATLAB'];
+
+d = fullfile(st_home,'Documents','MATLAB');
 if isdir(d)
     cd(d)
 else
@@ -27,58 +30,69 @@ else
     end
 end
 
-% Start a diary
-if exist([d filesep 'matlab.log'],'file') == 2
-    try
-        if exist(sprintf('matlab_%s.log',date),'file') == 2
-            if ispc
-                system(sprintf('matlab.log >> matlab_%s.log',date));
-            elseif isunix
-                system(sprintf('cat matlab.log >> matlab_%s.log',date));
-            end
-        else
-            copyfile('matlab.log', sprintf('matlab_%s.log',date))
-        end
-        delete('matlab.log');
-        fprintf('Previous Matlab Log file is renamed as matlab_%s.log\n',date)
-    catch ME
-        fprintf('Renaming of previous Matlab log file has failed: \n%s\n',ME.message)
+%% Start a diary
+try
+    doLog = getpref('mtools','doLog');
+catch
+    doLog = [];
+end
+if isempty(doLog)
+    choice = questdlg('Would you to enable logging?', ...
+        'Enable logging', ...
+        'Yes','No','No');
+    % Handle response
+    switch choice
+        case 'No'
+            setpref('mtools','doLog',0)
+            doLog = 0;
+        case 'Yes'
+            setpref('mtools','doLog',1)
+            doLog = 1;
     end
 end
-diary([d filesep 'matlab.log'])
-disp([ 'matlab.log started on : ' datestr(now) ])
+if doLog
+    if exist(fullfile(d,'matlab.log'),'file') == 2
+        try
+            if exist(sprintf('matlab_%s.log',date),'file') == 2
+                if ispc
+                    system(sprintf('matlab.log >> matlab_%s.log',date));
+                elseif isunix
+                    system(sprintf('cat matlab.log >> matlab_%s.log',date));
+                end
+            else
+                copyfile('matlab.log', sprintf('matlab_%s.log',date))
+            end
+            delete('matlab.log');
+            fprintf('Previous Matlab Log file is renamed as matlab_%s.log\n',date)
+        catch ME
+            fprintf('Renaming of previous Matlab log file has failed: \n%s\n',ME.message)
+        end
+    end
+    diary(fullfile(d,'matlab.log'))
+    disp([ 'matlab.log started on : ' datestr(now) ])
+end
 
-% THIS FILE CONTAINS the libroot!
-if exist('startuser.m','file') == 2
+%% User defined startup commands
+% This file contains user commands. i.e setting up other programs
+if exist('startuser.m','file')
     eval('startuser');
 end
 
-% Add path to libraries
+%% Add libraries to the path
 % ! NOTE ! We do not have to add files to path if this is correct!
 % Go to default place ???
 try
     libroot = getpref('mtools','libroot');
-    if ~exist('libroot',1)
-        libroot = uigetdir(st_home,'Select mtools root directory');
-        if libroot == 0
-            error('Without an mtools directory, here be dragons!')
-        else
-            setpref('mtools','libroot',libroot)
-            choice = questdlg('Would you to enable experimental features?', ...
-                'Enable Extras', ...
-                'Yes','No','No');
-            % Handle response
-            switch choice
-                case 'No'
-                    setpref('mtools','experimental',0)
-                case 'Yes'
-                    setpref('mtools','experimental',1)
-            end
-        end
-    end
 catch
-    libroot = uigetdir(st_home,'Select mtools root directory');
-    if libroot == 0
+    libroot = [];
+end
+if ~isdir(libroot)
+    if ismac
+        libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select mtools root directory');
+    else
+        libroot = uigetdir(st_home,'Select mtools root directory');
+    end
+    if all(libroot == 0)
         error('Without an mtools directory, here be dragons!')
     else
         setpref('mtools','libroot',libroot)
@@ -97,12 +111,13 @@ end
 
 addpath(genpath(fullfile(libroot,'Spectra')))
 
-if ~isempty(st_user) && ~isempty(st_comp)
-    fprintf( 'Welcome %s@%s! ILL files are loaded\n',st_user,st_comp);
+if all(~[isempty(st_user)  isempty(st_comp)])
+    fprintf( 'Welcome %s@%s! Spectra files are loaded\n',st_user,st_comp);
 end
 
+%% Fix the broken stuff!
 % If you have the curve fitting toolbox horace and herbert overwrite some functions
-v=ver;
+v = ver;
 if any(strcmp('Curve Fitting Toolbox', {v.Name}))
     try
         herbert_off
@@ -115,12 +130,12 @@ end
 clear all
 close all
 
-% Load previous workspace
-if exist('matlab.mat','file') == 2
+%% Load previous workspace
+if exist('matlab.mat','file')
     disp('Getting previous workspace data from matlab.mat')
     load matlab.mat
 end
 
-% Set defaults
+%% Set defaults
 set(0,'DefaultFigurePaperUnits','centimeters');
 set(0,'DefaultFigurePaperType','A4');
