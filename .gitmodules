@@ -9,4 +9,4 @@
 	url = https://github.com/substance33/Mtools
 [submodule "ResLibCal"]
 	path = ResLibCal
-	url = https://github.com/McStasMcXtrace/iFit
+url=https://github.com/McStasMcXtrace/iFit/Applications/ResLibCal
