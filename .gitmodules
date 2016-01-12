@@ -7,3 +7,6 @@
 [submodule "Mtools"]
 	path = Mtools
 	url = https://github.com/substance33/Mtools
+[submodule "ResLibCal"]
+	path = ResLibCal
+	url = https://github.com/substance33/ResLibCal
