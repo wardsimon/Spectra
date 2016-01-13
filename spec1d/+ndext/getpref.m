@@ -21,8 +21,13 @@ function rPref = getpref(prefName)
 % Branched from specnd 
 %
 % default values
+
+path_ind = strfind(mfilename('fullpath'),'/');
+path_d =  mfilename('fullpath');
+path_d = path_d(1:path_ind(end-3));
+
 dn = { 'libroot'                  'experimental' 'doLog'};
-dv = { fileparts(fileparts(pwd))  0              1};
+dv = { path_d  0              1};
 dl = {...
     'Where Spectra files are stored'...
     'Enable experiemntal features'...

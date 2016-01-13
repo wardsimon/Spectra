@@ -2,13 +2,14 @@
 % File        : startup.m
 % Description : Matlab libraries startup file
 % Author      : Simon Ward
-% Date        : 17/12/2015
+% Date        : 13/01/2016
 % Changes     : Added Unix/Windows compatibilty
 %               try/catch renaming
 %               Use java as it is blind to your system.
 %               Robust path additions
 %               Preference adding.
 %               Logging question
+%               New getpref/setpref structure
 
 %% Get system information
 % Use Java, it's more reliable!
@@ -27,6 +28,40 @@ else
     d = [getenv('HOME') filesep 'MATLAB'];
     if isdir(d)
         cd(d)
+    end
+end
+
+%% Add libraries to the path
+% ! NOTE ! We do not have to add files to path if this is correct!
+% Go to default place ???
+try
+    libroot = ndext.getpref('libroot').val;
+catch % We have not fixed the path perme
+    libroot = getpref('mtools','libroot'); % Try the old way
+    if ~isdir(libroot)
+        if ismac
+            libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select mtools root directory');
+        else
+            libroot = uigetdir(st_home,'Select mtools root directory');
+        end
+        if all(libroot == 0)
+            error('Without an mtools directory, here be dragons!')
+        else
+            addpath(genpath(fullfile(libroot,'Spectra')))
+            ndext.setpref('libroot',libroot)
+            choice = questdlg('Would you to enable experimental features?', ...
+                'Enable Extras', ...
+                'Yes','No','No');
+            % Handle response
+            switch choice
+                case 'No'
+                    ndext.setpref('experimental',0)
+                case 'Yes'
+                    ndext.setpref('experimental',1)
+            end
+        end
+    else
+        addpath(genpath(fullfile(libroot,'Spectra')))
     end
 end
 
@@ -75,37 +110,6 @@ end
 if exist('startuser.m','file')
     eval('startuser');
 end
-
-%% Add libraries to the path
-% ! NOTE ! We do not have to add files to path if this is correct!
-% Go to default place ???
-
-libroot = ndext.getpref('libroot').val;
-
-if ~isdir(libroot)
-    if ismac
-        libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select mtools root directory');
-    else
-        libroot = uigetdir(st_home,'Select mtools root directory');
-    end
-    if all(libroot == 0)
-        error('Without an mtools directory, here be dragons!')        
-    else
-        ndext.setpref('libroot',libroot)
-        choice = questdlg('Would you to enable experimental features?', ...
-            'Enable Extras', ...
-            'Yes','No','No');
-        % Handle response
-        switch choice
-            case 'No'
-                ndext.setpref('experimental',0)
-            case 'Yes'
-                ndext.setpref('experimental',1)
-        end
-    end
-end
-
-addpath(genpath(fullfile(libroot,'Spectra')))
 
 if all(~[isempty(st_user)  isempty(st_comp)])
     fprintf( 'Welcome %s@%s! Spectra files are loaded\n',st_user,st_comp);
