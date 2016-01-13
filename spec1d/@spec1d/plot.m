@@ -21,11 +21,7 @@ function varargout=plot(varargin)
 
 
 %% !!! SIMONS EXPERIMENTAL ! ! !
-try
-    experimental = getpref('mtools','experimental');
-catch
-    experimental = 0;
-end
+experimental = ndext.getpref('experimental').val;
 
 % Logging features. Still under development but works
 global logplot

@@ -9,7 +9,7 @@ function update_horace(varargin)
         hor_run = 0;
     end
    
-    libroot = getpref('mtools','libroot');
+    libroot = ndext.getpref('libroot').val;
     
     if nargin == 0
         url = 'http://svn.isis.rl.ac.uk/viewvc/Horace/trunk/?view=tar';

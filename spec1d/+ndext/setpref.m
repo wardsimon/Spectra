@@ -11,10 +11,12 @@ function setpref(prefName, value)
 %
 % See also ndext.getpref.
 %
+% Branched from specnd
+%
 
 if strcmp(prefName,'default')
-    if ispref('specnd_global')
-        rmpref('specnd_global');
+    if ispref('mtools')
+        rmpref('mtools');
     end
     return
 end
@@ -31,13 +33,13 @@ if ~isempty(iPref)
     if numel(opt0) > 1
         % there is a choice of different string options
         if ~ischar(value) || ~any(strcmp(value,opt0))
-            error('ndext:setpref:WrongInput',['The selected preference has a restricted choice: ' str0{end} '!'])
+            error('spectra:setpref:WrongInput',['The selected preference has a restricted choice: ' str0{end} '!'])
         end
-        setpref('specnd_global',prefName,value);
+        setpref('mtools',prefName,value);
     else
         % the value has to be a scalar
         % TODO check for other type of values
-        setpref('specnd_global',prefName,value);
+        setpref('mtools',prefName,value);
     end
     
 else

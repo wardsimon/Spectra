@@ -31,11 +31,7 @@ else
 end
 
 %% Start a diary
-try
-    doLog = getpref('mtools','doLog');
-catch
-    doLog = [];
-end
+    doLog = getpref('mtools','doLog').val;
 if isempty(doLog)
     choice = questdlg('Would you to enable logging?', ...
         'Enable logging', ...
@@ -43,10 +39,10 @@ if isempty(doLog)
     % Handle response
     switch choice
         case 'No'
-            setpref('mtools','doLog',0)
+            ndext.setpref('doLog',0)
             doLog = 0;
         case 'Yes'
-            setpref('mtools','doLog',1)
+            ndext.setpref('doLog',1)
             doLog = 1;
     end
 end
@@ -81,11 +77,9 @@ end
 %% Add libraries to the path
 % ! NOTE ! We do not have to add files to path if this is correct!
 % Go to default place ???
-try
-    libroot = getpref('mtools','libroot');
-catch
-    libroot = [];
-end
+
+libroot = ndext.getpref('libroot').val;
+
 if ~isdir(libroot)
     if ismac
         libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select mtools root directory');
@@ -93,18 +87,18 @@ if ~isdir(libroot)
         libroot = uigetdir(st_home,'Select mtools root directory');
     end
     if all(libroot == 0)
-        error('Without an mtools directory, here be dragons!')
+        error('Without an mtools directory, here be dragons!')        
     else
-        setpref('mtools','libroot',libroot)
+        ndext.setpref('libroot',libroot)
         choice = questdlg('Would you to enable experimental features?', ...
             'Enable Extras', ...
             'Yes','No','No');
         % Handle response
         switch choice
             case 'No'
-                setpref('mtools','experimental',0)
+                ndext.setpref('experimental',0)
             case 'Yes'
-                setpref('mtools','experimental',1)
+                ndext.setpref('experimental',1)
         end
     end
 end
