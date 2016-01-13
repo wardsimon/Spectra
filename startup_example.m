@@ -31,7 +31,8 @@ else
 end
 
 %% Start a diary
-    doLog = getpref('mtools','doLog').val;
+doLog = ndext.getpref('doLog').val;
+
 if isempty(doLog)
     choice = questdlg('Would you to enable logging?', ...
         'Enable logging', ...
@@ -46,6 +47,7 @@ if isempty(doLog)
             doLog = 1;
     end
 end
+
 if doLog
     if exist(fullfile(d,'matlab.log'),'file') == 2
         try
@@ -129,7 +131,3 @@ if exist('matlab.mat','file')
     disp('Getting previous workspace data from matlab.mat')
     load matlab.mat
 end
-
-%% Set defaults
-set(0,'DefaultFigurePaperUnits','centimeters');
-set(0,'DefaultFigurePaperType','A4');
