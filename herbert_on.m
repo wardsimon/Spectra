@@ -21,7 +21,7 @@ function path=herbert_on(non_default_path)
 %
 
 try
-    libroot = ndext.getpref('libroot').val;
+    libroot = sdext.getpref('libroot').val;
 catch
     libroot = fullfile(matlabroot(),'toolbox','mtools');
 end

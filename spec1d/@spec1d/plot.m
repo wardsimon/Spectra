@@ -21,7 +21,7 @@ function varargout=plot(varargin)
 
 
 %% !!! SIMONS EXPERIMENTAL ! ! !
-experimental = ndext.getpref('experimental').val;
+experimental = sdext.getpref('experimental').val;
 
 % Logging features. Still under development but works
 global logplot

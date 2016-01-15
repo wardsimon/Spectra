@@ -21,22 +21,12 @@ catch
     st_comp = 'unavailable';
 end
 
-d = fullfile(st_home,'Documents','MATLAB');
-if isdir(d)
-    cd(d)
-else
-    d = [getenv('HOME') filesep 'MATLAB'];
-    if isdir(d)
-        cd(d)
-    end
-end
-
 %% Add libraries to the path
 % ! NOTE ! We do not have to add files to path if this is correct!
 % Go to default place ???
-try
-    libroot = ndext.getpref('libroot').val;
-catch % We have not fixed the path perme
+try % Try the new way
+    libroot = sdext.getpref('libroot').val;
+catch % We have not fixed the path
     libroot = getpref('mtools','libroot'); % Try the old way
     if ~isdir(libroot)
         if ismac
@@ -48,16 +38,16 @@ catch % We have not fixed the path perme
             error('Without an mtools directory, here be dragons!')
         else
             addpath(genpath(fullfile(libroot,'Spectra')))
-            ndext.setpref('libroot',libroot)
+            sdext.setpref('libroot',libroot)
             choice = questdlg('Would you to enable experimental features?', ...
                 'Enable Extras', ...
                 'Yes','No','No');
             % Handle response
             switch choice
                 case 'No'
-                    ndext.setpref('experimental',0)
+                    sdext.setpref('experimental',0)
                 case 'Yes'
-                    ndext.setpref('experimental',1)
+                    sdext.setpref('experimental',1)
             end
         end
     else
@@ -66,7 +56,7 @@ catch % We have not fixed the path perme
 end
 
 %% Start a diary
-doLog = ndext.getpref('doLog').val;
+doLog = sdext.getpref('doLog').val;
 
 if isempty(doLog)
     choice = questdlg('Would you to enable logging?', ...
@@ -75,11 +65,21 @@ if isempty(doLog)
     % Handle response
     switch choice
         case 'No'
-            ndext.setpref('doLog',0)
+            sdext.setpref('doLog',0)
             doLog = 0;
         case 'Yes'
-            ndext.setpref('doLog',1)
+            sdext.setpref('doLog',1)
             doLog = 1;
+    end
+end
+
+d = fullfile(st_home,'Documents','MATLAB');
+if isdir(d)
+    cd(d)
+else
+    d = [getenv('HOME') filesep 'MATLAB'];
+    if isdir(d)
+        cd(d)
     end
 end
 

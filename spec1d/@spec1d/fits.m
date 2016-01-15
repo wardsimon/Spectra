@@ -90,7 +90,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     sout = spec1d;
     fitdata = struct;
     
-    if all([ndext.getpref('experimental').val, options.parallel, ~options.multifit])
+    if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         all_data = cell(length(s1),1);
         [all_data{:}] = get(s1,'x','y','e');
         for i = 1:length(all_data)

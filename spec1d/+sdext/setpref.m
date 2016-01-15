@@ -1,15 +1,15 @@
 function setpref(prefName, value)
-% sets specnd global preferences
+% sets spec1d global preferences
 %
-% ndext.setpref(prefName, value)
+% sdext.setpref(prefName, value)
 %
 % Sets the value of the prefName specnd global preferences.
 %
-% ndext.setpref('default')
+% sdext.setpref('default')
 %
 % Resets all preferences values to the default one.
 %
-% See also ndext.getpref.
+% See also sdext.getpref.
 %
 % Branched from specnd
 %
@@ -22,7 +22,7 @@ if strcmp(prefName,'default')
 end
 
 % check if the preference name exists
-dPref = ndext.getpref('default');
+dPref = sdext.getpref('default');
 
 iPref = find(strcmp(prefName,{dPref(:).name}),1,'first');
 if ~isempty(iPref)
@@ -43,7 +43,7 @@ if ~isempty(iPref)
     end
     
 else
-    error('ndext:setpref:WrongName','The given name is not a valid specnd global preferences!');
+    error('spectra:setpref:WrongName','The given name is not a valid spectra global preferences!');
 end
 
 end

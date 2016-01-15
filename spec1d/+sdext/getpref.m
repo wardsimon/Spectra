@@ -1,22 +1,22 @@
 function rPref = getpref(prefName)
-% returns specnd global preferences
+% returns spec1d global preferences
 %
-% rPref = ndext.getpref
+% rPref = sdext.getpref
 %
 % Returns the names, values and labels of each preferences. Default values
 % are returned, where no value is saved. rPref is a struct with field names
 % 'name', 'label' and 'val'. Each field is a cell.
 %
-% rPref = ndext.getpref(pName)
+% rPref = sdext.getpref(pName)
 %
 % Returns only the requested specnd preference name, value and label. Each
 % field contains the requested value.
 %
-% rPref = ndext.getpref('default')
+% rPref = sdext.getpref('default')
 %
 % Returns the default names, values and labels of each preferences.
 %
-% See also ndext.setpref.
+% See also sdext.setpref.
 %
 % Branched from specnd 
 %
@@ -26,8 +26,8 @@ path_ind = strfind(mfilename('fullpath'),'/');
 path_d =  mfilename('fullpath');
 path_d = path_d(1:path_ind(end-3));
 
-dn = { 'libroot'                  'experimental' 'doLog'};
-dv = { path_d  0              1};
+dn = { 'libroot' 'experimental' 'doLog'};
+dv = { path_d    0              0};
 dl = {...
     'Where Spectra files are stored'...
     'Enable experiemntal features'...
