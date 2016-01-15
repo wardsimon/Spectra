@@ -78,7 +78,7 @@ hfout=[];
 % Finally plot something
 g = gcf;
 held = ishold(g);
-markerorder = str2mat('o','square','diamond','^','>','<','p');
+markerorder = {'o','square','diamond','^','>','<','p'};
 colourorder = get(gca,'ColorOrder');
 hold on
 
@@ -111,13 +111,13 @@ for i = 1:length(s)
     set(hle,'Parent',hEGroup)
     
     %----- Do the actual plotting
-    hll=plot(x,y,'LineStyle','None','Marker',deblank(markerorder(1+mod(i-1,7),:)),'MarkerFaceColor',colourorder(1+mod(i-1,7),:),...
+    hll=plot(x,y,'LineStyle','None','Marker',markerorder{1+mod(i-1,7)},'MarkerFaceColor',colourorder(1+mod(i-1,7),:),...
         'MarkerSize',7,'MarkerEdgeColor','None','Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
     
-    if ~isempty(p.Unmatched)
-        f = fieldnames(p.Unmatched);
+    if ~isempty(plot_opt)
+        f = fieldnames(plot_opt);
         for j = 1:length(f)
-            set(hll,f{j},p.Unmatched.(f{j}))
+            set(hll,f{j},plot_opt.(f{j}))
         end
     end
     if ~isempty(yfit);
