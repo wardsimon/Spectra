@@ -49,10 +49,6 @@ if ~isempty(logplot)
     end
 end
 
-r.x=[];
-r.y=[];
-r.e=[];
-
 %% Sort out arguments
 %----- Draw data window
 %          b     blue          .     point              -     solid
