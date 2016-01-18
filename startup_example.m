@@ -27,8 +27,10 @@ end
 try % Try the new way
     libroot = sdext.getpref('libroot').val;
 catch % We have not fixed the path
-    libroot = getpref('mtools','libroot'); % Try the old way
-    if ~isdir(libroot)
+    try
+        libroot = getpref('mtools','libroot'); % Try the old way
+        addpath(genpath(fullfile(libroot,'Spectra')))
+    catch
         if ismac
             libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select mtools root directory');
         else
@@ -50,15 +52,13 @@ catch % We have not fixed the path
                     sdext.setpref('experimental',1)
             end
         end
-    else
-        addpath(genpath(fullfile(libroot,'Spectra')))
     end
 end
 
 %% Start a diary
 doLog = sdext.getpref('doLog').val;
 
-if isempty(doLog)
+if (doLog) == 2
     choice = questdlg('Would you to enable logging?', ...
         'Enable logging', ...
         'Yes','No','No');
