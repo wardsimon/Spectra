@@ -1,4 +1,4 @@
-function scan = ResCalFit_ini(file,varargin)
+function varargout = ResCalFit_ini(file,varargin)
     %% ResCalFit_ini function scan = ResCalFit_ini(file,varargin)
     % Initialisation script for fitting triple-axis data using ResLibCal as a back-end.
     % !!! This function typically needs 2 calls !!!
@@ -22,7 +22,7 @@ function scan = ResCalFit_ini(file,varargin)
     % varargin{6} = Background file;     'Text'
     %
     % S. Ward (simon.ward@psi.ch), September 2015
-    % Version 1.2 (14.09.2015)
+    % Version 1.3 (18.01.2016) - Support for GPU
     
     global ResFitScn
     
@@ -40,7 +40,7 @@ function scan = ResCalFit_ini(file,varargin)
     
     % Process arguments 
     if isempty(varargin)
-        scan = cfg;
+        varargout{1} = cfg;
         return
     else
         if length(varargin) < 4
@@ -54,7 +54,7 @@ function scan = ResCalFit_ini(file,varargin)
                 Q(:,i) = varargin{i};
             else
                 if length(varargin{i}) ~= max(larg)
-                    error();
+                    error('Wrong length');
                 else
                     Q(:,i) = varargin{i};
                 end
@@ -81,16 +81,10 @@ function scan = ResCalFit_ini(file,varargin)
         scan(i).EXP.QK = Q(i,2);
         scan(i).EXP.QL = Q(i,3);
         scan(i).EXP.W  = Q(i,4);
-        scan(i) = ResLibCal(scan(i),'compute');
+        scan(i).resolution.HKLE = Q(i,:);
     end
-    
-    % The new ResLibCal can except this. This is for the future....
-%     scan = cfg;
-%     cfg.EXP.QH = Q(1,1);
-%     cfg.EXP.QK = Q(1,2);
-%     cfg.EXP.QL = Q(1,3);
-%     cfg.EXP.W  = Q(:,4);
-%     scan = ResLibCal(scan,'compute');
-    % Make configuration available for ResCalFit 
-    ResFitScn = scan;
+    ResFitScn = arrayfun(@updateMC,scan);
+    if nargout == 1
+        varargout{1} = arrayfun(@(x) ResLibCal(x,'compute'),scan);
+    end
 end

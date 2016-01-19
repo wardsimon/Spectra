@@ -6,13 +6,16 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
     % NOTE!!! This only works with @spec1d/fits version > 4.2
     %
     % S. Ward (simon.ward@psi.ch), September 2015
-    % Version 1.2 (14.09.2015)
+    % Version 1.3 (18.01.2016) - Support for GPU
     
     global ResFitScn iter_l multifit_ind
-    persistent iter_mem
+    persistent iter_mem runGPU
     
     if isempty(iter_mem)
         iter_mem = 1;
+    end
+    if isempty(runGPU)
+        runGPU = sdext.getpref('gpuArray').val;
     end
     
     if nargin == 2;
@@ -28,11 +31,13 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         if length(x) ~= length(ResFitScn(multifit_ind))
             error('The initialised fit is not the same as the fit. Check ResCalFit_ini');
         end
+        
         % What frame are we in? Only recompute every scan, not point! (Errors will crop up otherwise...)
         if iter_l ~= iter_mem
-            for i = multifit_ind
-                ResFitScn(i).resolution = updateMC(ResFitScn(i).EXP,ResFitScn(i).resolution);
-            end
+            ResFitScn(multifit_ind) = arrayfun(@updateMC,ResFitScn(multifit_ind));
+%             for i = multifit_ind
+%                 ResFitScn(i).resolution = updateMC(ResFitScn(i).EXP,ResFitScn(i).resolution);
+%             end
             iter_mem = iter_l;
         end
         
@@ -43,16 +48,28 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         for i = multifit_ind
             % Get the MC points and reshape them to observed Q
             %Q = [(ResFitScn(i).resolution.abc.hkl2Frame\[ResFitScn(i).resolution.abc.cloud{1:3}]')' ResFitScn(i).resolution.abc.cloud{4}];
-            Q = cell2mat(ResFitScn(i).resolution.rlu.cloud);
-            try
+            Q = ResFitScn(i).resolution.rlu.cloud';
+            if iscell(Q)
+                Q = ([ResFitScn(i).resolution.rlu.cloud{:}]');
+            end
+            if isfield(ResFitScn(i).EXP,'NMC')
                 NMC = ResFitScn(i).EXP.NMC;
-            catch
-                NMC = length(ResFitScn(i).resolution.rlu.cloud{1});
+            else
+                if iscell(ResFitScn(i).resolution.rlu.cloud)
+                    NMC = length(ResFitScn(i).resolution.rlu.cloud{1});
+                else
+                    NMC = length(ResFitScn(i).resolution.rlu.cloud(1,:));
+                end
+                ResFitScn(i).EXP.NMC = NMC;
             end
             % Calculate the cross section
             S = ResFitScn(i).resolution.R0*sum(feval(ResFitScn(i).SQW,Q,p))/NMC;
             % Add on a background.
-            y(j) = S + feval(ResFitScn(i).BG,ResFitScn(i).resolution.HKLE,p);
+            if runGPU
+                y(j) = gather(S) + feval(ResFitScn(i).BG,ResFitScn(i).resolution.HKLE,p);
+            else
+                y(j) = S + feval(ResFitScn(i).BG,ResFitScn(i).resolution.HKLE,p);
+            end
             j = j+1;
         end
     else
