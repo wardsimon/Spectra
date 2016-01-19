@@ -26,13 +26,13 @@ path_ind = strfind(mfilename('fullpath'),'/');
 path_d =  mfilename('fullpath');
 path_d = path_d(1:path_ind(end-3));
 
-dn = { 'libroot' 'experimental' 'doLog'};
-dv = { path_d    0              2};
+dn = { 'libroot' 'experimental' 'doLog','gpuArray'};
+dv = { path_d    0              2        0};
 dl = {...
-    'Where Spectra files are stored'...
-    'Enable experiemntal features'...
-    'Log all interactions'
-    };
+    'Where Spectra files are stored',...
+    'Enable experiemntal features',...
+    'Log all interactions',...
+    'Should we run on the GPU'};
 
 dPref = struct('val',{},'name',{},'label',{});
 
@@ -55,7 +55,7 @@ if (nargin>0)
     
     iPref = find(strcmp(prefName,{dPref(:).name}),1);
     if isempty(iPref)
-        error('spectra:getndpref:WrongName','The requested spectra preference does not exist!');
+        error('spectra:getsdpref:WrongName','The requested spectra preference does not exist!');
     end
     
     % if a specific value is requested and it exists, return it

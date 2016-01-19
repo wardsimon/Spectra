@@ -45,8 +45,8 @@ for il=1:length(x_per_spec)
         end
     end
  
-    vout(il).pvals    = pout;
-    vout(il).evals    = eout;
+    vout(il).pvals    = pout(:);
+    vout(il).evals    = eout(:);
     vout(il).function = w.function;
     vout(il).pnames   = w.pnames{((il-1)*(length(w.pnames)/length(x_per_spec))+1):(il*length(w.pnames)/length(x_per_spec))};
     % I think this is the correct correction!
