@@ -202,13 +202,15 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
                         pnames = [pnames(:); temp(:)];
                     end
                 else
-                    [~,~,pnames] = feval(func,x,p,1);
+                    if nargin(func)<3
+                        pnames = num2str((1:numel(p))','p%d');
+                    else
+                        [~,~,pnames] = feval(func,x,p,1);
+                    end
                 end
             else
-                pnames = cell(length(p),1);
-                for i=1:length(p)
-                    pnames{i} = ['p' num2str(i)];
-                end
+            pnames = num2str((1:numel(p))','p%d');
+
             end
             
             %----- set return
