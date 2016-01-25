@@ -115,15 +115,15 @@ for i=1:length(x);
          if strcmp(method,'mean') % Simple mean
             xres=[xres;sum(xcombi)/length(xcombi)];
             yres=[yres;sum(ycombi)/length(ycombi)];
-            eres=[eres;sqrt(sum(ecombi.*ecombi))/length(ecombi)];
+            eres=[eres;sqrt(sum(ecombi.^2))/length(ecombi)];
          elseif strcmp(method,'counts') % Normalised counts
             xres=[xres;     sum(xcombi.*mcombi) /max(sum(mcombi),eps)];
             yres=[yres;     sum(ycombi.*mcombi) /max(sum(mcombi),eps)];
             eres=[eres;sqrt(sum(ycombi.*mcombi))/max(sum(mcombi),eps)];
          elseif strcmp(method,'weight') % Weighted by inverse error
-            xres=[xres; sum(xcombi./ecombi)/sum(1./ecombi)];
-            yres=[yres; sum(ycombi./ecombi)/sum(1./ecombi)];
-            eres=[eres;sqrt(length(ecombi))/sum(1./ecombi)];
+            xres=[xres; sum(xcombi./ecombi.^2)/sum(1./ecombi.^2)];
+            yres=[yres; sum(ycombi./ecombi.^2)/sum(1./ecombi.^2)];
+            eres=[eres;sqrt(sum(ycombi./ecombi.^2))/sum(1./ecombi.^2)];
          end
          xcombi=[x(i)];
          ycombi=[y(i)];
@@ -146,7 +146,7 @@ if ~isempty(xcombi)
    elseif strcmp(method,'counts') % Normalised counts
       xres=[xres;     sum(xcombi.*mcombi) /max(sum(mcombi),eps)];
       yres=[yres;     sum(ycombi.*mcombi) /max(sum(mcombi),eps)];
-      eres=[eres;sqrt(sum(ycombi.*mcombi))/max(sum(mcombi),eps)];
+      eres=[eres;sqrt(sum((ecombi.*mcombi).^2))/max(sum(mcombi),eps)];
    elseif strcmp(method,'weight') % Weighted by inverse error
       xres=[xres; sum(xcombi./ecombi)/sum(1./ecombi)];
       yres=[yres; sum(ycombi./ecombi)/sum(1./ecombi)];

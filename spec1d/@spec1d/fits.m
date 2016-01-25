@@ -104,27 +104,25 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
                 all_data{i}{1} = all_data{i}{1}(all_data{i}{1}>=options.window{i}(1) & all_data{i}{1}<=options.window{i}(2));
             end
         end
-        spmd
-            for n = labindex:numlabs:length(s1)
-                switch  options.method
-                    case 'lsquare'
-                        [yfit{n},p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options);
-                    case 'samin'
-                        error('This has not been implemented yet, Sorry!')
-                    otherwise
-                        warning('Fitting method is not implemented or not understood. Using lsquare')
-                        [yfit{n},p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options);
-                end
-                ChiSq{n} = sum(((all_data{n}{2}-yfit)./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
+        parfor n = 1:length(all_data)
+            switch  options.method
+                case 'lsquare'
+                    [yfit{n},p{n},cvg,iter,corp,covp,covr,stdresid,Z,RSq{n},ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options);
+                case 'samin'
+                    error('This has not been implemented yet, Sorry!')
+                otherwise
+                    warning('Fitting method is not implemented or not understood. Using lsquare')
+                    [yfit{n},p{n},cvg,iter,corp,covp,covr,stdresid,Z,RSq{n},ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options);
             end
+            ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
         end
         for il = 1:length(all_data)
             %----- Get names of fit variables
             if pn
                 if options.multifit
                     pnames = {};
-                    for i = 1:n
-                        [p_new, ~, ind] = multifitp2p(p,notfixed,i);
+                    for i = 1:length(s1)
+                        [p_new, ~, ind] = multifitp2p(p{i},notfixed,i);
                         [~, ~, temp] = feval(func,all_data{il}{1}(ind),p_new,1);
                         pnames = [pnames(:); temp(:)];
                     end
@@ -196,7 +194,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
             if pn
                 if options.multifit
                     pnames = {};
-                    for i = 1:n
+                    for i = 1:length(s1)
                         [p_new, ~, ind] = multifitp2p(p,notfixed,i);
                         [~, ~, temp] = feval(func,x(ind),p_new,1);
                         pnames = [pnames(:); temp(:)];

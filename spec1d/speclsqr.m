@@ -480,7 +480,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     %% cov matrix of data est. from Bard Eq. 7-5-13, and Row 1 Table 5.1
     
     tp = wt.^2;
-    if exist('sparse')  % save memory
+    if exist('sparse','builtin')  % save memory
         Q = sparse (1:m, 1:m, 1 ./ tp);
         Qinv = sparse (1:m, 1:m, tp);
     else
@@ -551,6 +551,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
         
         jtgjinv = pinv(jac'*Qinv*jac);
         covp = jtgjinv*jac'*Qinv*Vy*Qinv*jac*jtgjinv; % Eq. 7-5-13, Bard %cov of parm est
+        corp = zeros(n,n);
         for k = 1:n,
             for j = k:n,
                 corp(k,j) = covp(k,j)/sqrt(abs(covp(k,k)*covp(j,j)));
