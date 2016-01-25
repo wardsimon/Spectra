@@ -1,13 +1,13 @@
 function s_out = combine(toll,varargin)
 %
-% function r=combine(method,toll,s1,s2,....sn)
+% function s_out = combine(toll,s1,s2,....sn,'method','methods')
 %
 % @SPEC1D/COMBINE function to combine two or more spectra. 
 %
 % If the x values of two points differ by less
-% than tolerance toll, then the points are combined.
+% than tolerance 'toll', then the points are combined.
 %
-% Depending on method, points are combined as
+% Depending on the optional 'method', points are combined as
 % 'mean'		: Simple means for x and y, errors are averaged in quadrature.
 % 'counts'	: Restablishes normalisation and original counts assuming 
 %				  square-root statistics, is correct for normalised counts
@@ -18,11 +18,13 @@ function s_out = combine(toll,varargin)
 %
 % Example: 
 % Combine s1,s2 and s3 when x values differ by less than 0.01.
-% >r=combine('mean',0.01,s1,s2,s3)
-%
-% DFM 1.4.98, HMR, NBC, BHL 20.11.2000
+% >r = combine(0.01,s1,s2,s3) % combine s1,s2,s3 by counts method 
+% >r = combine(0.01,s1,s2,s3,'method','mean') % combine s1,s2,s3 by mean method 
+
+% Simon Ward 25/01/2016
 
 p = inputParser;
+p.CaseSensitive = false;
 p.addRequired('toll',@(x) isnumeric(x) && isreal(x));
 p.addRequired('s_in',@(x) isa(x,'spec1d'));
 p.addOptional('add_s',[],@(x) isa(x,'spec1d'))
