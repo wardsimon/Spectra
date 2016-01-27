@@ -1,37 +1,28 @@
-function r1=log(s1)
+function sout = log(varargin)
 %
-% function r=abs(s1)
+% function r = log(s1..sn)
 %
-% @SPEC1D/DYDX function to give the absolute value of spectrum s1.
+% @SPEC1D/Log function to give the natural log of each spectrum s1...sn.
 %
-% JOP 4.11.09
+% Simon Ward 26/01/2016 - simon.ward@psi.ch
 %
-yfitabs=[];
 
-for n=1:length(s1)
-    x=s1(n).x; x=x(:);
-    y=s1(n).y; y=y(:);  yy=y(:);
-    e=s1(n).e; e=e(:);
-    yfit=s1(n).yfit; yfit=yfit(:);
-    s = warning('query', 'all');
-    warning off all
+s1 = [varargin{:}];
+
+for n = 1:length(s1)
     
-    yabs=log(y);
-
+    x = s1(n).x(:);
+    y = s1(n).y(:);
+    e = s1(n).e(:);
+    yfit = s1(n).yfit(:);
+    
+    r = s1(n);
+    r.x = x;
+    r.y = log(y);
+    r.e = e./y;
+    
     if ~isempty(yfit)
-        yfitabs=log(yfit);
+        r.yfit=log(yfit);
     end
-    yabs(yy<0)=0;
-    
-    r.x=x;
-    r.y=yabs;
-    r.e=log(e)./e;
-    r.e(yy<0)=0;
-    warning(s);
-    r.x_label=s1(n).x_label;
-    r.y_label=s1(n).y_label;
-    r.datafile=s1(n).datafile;
-    r.yfit=yfitabs;
-
-    r1(n)=spec1d(r);
+    sout(n)=spec1d(r);
 end

@@ -1,7 +1,5 @@
 function s_out = loadobj(s_in)
-%% This function fixes the conversion between the original spec1d and the simon version.
-
-
+%% This function fixes the conversion between the original spec1d and the post 2013 version.
 s = size(s_in);
 
 s_in = s_in(:);

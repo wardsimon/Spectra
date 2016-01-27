@@ -7,14 +7,16 @@ function s = spec1d(a,varargin)
 % Usage:    1. s = spec1d(x,y,e);
 %           2. s = spec1d('x',x,'y',y,'e',e);
 %           3. s = spec1d(x,y,,e,'datafile',file,'x_label',xlabel,'y_label',ylabel);
-% Simon Ward 15/01/2016
+%
+% Update : Start GPU work.
+% Simon Ward 25/01/2016
 
     p = inputParser;
     
     if nargin == 0
         p.addParamValue('x',[],@(x) isnumeric(x) & isreal(x))
         p.addParamValue('y',[],@(x) isnumeric(x) & isreal(x))
-        p.addParamValue('e',[],@(x) isnumeric(x) & isreal(x))
+        p.addParamValue('e',[],@(x) isnumeric(x) & isreal(x) & all(x >= 0))
         p.addParamValue('yfit',[],@(x) isnumeric(x) & isreal(x))
         p.addParamValue('x_label',[],@(x) ischar(x) | isempty(x))
         p.addParamValue('y_label',[],@(x) ischar(x) | isempty(x))
@@ -30,7 +32,7 @@ function s = spec1d(a,varargin)
         end
         p.addParamValue('x',[],@(x) isnumeric(x) & isreal(x))
         p.addParamValue('y',[],@(x) isnumeric(x) & isreal(x))
-        p.addParamValue('e',[],@(x) isnumeric(x) & isreal(x))
+        p.addParamValue('e',[],@(x) isnumeric(x) & isreal(x) & all(x >= 0))
         p.addParamValue('yfit',[],@(x) isnumeric(x) & isreal(x))
         p.addParamValue('x_label',[],@(x) ischar(x) | isempty(x))
         p.addParamValue('y_label',[],@(x) ischar(x) | isempty(x))
@@ -44,7 +46,7 @@ function s = spec1d(a,varargin)
         end
         p.addRequired('x',@(x) isnumeric(x) & isreal(x))
         p.addRequired('y',@(x) isnumeric(x) & isreal(x))
-        p.addRequired('e',@(x) isnumeric(x) & isreal(x))
+        p.addRequired('e',@(x) isnumeric(x) & isreal(x) & all(x >= 0))
         p.addOptional('yfit',[],@(x) isnumeric(x) & isreal(x))
         p.addOptional('x_label',[],@ischar)
         p.addOptional('y_label',[],@ischar)
@@ -77,5 +79,28 @@ function s = spec1d(a,varargin)
             warning('x, y and e are not of the same length!\nLength x:\t%i\nLength y:\t%i\nLength e:\t%i',length(s_in(i).x),length(s_in(i).y),length(s_in(i).e))
         end
         
+        if (length(s_in(i).x) > 1E5) && sdext.getpref('gpuArray').val && checkGpuMemory(s_in(i).x)
+           s_in(i).x = gpuArray(s_in(i).x); 
+           s_in(i).y = gpuArray(s_in(i).y);
+           s_in(i).e = gpuArray(s_in(i).e);
+        else
+           if isa(s_in(i).x,'gpuArray') % One of the conditions is not met, pull back
+               s_in(i).x = gather(s_in(i).x);
+               s_in(i).y = gather(s_in(i).y);
+               s_in(i).e = gather(s_in(i).e);
+           end
+        end
         s(i) = class(s_in(i),'spec1d');
+    end 
+end
+
+function OK = checkGpuMemory(a)
+    d = gpuDevice;
+    memA = d.AvailableMemory;  % Check available memory
+    memD = 3*length(a)*8; % We will use this much memory
+    if memD < memA
+        OK = 1;
+    else
+        OK = 0;
     end
+end

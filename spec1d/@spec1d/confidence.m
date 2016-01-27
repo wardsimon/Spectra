@@ -48,7 +48,7 @@ function varargout = confidence(s,fit,conf,varargin)
     
     p = fit(i).pvals(fit(i).evals~=0);
     
-    delta=CalcConfidence(p,resid,jac,conf);
+    delta = CalcConfidence(p,resid,jac,conf);
     
     p0 = fit(i).pvals;
     p1 = p0;
@@ -57,11 +57,9 @@ function varargout = confidence(s,fit,conf,varargin)
     p2(fit(i).evals~=0) = p0(fit(i).evals~=0) - delta;
     
     
-    y1=feval(fit(i).function,x,p1);
-    y2=feval(fit(i).function,x,p2);
-    
-    f = get(0,'CurrentFigure');
-    
+    y1 = feval(fit(i).function,x,p1);
+    y2 = feval(fit(i).function,x,p2);
+        
     if nargout == 1
         varargout{1}(:,1) = y1;
         varargout{1}(:,2) = y2;
@@ -69,6 +67,7 @@ function varargout = confidence(s,fit,conf,varargin)
         varargout{1} = y1;
         varargout{2} = y2;
     else
+        f = get(0,'CurrentFigure');
         if ~isempty(f)
             figure(f)
             l = findobj(gcf,'Type','Line','-and','LineStyle','-','-not','Color',[.5 .5 .5]);

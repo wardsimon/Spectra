@@ -21,7 +21,7 @@ function varargout=plot(varargin)
 
 
 %% !!! SIMONS EXPERIMENTAL ! ! !
-    experimental = sdext.getpref('experimental').val;
+experimental = sdext.getpref('experimental').val;
 
 % Logging features. Still under development but works
 global logplot
@@ -48,10 +48,6 @@ if ~isempty(logplot)
         end
     end
 end
-
-r.x=[];
-r.y=[];
-r.e=[];
 
 %% Sort out arguments
 %----- Draw data window
@@ -159,7 +155,7 @@ if isempty(color)
         end
     end
 else
-    colororder=hsv2rgb([ones(length(s),1) linspace(1,0.1,length(s))' ones(length(s),1)].*repmat(rgb2hsv(color),length(s),1));
+    colororder=hsv2rgb([ones(length(s),1) linspace(0.3,1,length(s))' ones(length(s),1)].*repmat(rgb2hsv(color),length(s),1));
 end
 
 if isempty(marker)
@@ -189,11 +185,11 @@ for i=1:length(s)
     %----- build up nan-separated vector for bars
     ytop = (y + err)';
     ybot = (y - err)';
-    tee = 0.075*min(diff(x));  % make tee .02 x-distance for error bars
+    tee = 0.075*min(diff(x));  % make tee distance for error bars
     xleft = (x-tee)';
     xright = (x+tee)';
     x_eb = zeros(9*length(x),1);
-    y_eb =x_eb;
+    y_eb = x_eb;
     for j = 1:length(x)
         x_eb((((j-1)*9)+1):(j*9)) = [xleft(j) xright(j) NaN x(j) x(j) NaN xleft(j) xright(j) NaN];
         y_eb((((j-1)*9)+1):(j*9)) = [ybot(j) ybot(j) NaN ybot(j) ytop(j) NaN ytop(j) ytop(j) NaN];
@@ -212,7 +208,7 @@ for i=1:length(s)
         text('Color',hsv2rgb([1 1 0.7].*rgb2hsv(colororder(i,:))), 'VerticalAlign', 'Middle','Visible','Off','Tag',num2str(i),'Interpreter','Tex');
         % Performance problems with high density data
         if length(x) < 250
-            set(gcf,'WindowButtonMotionFcn', @hoverCallback);
+%             set(gcf,'WindowButtonMotionFcn', @hoverCallback);
         end
     else
         set(hll,'ButtonDownFcn','editline(gco);');
@@ -259,18 +255,28 @@ for i=1:length(s)
             text('Color',hsv2rgb([1 1 0.7].*rgb2hsv(colororder(i,:))),...
                 'VerticalAlign', 'Middle','Visible','Off','Tag',num2str(i+length(s)),'Interpreter','Tex');
             set(hlf,'Tag',num2str(i+length(s)))
-            set(gcf,'WindowButtonMotionFcn', @hoverCallback);
+%             set(gcf,'WindowButtonMotionFcn', @hoverCallback);
         end
         set(hlf,'ButtonDownFcn','editline(gco);');
         set(hlf,'Parent',hEGroup)
     else
-        hlf=NaN;
+        hlf=[];
     end
-   
-    % Remove error and fit from legend
-    set(get(get(hEGroup,'Annotation'),'LegendInformation'),...
-        'IconDisplayStyle','off'); % Exclude line from legend
     
+    % Remove error and fit from legend
+    if ishg2
+        % HG2 Way
+        hle.LegendDisplay = 'off';
+    else
+        try 
+            % The undocumented way
+            hasbehavior(hle,'legend',0)
+        catch
+        % Foolproof way!
+        set(get(get(hEGroup,'Annotation'),'LegendInformation'),...
+            'IconDisplayStyle','off');
+        end
+    end
     
     hout=[hout;hll];
     hbout=[hbout;hle];
