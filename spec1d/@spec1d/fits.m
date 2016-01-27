@@ -16,7 +16,7 @@ function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
     p.CaseSensitive = false;
     p.KeepUnmatched = true;
     p.addRequired('spec1d',@(x) isa(x,'spec1d'))
-    p.addRequired('func',@ischar)
+    p.addRequired('func',@(x) ischar(x) || isa(x,'function_handle'))
     p.addRequired('pin',@(x) isnumeric(x) | iscell(x))
     p.addRequired('fixed',@(x) isnumeric(x) | islogical(x))
     fcp = [];
