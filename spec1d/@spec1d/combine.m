@@ -15,12 +15,10 @@ function s_out = combine(toll,varargin)
 % Default is 'counts'
 %
 % Depending on the optional 'indexing', points are indexed as
-% 'relative'    : Histogram bining of size 'toll', averages are taken in
-%                 this range. The minimum gap before averaging is greater
-%                 than 'toll'
-% 'absolute'	: The starting point of the histogram is continuously shifted
-%                 to the data points. The absolute bin between spectra points
-%                 is always greater then 'toll'.
+% 'relative'    : Histogram bining of size 'toll'. This is the same as
+%                 using the rebin function except for multiple spectum.
+% 'absolute'	: The gap between the points is  always greater then 'toll'
+%                 before any averaging.
 % 'legacy'      : Replicate the original @spec1d/combine
 % Default is 'relative' due to speed considerations.
 %
@@ -57,28 +55,10 @@ x = [s.x];
 y = [s.y]; y = y(ind);
 e = [s.e]; e = e(ind);
 
-gpuCompute = 0;
-if isa(x,'gpuArray')
-    gpuCompute = 1;
-    if ~strcmp(method,{'counts','weight'})
-        warning('spec1d:combine:GpuUnsuportedMethod','%s is not a valid GPU method. Switching to counts',p.Results.method)
-        method = 'counts';
-    end
-end
-
 switch lower(indexing(1))
     case 'r'
         % Relative
         ind = [1; ceil(cumsum(diff(x(:)))/bin)]; % This is a faster way of [~,~,ind] = histcounts(x(:),min(x):bin:max(x));
-        % - Using accumarray(~,~,[],@sum,NaN) and filtering NaNs we can remove these time consuming statements -
-        %         continuous = diff(ind);
-        %         if any(continuous > 1) % This makes the vector monotonically increasing.
-        %             while any(continuous > 1)
-        %                 start_index = find(continuous>1,1,'first')+1;
-        %                 ind(start_index:end) =  ind(start_index-1) + ind(start_index:end) - ind(start_index) + 1;
-        %                 continuous = diff(ind);
-        %             end
-        %         end
     case 'a'
         % Absolute
         ind = zeros(size(x));
@@ -90,7 +70,7 @@ switch lower(indexing(1))
             else
                 xtemp = [xtemp x(i)]; %#ok<AGROW>
             end
-            if sum(diff(xtemp)) > bin
+            if diff(xtemp([1 end])) > bin
                 ind(i) = ind(i-1)+1;
                 xtemp = [];
             else
@@ -107,20 +87,16 @@ end
 
 switch lower(method(1))
     case 'm'
-        % Simple mean - This is not currently supported by the GPU due to
-        % @mean - As of R2016a (pre-release)
-        xs = accumarray(ind(:),x(:),[],@mean,NaN);
-        ys = accumarray(ind(:),y(:),[],@mean);
-        es = accumarray(ind(:),e(:),[],@(x) sqrt(sum(x.^2))/length(x));
+        % Simple mean - Remastered to be GPU compatible
+        N = accumarray(ind(:),ones(size(x)),[],@sum,NaN);
+        xs = accumarray(ind(:),x(:),[],@sum,NaN)./N(:);
+        ys = accumarray(ind(:),y(:),[],@sum)./N(:);
+        es = sqrt(accumarray(ind(:),e(:).^2,[],@sum))./N(:);
     case 'c'
         % Counts
         % Reconstruct the montor count.
         % For zero error, this is impossible, so we take average monitor value.
-        if gpuCompute
-            m = zeros(size(e),'gpuArray');
-        else
-            m = zeros(size(e));
-        end
+        m = zeros(size(e),class(e)); % For GPU work.
         if any(y < 0)
             warning('spec1d:combine:NegativeY','Some Y values are negative. Using method "counts" is not recomended.')
             m(e~=0) = abs(y(e~=0))./e(e~=0).^2;
@@ -134,14 +110,14 @@ switch lower(method(1))
         ms(ms < eps) = eps; % Check for possibility of rounding errors
         xs = accumarray(ind(:),x(:).*m(:),[],@sum,NaN)./ms;
         ys = accumarray(ind(:),y(:).*m(:),[],@sum)./ms;
-        es = (accumarray(ind(:),(e(:).*m(:)).^2,[],@sum).^0.5)./ms;
+        es = (accumarray(ind(:),(e(:).*m(:)).^2,[],@sum).^0.5)./(ms.*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
     case 'w'
         % Weight
         ms = accumarray(ind(:),1./e(:).^2,[],@sum);
         ms(ms < eps) = eps; % Check for possibility of rounding errors
         xs = accumarray(ind(:),x(:)./e(:).^2,[],@sum,NaN)./ms;
         ys = accumarray(ind(:),y(:)./e(:).^2,[],@sum)./ms;
-        es = 1./sqrt(accumarray(ind(:),1./e(:).^2,[],@sum));
+        es = 1./(sqrt(accumarray(ind(:),1./e(:).^2,[],@sum)).*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
     otherwise
         error('spec1d:combine:NotValidMethod','%s is not a valid method. See documentation',p.Results.method)
 end
