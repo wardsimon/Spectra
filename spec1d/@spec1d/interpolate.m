@@ -1,10 +1,43 @@
 function s_out = interpolate(s_in,x_new,varargin)
 %
-% function s_out = interpolate(s1,s2,...x_new)
+% function s_out = interpolate(s1,x_new,options)
 %
 % @SPEC1D/INTERPOLATE function to interpolate a given spectra to a new x-axis.
 %
-% Simon Ward 01/02/2016
+% Interpolate the given spectra for the x-ranges given by the vector x_new. 
+%
+% Depending on the optional 'method', points are interpolated as
+% 'weightedpoly' : Adaptive polynomial interpolation where errors are calculated and
+%                  minimised for a n-length polynomial function.
+% 'linear'	     : Nearest neighbout interpolation where values are
+%                  weighted by inverse distance (including errors)
+% 'builtin'	     : Use the MATLAB interp1 function. Optional arguments can
+%                  be passed
+% 'FUNCTION'     : The value FUNCTION is a function which can be explained
+%                  with the documentation "help('sdinterp')". Optional
+%                  arguments can be passed.
+% Default is 'weightedpoly'. 'builtin' or 'linear' is suggested for speed.
+%
+% If the method 'weightedpoly' is selected, the optional 'order', paramter
+% is available. The value is a positive integer and corresponds to the
+% order of the fitted polynomial. Default is -1, which optimises for least
+% error.
+%
+% s1 can be single spectra or arrays of spectra.
+% x_new is a vecor of arbitary length. Where min(x_new) < min(s1.x) and
+% max(x_new) < max(s1.x)
+%
+% Example:
+% Interpolate s1 to vector -4:0.1:4.
+% >r = interpolate(s1,-4:0.1:4) % standard interpolate 
+% >r = interpolate(s1,-4:0.1:4,'order',5) % interpolate with a 5th order
+%                                           polynomial
+% >r = interpolate(s1,-4:0.1:4,'method','linear') % linear interpolation 
+% >r = interpolate(s1,-4:0.1:4,'method','builtin')% linear interpolation
+%                                                   using the builtin MATLAB function
+% >r = interpolate(s1,-4:0.1:4,'method','cbezier')% Interpolation using a 
+%                                                   function in the sdinterp library 
+% Simon Ward 02/02/2016
 
 p = inputParser;
 p.addRequired('s',@(x)isa(x,'spec1d'));
@@ -20,17 +53,32 @@ x_new = p.Results.x_new;
 method = p.Results.method;
 varargin = struct2cell(p.Unmatched);
 
-c = onCleanup(@() warning('on','MATLAB:nearlySingularMatrix'));
-warning('off','MATLAB:nearlySingularMatrix')
 for i = 1:length(s)
     
     x = s(i).x(:);
     y = s(i).y(:);
     e = s(i).e(:);
     
+    if (min(x_new) < min(x)) || (max(x) < max(x_new))
+        warning('spec1d:interpolate:MinMaxXnewValues','The supplied interpolation range is out of the spectra range.')
+        if any(strcmpi(method,{'linear','weightedpoly'}))
+            x_new(x_new>max(x) | x_new<min(x)) = [];
+        end
+    end
     switch lower(method)
+        case 'linear'
+            temp = mat2cell((x(:,ones(1,length(x_new))) - x_new),length(x),ones(size(x_new)));
+            [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
+            [rind2,~] = cellfun(@(x) find(x >  0,1,'first'),temp);
+            y_new = arrayfun(@(x_new,n1,n2) y(n1)*(x(n2)-x_new)/(x(n2)-x(n1))+...
+                y(n2)*(x(n1)-x_new)/(x(n1)-x(n2)),x_new,rind1,rind2);
+            e_new = arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
+                (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
         case 'weightedpoly'
             if p.Results.order < 1
+                c = onCleanup(@() [warning('on','MATLAB:nearlySingularMatrix'), warning('on','MATLAB:polyval:ZeroDOF')]);
+                warning('off','MATLAB:nearlySingularMatrix')
+                warning('off','MATLAB:polyval:ZeroDOF')
                 var_poly = zeros(length(x),1);
                 for j = 1:(length(x)-1)
                     [pp, S] = sdinterp.weightedpoly(x,y,e,j);
@@ -63,10 +111,12 @@ for i = 1:length(s)
             end
     end
     
+    rind = isnan(y_new) | isnan(e_new);
+    
     % Make output object
     r = s(i);
-    r.x = x_new;
-    r.y = y_new;
-    r.e = e_new;
+    r.x = x_new(~rind);
+    r.y = y_new(~rind);
+    r.e = e_new(~rind);
     s_out(i) = spec1d(r);
 end
