@@ -4,7 +4,7 @@ function s_out = interpolate(s_in,x_new,varargin)
 %
 % @SPEC1D/INTERPOLATE function to interpolate a given spectra to a new x-axis.
 %
-% Interpolate the given spectra for the x-ranges given by the vector x_new. 
+% Interpolate the given spectra for the x-ranges given by the vector x_new.
 %
 % Depending on the optional 'method', points are interpolated as
 % 'weightedpoly' : Adaptive polynomial interpolation where errors are calculated and
@@ -29,14 +29,19 @@ function s_out = interpolate(s_in,x_new,varargin)
 %
 % Example:
 % Interpolate s1 to vector -4:0.1:4.
-% >r = interpolate(s1,-4:0.1:4) % standard interpolate 
+% >r = interpolate(s1,-4:0.1:4) % standard interpolate
 % >r = interpolate(s1,-4:0.1:4,'order',5) % interpolate with a 5th order
 %                                           polynomial
-% >r = interpolate(s1,-4:0.1:4,'method','linear') % linear interpolation 
+% >r = interpolate(s1,-4:0.1:4,'method','linear') % linear interpolation
 % >r = interpolate(s1,-4:0.1:4,'method','builtin')% linear interpolation
 %                                                   using the builtin MATLAB function
-% >r = interpolate(s1,-4:0.1:4,'method','cbezier')% Interpolation using a 
-%                                                   function in the sdinterp library 
+% >r = interpolate(s1,-4:0.1:4,'method','cbezier')% Interpolation using a
+%                                                   function in the
+%                                                   sdinterp library
+% !!Note!!
+% For data where e is the sqrt of y this is OK. For arbitary data, it is not
+% correct but an approximation.
+%
 % Simon Ward 02/02/2016
 
 p = inputParser;
@@ -93,11 +98,16 @@ for i = 1:length(s)
                 var_poly(var_poly==0) = NaN;
                 [~, ind] = min(var_poly);
                 [pp, S] = sdinterp.weightedpoly(x,y,e,ind);
-                [y_new, e_new] = polyval(pp,x_new,S);
+                [y_new, e_new] = polyval(pp,x_new,S); % This is the error for the interpolation. We need to add on the error for the points.
             else
                 [pp, S] = sdinterp.weightedpoly(x,y,e,p.Results.order);
                 [y_new, e_new] = polyval(pp,x_new,S);
             end
+            temp = mat2cell((x(:,ones(1,length(x_new))) - x_new),length(x),ones(size(x_new)));
+            [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
+            [rind2,~] = cellfun(@(x) find(x >  0,1,'first'),temp);
+            e_new = e_new + arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
+                (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
         case 'builtin'
             y_new = interp1(x,y,x_new);
             e_new = sqrt(interp1(x,e.^2,x_new));
@@ -111,7 +121,15 @@ for i = 1:length(s)
             end
     end
     
-    rind = isnan(y_new) | isnan(e_new);
+    % Remove all bad data
+    rind = isnan(y_new) | isnan(e_new) | isinf(y_new)| isinf(e_new);
+    
+    % Check for imaginary
+    if any(~isreal(y_new) | ~isreal(y_new))
+        warning('spec1d:interpolate:ImaginaryReturnValues','The result of interpolation is imaginary. Taking the real value')
+        y_new = real(y_new);
+        e_new = real(e_new);
+    end
     
     % Make output object
     r = s(i);
