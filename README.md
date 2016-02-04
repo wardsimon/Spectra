@@ -1,4 +1,4 @@
-<img src="spectra_logo.png" width="450">
+<img style="text-align:center;" src="spectra_logo.png" width="450">
 
 **Spectra** is a Matlab library which can be used as a generic experimental data container and is especially suited to neutron scattering datasets. Spectra are stored as spec1d objects which can have mathematical operations applied, where errors are automatically and accuratly calculated.
 
