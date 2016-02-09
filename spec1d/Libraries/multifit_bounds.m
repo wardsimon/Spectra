@@ -15,13 +15,13 @@ bounds_out=zeros((length(flag)+length(find(flag>1))*(length(x_per_spec)-1)),2);
 ll = 1;
 for j = 1:length(flag)
     if flag(j) == 2
-        if size(bounds{j},2) == 2
+        if all(size(bounds{j})==[1 2])
             bounds{j} = repmat(bounds{j},length(ll:(ll+length(x_per_spec)-1)),1);
         end
         bounds_out(ll:(ll+length(x_per_spec)-1),:) = bounds{j};
         ll = ll+length(x_per_spec);
     elseif flag(j) == 3
-        if size(bounds{j},2) == 2
+        if all(size(bounds{j})==[1 2])
             bounds{j} = repmat(bounds{j},length(ll:(ll+length(x_per_spec)-1)),1);
         end
         bounds_out(ll:(ll+length(x_per_spec)-1),:) = bounds{j};

@@ -572,7 +572,7 @@ if ~isempty(options.OutputFcn) & strcmp(options.OutputFcn, 'fminplot')
 end
   
 output.funcCount       = constraints.funcCount ;
-output.algorithm       = options.algorithm;
+% output.algorithm       = options.algorithm;
 output.parsHistory     = constraints.parsHistory;
 output.criteriaHistory = constraints.criteriaHistory;
 output.parsBest        = constraints.parsBest;
