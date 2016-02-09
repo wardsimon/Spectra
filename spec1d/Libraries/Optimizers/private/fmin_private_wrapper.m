@@ -223,7 +223,6 @@ t0=clock;
 
 n = prod(size(pars)); N=n; % these are for the following 'eval's
 numberOfVariables = n;
-numberofvariables = n;
 if ischar(options.MaxFunEvals), 
   options.MaxFunEvals = eval(options.MaxFunEvals); 
 end

@@ -9,8 +9,8 @@ function [f,w] = findpeaks(x,y,varargin)
     end
     
     p = [p(:); 0; 0; 0];
-    
-    s = spec1d(x,y,sqrt(y));
+    e = sqrt(abs(y));
+    s = spec1d(x,y,e);
     
     [f, w] = fits(s,'ngauss_FWHM',p',ones(size(p')));
     

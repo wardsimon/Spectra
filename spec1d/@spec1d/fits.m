@@ -92,6 +92,7 @@ end
 sout = spec1d;
 fitdata = struct;
 
+% This is for parallel fitting.
 if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
     all_data = cell(length(s1),1);
     [all_data{:}] = get(s1,'x','y','e');
@@ -106,6 +107,7 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
             all_data{i}{1} = all_data{i}{1}(all_data{i}{1}>=options.window{i}(1) & all_data{i}{1}<=options.window{i}(2));
         end
     end
+    % Do the fitting
     parfor n = 1:length(all_data)
         switch  lower(options.optimiser)
             case 'spec_lm'
@@ -116,8 +118,10 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         end
         ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
     end
+    
+    % Set the return
     for il = 1:length(all_data)
-        %----- Get names of fit variables
+        % Get names of fit variables
         if pn
             if options.multifit
                 pnames = {};
@@ -136,7 +140,7 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
             end
         end
         
-        %----- set return
+        % make spec1d objects
         sloop.x = all_data{il}{1};
         sloop.y = all_data{il}{2};
         sloop.e = all_data{il}{3};
@@ -153,7 +157,8 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         fitdata(il).chisq = ChiSq{il};
         fitdata(il).rsq = RSq{il};
     end
-else
+    
+else % This is for normal fitting and multi-fitting.
     for il=1:length(s1)
         x=s1(il).x; y=s1(il).y; e=s1(il).e;
         %----- Remove zeros from e
@@ -168,38 +173,52 @@ else
             x = x(x>=options.window(1) & x<=options.window(2));
         end
         
-        if sum(notfixed)==0
+        % When we just want to see the starting point
+        if sum(notfixed) == 0
             yfit = feval(func,x,pin);
             p = pin;
             r = corrcoef([y(:),yfit(:)]);
             RSq = r(1,2).^2;
             sig = zeros(size(p));
-        else
-            if options.multifit && ~strcmpi(options.optimiser,'spec_lm')
-                warning()
-                options.optimiser = 'spec_lm';
-            end
+        else % The real fit
+%             if options.multifit && ~strcmpi(options.optimiser,'spec_lm')
+%                 warning('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid for multi-fitting. Changed to default.',options.optimiser)
+%                 options.optimiser = 'spec_lm';
+%             end
             %----- Fit data
             switch  options.optimiser
                 case 'spec_lm'
                     [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
                 otherwise
+                    % Check that the criteria is possible.
                     if ~strcmpi(options.criteria,sdext.getCriteria)
                         error('spec1d:fits:InvalidCriteria','Criteria %s is invalid. See available criteria with sdext.getCriteria',options.criteria)
                     end
+                    % Check that the optimiser is possible.
                     if ~strcmpi(options.optimiser,sdext.getOptimisers)
                         error('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid. See available optimisers with sdext.getOptimisers',options.optimiser)
                     end
                     if strcmpi(options.criteria,'least_square')
-                        criteria_func = @(pars) sum(feval(options.criteria,y,e,feval(func,x,pars)));
+                        criteria_func = @(pars) sum(feval(options.criteria,y,e,FitFuncEval(func,x,pars,notfixed)));
                     else
-                        criteria_func = @(pars) feval(options.criteria,y,e,feval(func,x,pars));
+                        criteria_func = @(pars) feval(options.criteria,y,e,FitFuncEval(func,x,pars,notfixed));
                     end
+                    % We may have specific options to pass to the
+                    % optimiser.
                     if ~isfield(opt,'About')
                         opt = feval(options.optimiser,'defaults');
                     end
-                    [p, fval, flag, output ]= feval(options.optimiser,criteria_func,pin,opt,~notfixed);
-                    yfit = feval(func,x,p);
+                    % Check for loose boundary conditions
+                    if any(isinf(options.bounds(:)))
+                        warning('spec1d:fits:BoundaryWarning','Some boundary conditions are infinate. These optimisers need well defined bounds. Taking +-2*pin')
+                    else
+                        constraints.min = options.bounds(:,1);
+                        constraints.max = options.bounds(:,2);
+                    end
+                    constraints.fixed = ~notfixed;
+                    % Do the fitting
+                    [p, fval, flag, output ]= feval(options.optimiser,criteria_func,pin,setstructfields(opt,options),constraints);
+                    yfit = FitFuncEval(func,x,p,notfixed);
                     sig = output.parsHessianUncertainty;
                     r = corrcoef([y(:),yfit(:)]);
                     RSq = r(1,2).^2;
@@ -208,11 +227,11 @@ else
                     end
             end
         end
-        %----- Goodness of fit
+        % Goodness of fit
         v = length(y)-sum(logical(notfixed));
         ChiSq = sum(((y-yfit)./e).^2 )/v;
         
-        %----- Get names of fit variables
+        % Get names of fit variables
         if pn
             if options.multifit
                 pnames = {};
@@ -230,10 +249,9 @@ else
             end
         else
             pnames = num2str((1:numel(p))','p%d');
-            
         end
         
-        %----- set return
+        % Make  the return spec1d objects
         sloop.x = x;
         sloop.y = y;
         sloop.e = e;
@@ -251,6 +269,8 @@ else
         fitdata(il).rsq = RSq;
     end
 end
+
+% If a multifit, convert back into single objects.
 if options.multifit
     [sout, fitdata] = multifit_extract(sout,fitdata,notfixed);
     x_per_spec = [];
@@ -258,9 +278,27 @@ if options.multifit
 end
 end
 
+% Reset after finishing.
 function cleanup
 global multifit_ind x_per_spec
 x_per_spec = [];
 multifit_ind = [];
 end
 
+
+function f = FitFuncEval(F,x,p,notfixed)
+    global x_per_spec multifit_ind
+    x_per_spec_local = x_per_spec;
+    
+    if isempty(x_per_spec_local)
+        f = feval(F,x,p);
+        f = f(:);
+    else
+        f = zeros(sum(x_per_spec_local),1);
+        for i = 1:length(x_per_spec_local)
+            [p_new, ~, ind] = multifitp2p(p,notfixed,i);
+            multifit_ind = ind;
+            f(ind) = feval(F,x(ind),p_new);
+        end
+    end
+end

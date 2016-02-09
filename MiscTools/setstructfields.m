@@ -22,7 +22,9 @@ for i = 1:length(fields),
     if isstruct(value) && isfield(structout, fields{i}) && isstruct(structout.(fields{i}))
         structout.(fields{i}) = setstructfields(structout.(fields{i}), value);
     else
-        structout.(fields{i}) = newfields.(fields{i});
+        if ~isempty(newfields.(fields{i}))
+            structout.(fields{i}) = newfields.(fields{i});
+        end
     end
 end
 

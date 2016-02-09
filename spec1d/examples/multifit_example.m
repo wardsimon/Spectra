@@ -52,15 +52,20 @@ notfixed=[1 2 1 2 0 0];
 [f1, w2] = fits(s,'ngauss_FWHM',p,notfixed);
 
 %% Lets add some boundary conditions....
-bounds{1} = [0 Inf]; % Amplitude 
+bounds{1} = [0 60]; % Amplitude 
 bounds{2} = [0 5; 5 20; 10 30]; % Center
 bounds{3} = [0 5]; % Width
-bounds{4} = [zeros(3,1) Inf(3,1)]; % BG
-bounds{5} = [-Inf Inf];
-bounds{6} = [-Inf Inf];
-
+bounds{4} = [zeros(3,1) 10*ones(3,1)]; % BG
+bounds{5} = [-5 5];
+bounds{6} = [-5 5];
+% bounds{1} = [0 Inf]; % Amplitude 
+% bounds{2} = [0 5; 5 20; 10 30]; % Center
+% bounds{3} = [0 5]; % Width
+% bounds{4} = [zeros(3,1) Inf(3,1)]; % BG
+% bounds{5} = [-Inf Inf];
+% bounds{6} = [-Inf Inf];
 % Note I have added the fcp, this is because we need a few more itterations
-[f, w] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds,'fcp',[1e-4 80 1e-4]);
+[f, w] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds,'fcp',[1e-4 80 1e-4],'optimiser','fminsimplex');
 % Or we can do it without..
 [f_no_fcp, w_no_fcp] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds);
 
