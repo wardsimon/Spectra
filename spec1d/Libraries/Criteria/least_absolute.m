@@ -18,10 +18,10 @@ function c=least_absolute(Signal, Error, Model)
     % make sure weight=1/sigma does not reach unrealistic values
     %   initially, most weights will be equal, but when fit impproves, 
     %   stdE will get lower, allowing better matching of initial weight.
-    normE = sum(Error(index));
-    stdE  = std(residuals(index));
-    Error( Error < stdE/4 ) = stdE/4; 
-    Error = Error *(normE/sum(Error(index)));
+%     normE = sum(Error(index));
+%     stdE  = std(residuals(index));
+%     Error( Error < stdE/4 ) = stdE/4; 
+%     Error = Error *(normE/sum(Error(index)));
     
     if isempty(index), c=Inf;
     else               c=abs((residuals(index))./Error(index));

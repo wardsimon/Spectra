@@ -269,11 +269,14 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     end
     fbest = f;
     pbest = p;
-    r = wt.*(y-f);
-    if (~isreal (r))
-        error ('Weighted residuals are not real');
-    end
-    ss = r.' * r;
+    
+    ss = sum(feval(options.criteria,y,1./wt,f));
+%     r = wt.*(y-f);
+%     if (~isreal (r))
+%         error ('Weighted residuals are not real');
+%     end
+%     ss = r.' * r;
+    
     sbest = ss;
     chgprev = Inf*ones(n,1);
     cvg = 0;
@@ -396,11 +399,12 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
                         f(ind) = feval(F,x(ind),p_new);
                     end
                 end
-                r=wt.*(y-f);
-                if (~isreal (r))
-                    error ('weighted residuals are not real');
-                end
-                ss = r.' * r;
+%                 r=wt.*(y-f);
+%                 if (~isreal (r))
+%                     error ('weighted residuals are not real');
+%                 end
+%                 ss = r.' * r;
+                ss = sum(feval(options.criteria,y,1./wt,f));
                 if (ss<sbest)
                     pbest=p;
                     fbest=f;
