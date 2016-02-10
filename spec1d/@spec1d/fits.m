@@ -1,14 +1,57 @@
 function [sout,fitdata,optional]=fits(s1,func,pin,notfixed,varargin)
-%% function [sout,fitdata]=fits(s1,func,pin,notfixed,fcp,win)
+%% function [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
 %
-% [sout,fitdata]=fits(s1,func,pin,notfixed,fcp,win)
+% [sout,fitdata]=fits(s1,func,pin,notfixed,varargin)
 %
-% @SPEC1D/FIT Fits data in spec1d object s1 to MFIT function
-% specified in func. Also works for an array of spec1d objects.
+% @SPEC1D/FIT Fits data in spec1d object s1 to a given fit function with
+% starting parameters pin.
+%
+% Input parameters
+%
+% s        : Single or array of spec1d objects
+% func     : Function of the form 'gauss', '@(x,p) gauss(x,p(1:4)) + p(5)*x',
+%            @(x,p) gauss(x,p) + additionaldata.
+% pin      : Parameters of func to be optimised. A double vector
+% notfixed : Parameters to be varied. A logical vector.
+% varargin : Additional options and parameters. See below...
+%
+% varargin are optional parameter, value pairs. Items marked with a * are 
+% for the spec_lm optimiser. They can be the following:
+% bounds      : Boundary conditions for pin. In the form of [Lower Upper]
+%               column vectors size [length(pin) 2].
+% dfdp*       : Function used to calculate the gradient of pin in func.
+% confidence* : If errors can't be calculated through the jacobian a
+%               confidence range is used.
+% inequc*     : User supplied inequality relations.
+% window      : Window to perform the fitting.
+% parallel*   : Perform fits to the s1 vector in parallel
+% verbose     : How much information is displayed.
+%
+% We can also vary the optimisation algorith and the criteria.
+%
+% The optional 'optimiser' command directs which optimiser to use. It can
+% be any of the following:
+% spec_lm    : General purpose implementation of the non-linear
+%              Levenberg–Marquardt algorithm (Default)
+% builtin    : Use the built in Levenberg–Marquardt algorithm. Will only
+%              work if the Global Optimisation Toolbox is installed.
+% sdext.getOptimisers : Running this command lists all available optimisation
+%              algorithms. Default optimisation parameters cam be obtained 
+%              by running options = algorithm('defaults'); where algorith is
+%              an option in the list from sdext.getOptimisers. The options
+%              can be passed into the fitting function by adding the
+%              structure as the last varargin in the function call. 
+%
+% The optional 'criteria' can also be changed. Criteria can be found by
+% running sdext.getCriteria. The lefault is least_squares.
+%
+% Note - Multifitting can also be performed. See the file
+% multifit_example.m for worked examples.
 %
 % Version 4.3, Jan 2016
 % Simon Ward, based on the work of Des McMorrow and Henrik Ronnow and
 % Emmanuel FARHI
+
 c = onCleanup(@cleanup);
 global multifit_ind x_per_spec
 
@@ -35,7 +78,6 @@ p.addParamValue('optimiser','spec_lm',@ischar)
 p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@length,x)==2))
 p.addParamValue('parallel',0,@(x) x==0 | x == 1)
 p.addParamValue('criteria','least_square',@(x) ischar(x))
-p.addParamValue('relations',{}, @iscell)
 p.addParamValue('verbose',0,@(x) isnumeric(x) | islogical(x))
 if length(varargin) ~= 1
     p.parse(s1,func,pin,notfixed,varargin{:});
@@ -181,14 +223,36 @@ else % This is for normal fitting and multi-fitting.
             RSq = r(1,2).^2;
             sig = zeros(size(p));
         else % The real fit
-%             if options.multifit && ~strcmpi(options.optimiser,'spec_lm')
-%                 warning('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid for multi-fitting. Changed to default.',options.optimiser)
-%                 options.optimiser = 'spec_lm';
-%             end
+            if ~(strcmpi(options.optimiser,'builtin') && exist('optim','dir'))
+                warning('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid as the optimisation toolbox is not installed. Defaulting to spec_lm.',options.optimiser)
+                options.optimiser = 'spec_lm';
+            end
             %----- Fit data
             switch  options.optimiser
                 case 'spec_lm'
                     [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
+                case 'builtin'
+                    infun = @(x,xin) feval(func,xin,x);
+                    opt = optimset('MaxIter',fcp(2),'Display','Off');
+                    [p,resnorm,residual,exitflag,output,lambda,jacobian] = lsqcurvefit( @(p1, xdata) infun( interlace(pin(:), p1(:), ~notfixed), xdata),...
+                        pin(notfixed), x, y, options.bounds(notfixed,1), options.bounds(notfixed,2),opt);
+                    if exitflag ~= 1
+                        warning('spec1d:fits:AlgorithmError','A minimum has not been found or an error has occoured. Error code %i. See documentation',exitflag)
+                    end
+                    p = interlace( pin(:), p(:), ~notfixed);
+                    yfit = feval(func,x,p);
+                    r = corrcoef([y(:),yfit(:)]);
+                    RSq = r(1,2).^2;
+                    wt = 1./e(:);
+                    Qinv = diag(wt.*wt);
+                    Q = diag((0*wt+1)./(wt.^2));
+                    m = length(y);
+                    n = sum(notfixed);
+                    covr = residual'*Qinv*residual*Q/(m-n);                 %covariance of residuals
+                    Vy = 1/(1-n/m)*covr;  % Eq. 7-13-22, Bard         %covariance of the data
+                    jtgjinv = pinv(jacobian'*Qinv*jacobian);
+                    covp = jtgjinv*jacobian'*Qinv*Vy*Qinv*jacobian*jtgjinv; % Eq. 7-5-13, Bard %cov of parm est
+                    sig = interlace(zeros(size(pin)),sqrt(diag(covp)),~notfixed);
                 otherwise
                     % Check that the criteria is possible.
                     if ~strcmpi(options.criteria,sdext.getCriteria)
@@ -218,6 +282,9 @@ else % This is for normal fitting and multi-fitting.
                     constraints.fixed = ~notfixed;
                     % Do the fitting
                     [p, fval, flag, output ]= feval(options.optimiser,criteria_func,pin,setstructfields(opt,options),constraints);
+                    if flag ~= 0
+                        warning('spec1d:fits:AlgorithmError','A minimum has not been found or an error has occoured. Error code %i. See documentation',flag)
+                    end
                     yfit = FitFuncEval(func,x,p,notfixed);
                     sig = output.parsHessianUncertainty;
                     r = corrcoef([y(:),yfit(:)]);
@@ -280,9 +347,9 @@ end
 
 % Reset after finishing.
 function cleanup
-global multifit_ind x_per_spec
-x_per_spec = [];
-multifit_ind = [];
+    global multifit_ind x_per_spec
+    x_per_spec = [];
+    multifit_ind = [];
 end
 
 
@@ -301,4 +368,9 @@ function f = FitFuncEval(F,x,p,notfixed)
             f(ind) = feval(F,x(ind),p_new);
         end
     end
+end
+
+
+function a = interlace( a, x, fix )
+    a(~fix) = x;
 end
