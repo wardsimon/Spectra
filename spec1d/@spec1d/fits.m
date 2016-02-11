@@ -119,8 +119,9 @@ end
 
 % Is this a multifit?
 if options.multifit
-    warning('spec1d:fits:Multifit','This fit is a multifit.')
-    n = length(s1);
+    if options.verbose
+        warning('spec1d:fits:Multifit','This fit is a multifit.')
+    end
     [s1, pin, notfixed] = multifit_ini(s1,pin,notfixed);
     options.inequc = {zeros(length(pin),0) zeros(0,1)};
     if iscell(options.bounds)
@@ -223,7 +224,7 @@ else % This is for normal fitting and multi-fitting.
             RSq = r(1,2).^2;
             sig = zeros(size(p));
         else % The real fit
-            if ~(strcmpi(options.optimiser,'builtin') && exist('optim','dir'))
+            if strcmpi(options.optimiser,'builtin') && exist('optim','dir')
                 warning('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid as the optimisation toolbox is not installed. Defaulting to spec_lm.',options.optimiser)
                 options.optimiser = 'spec_lm';
             end
