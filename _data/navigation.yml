@@ -1,7 +1,13 @@
 # Menu navigation links
 
-- title: Theme Setup
-  url: /theme-setup/
+- title: Examples
+  url: /tags/#examples
 
-- title: External Link
-  url: http://mademistakes.com
+- title: Tutorials
+  url: /tags/#tutorials
+  
+- title: spec1d
+  url: /tags/#spec1d  
+  
+- title: specnd
+  url: https://github.com/tsdev/specnd
