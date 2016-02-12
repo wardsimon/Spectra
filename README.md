@@ -1,8 +1,8 @@
-<img src="spectra_logo.png" width="450">
+<p align="center"><img src="https://github.com/substance33/Spectra/blob/LNS/spectra_logo.png" width="450" alt="Spectra Logo"></p>
 
 ## About
 
-**Spectra** is a Matlab library which can be used as a generic experimental data container and is especially suited to neutron scattering datasets. Spectra are stored as spec1d objects which can have mathematical operations applied, where errors are automatically and accuratly calculated.
+**Spectra** is a [MATLAB](http://www.mathworks.com/products/matlab/) library which can be used as a generic experimental data container and is especially suited to neutron scattering datasets. Spectra are stored as spec1d objects which can have mathematical operations applied, where errors are automatically and accuratly calculated.
 
 ## Components
 This library contains the [SpinW](https://www.github.com/tsdev/spinw) library for calculating spin wave spectra and [ResLibCal](https://www.github.com/McStasMcXtrace/iFit) from the iFit library to calculate instrumental resolution.
