@@ -6,6 +6,7 @@ tags:
 - fitting
 - multifit
 description: "Example on how to implement fitting to multiple objects"
+comments: true
 
 ---
 
@@ -16,7 +17,7 @@ description: "Example on how to implement fitting to multiple objects"
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>multifit_example</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-11"><meta name="DC.source" content="multifit_example.m"><style type="text/css">
+      --><title>multifit_example</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-12"><meta name="DC.source" content="multifit_example.m"><style type="text/css">
 
 
 
@@ -107,7 +108,7 @@ s(3)=spec1d(s3);
 
 figure
 plot(s)
-</pre><figure><img src="images/multifit_example_01.png" alt=""></figure> <h2>Here I define all my starting parameters (all pretty bad guesses)<a name="3"></a></h2><pre class="codeinput">p{1}=20;            <span class="comment">% Amplitude</span>
+</pre><figure><a href="{{ site.url }}/images/multifit_example_01.png"><img src="{{ site.url }}/images/multifit_example_01.png" alt=""></a></figure> <h2>Here I define all my starting parameters (all pretty bad guesses)<a name="3"></a></h2><pre class="codeinput">p{1}=20;            <span class="comment">% Amplitude</span>
 p{2}=[2 10 25];     <span class="comment">% Center</span>
 p{3}=3;             <span class="comment">% Width</span>
 p{4}=[1 2 3];       <span class="comment">% linear BG</span>
@@ -134,10 +135,10 @@ bounds{6} = [-5 5];
 
 figure
 plot(f)
-</pre><figure><img src="images/multifit_example_02.png" alt=""></figure> <h2>This is what happens with normal fitting.<a name="6"></a></h2><pre class="codeinput">[f_test, w_test] = fits(s,<span class="string">'ngauss_FWHM'</span>,[p{1} p{2}(1) p{3} p{4}(1) p{5} p{6}],logical(notfixed));
+</pre><figure><a href="{{ site.url }}/images/multifit_example_02.png"><img src="{{ site.url }}/images/multifit_example_02.png" alt=""></a></figure> <h2>This is what happens with normal fitting.<a name="6"></a></h2><pre class="codeinput">[f_test, w_test] = fits(s,<span class="string">'ngauss_FWHM'</span>,[p{1} p{2}(1) p{3} p{4}(1) p{5} p{6}],logical(notfixed));
 figure
 plot(f_test)
-</pre><figure><img src="images/multifit_example_03.png" alt=""></figure> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+</pre><figure><a href="{{ site.url }}/images/multifit_example_03.png"><img src="{{ site.url }}/images/multifit_example_03.png" alt=""></a></figure> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 close all
 clear all
