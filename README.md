@@ -1,27 +1,26 @@
-# HPSTR Jekyll Theme
+<img src="spectra_logo.png" width="450">
 
-They say three times the charm, so here is another free responsive Jekyll theme for you. I've learned a ton since open sourcing [my first two themes](https://mademistakes.com/work/jekyll-themes/), and wanted to try a few new things this time around. If you've used my previous themes most of this should be familiar territory.
+## About
 
-**Jekyll 3 Update:** A version of HPSTR compatible with Jekyll 3 can be found in the [`jekyll3` branch](https://github.com/mmistakes/hpstr-jekyll-theme/tree/jekyll3). GitHub Pages is [locked at version 2.4](https://pages.github.com/versions/) so some keep that in mind if you're trying to use 3.0 features that aren't supported there yet.
+**Spectra** is a Matlab library which can be used as a generic experimental data container and is especially suited to neutron scattering datasets. Spectra are stored as spec1d objects which can have mathematical operations applied, where errors are automatically and accuratly calculated.
 
-## What HPSTR brings to the table:
+## Components
+This library contains the [SpinW](https://www.github.com/tsdev/spinw) library for calculating spin wave spectra and [ResLibCal](https://www.github.com/McStasMcXtrace/iFit) from the iFit library to calculate instrumental resolution.
 
-* Modern and minimal design.
-* Responsive templates for post, page, and post index `_layouts`. Looks great on mobile, tablet, and desktop devices.
-* Gracefully degrades in older browsers. Compatible with Internet Explorer 8+ and all modern browsers.  
-* Sweet animated menu with support for drop-downs.
-* Optional [Disqus](http://disqus.com) comments and social sharing links.
-* [Open Graph](https://developers.facebook.com/docs/opengraph/) and [Twitter Cards](https://dev.twitter.com/docs/cards) support for a better social sharing experience.
-* Simple [custom 404 page](http://mmistakes.github.io/hpstr-jekyll-theme/404.html) to get you started.
-* Stylesheets for Pygments and Coderay [syntax highlighting](http://mmistakes.github.io/hpstr-jekyll-theme/code-highlighting-post/) to make your code examples look snazzy
-* [Available in Spanish](https://github.com/cruznick/hpstr-jekyll-theme/tree/es). Thanks [@cruznick](https://github.com/cruznick)!
+Data manipulation such as combining, cutting, re-binning and has been implemented as well as fitting data to arbitary models.
 
-![HPSTR Theme Preview screenshot](http://mmistakes.github.io/hpstr-jekyll-theme/images/hpstr-jekyll-theme-preview.jpg)
+## Disclaimer
 
----
+Research science contains a few endpoints Software, Publication, Pedagogy, and Reproducibility.  The research science process is very interactive so I personally reserve the ``LNS`` branch (default) for vetted software codes.  I tend to work off of the ``development`` branch while I am implementing new code.
 
 ## Getting Started
 
-HPSTR takes advantage of Sass and data files to make customizing easier. These features require Jekyll 2.x and will not work with older versions of Jekyll.
+This software can be obtained by
 
-To learn how to install and use this theme check out the [Setup Guide](https://mmistakes.github.io/hpstr-jekyll-theme/theme-setup/) for more information.
+1. ``git clone https://github.com/substance33/Spectra.git``
+2. If you want the additional submodules run ``git clone --recursive https://github.com/substance33/Spectra.git`` instead.
+3. Rename ``startup_example.m`` to ``startup.m`` and place it in the MATLAB home directory or ```fullfile(matlabroot,'toolbox','local')```.
+4. If you do the former, you will neet to execute ``startup.m`` when you start MATLAB.
+
+## Information
+User guides and examples can be found at the project site https://substance33.github.io/Spectra look for tagged posts.
