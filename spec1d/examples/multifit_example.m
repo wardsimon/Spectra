@@ -2,7 +2,7 @@ close all
 clear all
 clc
 
-
+%% Let's make some fake data
 x1=1:1:15;
 sep{1}=repmat(NaN,length(x1),1);
 s1.x=x1;
@@ -48,7 +48,7 @@ p{6}=0;             % quadratic BG
 %       3: parameter is not equal & fixed
 notfixed=[1 2 1 2 0 0];
 
-%% Now I can fit it!
+%% Fit it normaly
 [f1, w2] = fits(s,'ngauss_FWHM',p,notfixed);
 
 %% Lets add some boundary conditions....
@@ -58,14 +58,8 @@ bounds{3} = [0 5]; % Width
 bounds{4} = [zeros(3,1) 10*ones(3,1)]; % BG
 bounds{5} = [-5 5];
 bounds{6} = [-5 5];
-% bounds{1} = [0 Inf]; % Amplitude 
-% bounds{2} = [0 5; 5 20; 10 30]; % Center
-% bounds{3} = [0 5]; % Width
-% bounds{4} = [zeros(3,1) Inf(3,1)]; % BG
-% bounds{5} = [-Inf Inf];
-% bounds{6} = [-Inf Inf];
 % Note I have added the fcp, this is because we need a few more itterations
-[f, w] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds,'fcp',[1e-4 80 1e-4],'optimiser','fminsimplex');
+[f, w] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds,'fcp',[1e-4 80 1e-4]);
 % Or we can do it without..
 [f_no_fcp, w_no_fcp] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds);
 
