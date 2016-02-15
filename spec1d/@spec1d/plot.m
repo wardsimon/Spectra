@@ -17,9 +17,11 @@ function varargout = plot(varargin)
 %
 % Simon Ward 27/01/2016
 
+s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
+s = varargin(s_ind);
+varargin(s_ind) = [];
 p = inputParser;
-p.addRequired('s_in',@(x) isa(x,'spec1d'));
-p.addOptional('add_s',[],@(x) isa(x,'spec1d'))
+p.addRequired('s_in',@iscell);
 p.addParameter('semilogx',0,@isnumeric);
 p.addParameter('semilogy',0,@isnumeric);
 p.addParameter('loglog',0,@isnumeric);
@@ -27,13 +29,9 @@ p.addParameter('semilog',0,@isnumeric);
 p.addParameter('trace',0,@isnumeric);
 p.addParameter('tLenght',NaN,@isnumeric);
 
-p.parse(varargin{:});
+p.parse(s,varargin{:});
 
-if ~isempty(p.Results.add_s(:))
-    s = [p.Results.s_in(:) p.Results.add_s(:)];
-else
-    s = p.Results.s_in(:);
-end
+s = [p.Results.s_in{:}];
 
 plot_opt = p.Unmatched;
 

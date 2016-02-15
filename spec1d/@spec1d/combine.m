@@ -33,19 +33,21 @@ function s_out = combine(toll,varargin)
 
 % Simon Ward 25/01/2016
 
+
+s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
+s = varargin(s_ind);
+varargin(s_ind) = [];
+
 p = inputParser;
 p.CaseSensitive = false;
 p.addRequired('toll',@(x) isnumeric(x) && isreal(x));
-p.addRequired('s_in',@(x) isa(x,'spec1d'));
-p.addOptional('add_s',[],@(x) isa(x,'spec1d'))
+p.addRequired('s_in',@iscell);
 p.addOptional('indexing','relative',@ischar)
 p.addParameter('method','counts',@ischar);
-p.parse(toll,varargin{:});
-if ~isempty(p.Results.add_s(:))
-    s = [p.Results.s_in(:) p.Results.add_s(:)];
-else
-    s = p.Results.s_in(:);
-end
+
+p.parse(toll,s,varargin{:});
+s = [p.Results.s_in{:}];
+
 bin = p.Results.toll;
 method = p.Results.method;
 indexing = p.Results.indexing;
