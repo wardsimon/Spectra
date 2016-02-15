@@ -15,7 +15,7 @@ Research science contains a few endpoints Software, Publication, Pedagogy, and R
 
 ## Getting Started
 
-This software can be obtained by
+This software can be obtained by git or as a [zip file](https://github.com/substance33/Spectra/archive/LNS.zip)
 
 1. ``git clone https://github.com/substance33/Spectra.git``
 2. If you want the additional submodules run ``git clone --recursive https://github.com/substance33/Spectra.git`` instead.
