@@ -1,0 +1,210 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>multifit_example</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-15"><meta name="DC.source" content="multifit_example.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Let's make some fake data</a></li><li><a href="#3">Here I define all my starting parameters (all pretty bad guesses)</a></li><li><a href="#4">Fit it normaly</a></li><li><a href="#5">Lets add some boundary conditions....</a></li><li><a href="#6">This is what happens with normal fitting.</a></li></ul></div><pre class="codeinput">close <span class="string">all</span>
+clear <span class="string">all</span>
+clc
+</pre><h2>Let's make some fake data<a name="2"></a></h2><pre class="codeinput">x1=1:1:15;
+sep{1}=repmat(NaN,length(x1),1);
+s1.x=x1;
+s1.y=ngauss_FWHM(x1,[40,5 4 0 0 0])+3*(rand(size(x1))-1/2);
+s1.e=1+2*rand(size(x1));
+s1.x_label=<span class="string">'Energy transfer [meV]'</span>;
+s1.y_label=<span class="string">'Intensity [counts per 10 min]'</span>;
+s(1) = spec1d(s1);
+
+x2=2:1:21;
+sep{2}=repmat(NaN,length(x2),1);
+s2.x=x2;
+s2.y=ngauss_FWHM(x2,[40,12 4 0 0 0])+3*(rand(size(x2))-1/2);
+s2.e=2+5*rand(size(x2));
+s2.x_label=<span class="string">'Energy transfer [meV]'</span>;
+s2.y_label=<span class="string">'Intensity [counts per 10 min]'</span>;
+s(2)=spec1d(s2);
+
+x3=0:1:29;
+sep{3}=repmat(NaN,length(x3),1);
+s3.x=x3;
+s3.y=ngauss_FWHM(x3,[40,20 4 0 0 0])+3*(rand(size(x3))-1/2);
+s3.e=1+1.2*rand(size(x3));
+s3.x_label=<span class="string">'Energy transfer [meV]'</span>;
+s3.y_label=<span class="string">'Intensity [counts per 10 min]'</span>;
+s(3)=spec1d(s3);
+
+figure
+plot(s)
+</pre><img vspace="5" hspace="5" src="multifit_example_01.png" alt=""> <h2>Here I define all my starting parameters (all pretty bad guesses)<a name="3"></a></h2><pre class="codeinput">p{1}=20;            <span class="comment">% Amplitude</span>
+p{2}=[2 10 25];     <span class="comment">% Center</span>
+p{3}=3;             <span class="comment">% Width</span>
+p{4}=[1 2 3];       <span class="comment">% linear BG</span>
+p{5}=0;             <span class="comment">% quadratic BG</span>
+p{6}=0;             <span class="comment">% quadratic BG</span>
+
+<span class="comment">% "notfixed" has one entry for each cell element of p:</span>
+<span class="comment">%       0: parameter is equal in all scans &amp; fixed</span>
+<span class="comment">%       1: parameter is equal in all scans &amp; not fixed</span>
+<span class="comment">%       2: parameter is not equal &amp; not fixed</span>
+<span class="comment">%       3: parameter is not equal &amp; fixed</span>
+notfixed=[1 2 1 2 0 0];
+</pre><h2>Fit it normaly<a name="4"></a></h2><pre class="codeinput">[f1, w2] = fits(s,<span class="string">'ngauss_FWHM'</span>,p,notfixed);
+</pre><pre class="codeoutput">Warning: COVERGENCE NOT ACHIEVED!
+9.125% chance of fewer than 13 runs. Try changing fcp... 
+</pre><h2>Lets add some boundary conditions....<a name="5"></a></h2><pre class="codeinput">bounds{1} = [0 60]; <span class="comment">% Amplitude</span>
+bounds{2} = [0 5; 5 20; 10 30]; <span class="comment">% Center</span>
+bounds{3} = [0 5]; <span class="comment">% Width</span>
+bounds{4} = [zeros(3,1) 10*ones(3,1)]; <span class="comment">% BG</span>
+bounds{5} = [-5 5];
+bounds{6} = [-5 5];
+<span class="comment">% Note I have added the fcp, this is because we need a few more itterations</span>
+[f, w] = fits(s,<span class="string">'ngauss_FWHM'</span>,p,notfixed,<span class="string">'bounds'</span>,bounds,<span class="string">'fcp'</span>,[1e-4 80 1e-4]);
+<span class="comment">% Or we can do it without..</span>
+[f_no_fcp, w_no_fcp] = fits(s,<span class="string">'ngauss_FWHM'</span>,p,notfixed,<span class="string">'bounds'</span>,bounds);
+
+figure
+plot(f)
+</pre><pre class="codeoutput">Warning: COVERGENCE NOT ACHIEVED!
+47.526% chance of fewer than 32 runs. Try changing fcp... 
+</pre><img vspace="5" hspace="5" src="multifit_example_02.png" alt=""> <h2>This is what happens with normal fitting.<a name="6"></a></h2><pre class="codeinput">[f_test, w_test] = fits(s,<span class="string">'ngauss_FWHM'</span>,[p{1} p{2}(1) p{3} p{4}(1) p{5} p{6}],logical(notfixed));
+figure
+plot(f_test)
+</pre><img vspace="5" hspace="5" src="multifit_example_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+close all
+clear all
+clc
+
+%% Let's make some fake data
+x1=1:1:15;
+sep{1}=repmat(NaN,length(x1),1);
+s1.x=x1;
+s1.y=ngauss_FWHM(x1,[40,5 4 0 0 0])+3*(rand(size(x1))-1/2);
+s1.e=1+2*rand(size(x1));
+s1.x_label='Energy transfer [meV]';
+s1.y_label='Intensity [counts per 10 min]';
+s(1) = spec1d(s1);
+
+x2=2:1:21;
+sep{2}=repmat(NaN,length(x2),1);
+s2.x=x2;
+s2.y=ngauss_FWHM(x2,[40,12 4 0 0 0])+3*(rand(size(x2))-1/2);
+s2.e=2+5*rand(size(x2));
+s2.x_label='Energy transfer [meV]';
+s2.y_label='Intensity [counts per 10 min]';
+s(2)=spec1d(s2);
+
+x3=0:1:29;
+sep{3}=repmat(NaN,length(x3),1);
+s3.x=x3;
+s3.y=ngauss_FWHM(x3,[40,20 4 0 0 0])+3*(rand(size(x3))-1/2);
+s3.e=1+1.2*rand(size(x3));
+s3.x_label='Energy transfer [meV]';
+s3.y_label='Intensity [counts per 10 min]';
+s(3)=spec1d(s3);
+
+figure
+plot(s)
+
+%% Here I define all my starting parameters (all pretty bad guesses)
+p{1}=20;            % Amplitude
+p{2}=[2 10 25];     % Center
+p{3}=3;             % Width
+p{4}=[1 2 3];       % linear BG
+p{5}=0;             % quadratic BG
+p{6}=0;             % quadratic BG
+
+% "notfixed" has one entry for each cell element of p:
+%       0: parameter is equal in all scans & fixed
+%       1: parameter is equal in all scans & not fixed
+%       2: parameter is not equal & not fixed
+%       3: parameter is not equal & fixed
+notfixed=[1 2 1 2 0 0];
+
+%% Fit it normaly
+[f1, w2] = fits(s,'ngauss_FWHM',p,notfixed);
+
+%% Lets add some boundary conditions....
+bounds{1} = [0 60]; % Amplitude 
+bounds{2} = [0 5; 5 20; 10 30]; % Center
+bounds{3} = [0 5]; % Width
+bounds{4} = [zeros(3,1) 10*ones(3,1)]; % BG
+bounds{5} = [-5 5];
+bounds{6} = [-5 5];
+% Note I have added the fcp, this is because we need a few more itterations
+[f, w] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds,'fcp',[1e-4 80 1e-4]);
+% Or we can do it without..
+[f_no_fcp, w_no_fcp] = fits(s,'ngauss_FWHM',p,notfixed,'bounds',bounds);
+
+figure
+plot(f)
+
+%% This is what happens with normal fitting. 
+[f_test, w_test] = fits(s,'ngauss_FWHM',[p{1} p{2}(1) p{3} p{4}(1) p{5} p{6}],logical(notfixed));
+figure
+plot(f_test)
+##### SOURCE END #####
+--></body></html>

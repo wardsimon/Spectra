@@ -1,3 +1,12 @@
-
+# MATLAB temp files #
+####################
 *.m~
-spec1d/.DS_Store
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

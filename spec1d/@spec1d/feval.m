@@ -7,20 +7,17 @@ function [ varargout ] = feval(fit,varargin)
 %
 % Simon Ward 26/01/2016 - simon.ward@psi.ch
 %
+s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
+s = varargin(s_ind);
+varargin(s_ind) = [];
 
 p = inputParser;
 p.CaseSensitive = false;
 p.addRequired('fit',@(x) isstruct(x) & isfield(x,'function'));
-p.addRequired('s_in',@(x) isa(x,'spec1d'));
-p.addOptional('add_s',[],@(x) isa(x,'spec1d'))
-p.parse(fit,varargin{:});
+p.addRequired('s_in',@iscell);
+p.parse(fit,s,varargin{:});
 
-if ~isempty(p.Results.add_s(:))
-    s = [p.Results.s_in(:) p.Results.add_s(:)];
-else
-    s = p.Results.s_in(:);
-end
-
+s = [p.Results.s_in{:}];
 
 fit = p.Results.fit;
 
