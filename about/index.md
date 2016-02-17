@@ -4,7 +4,7 @@ title: About Spectra
 image:
   feature: spectra_logo.png
   credit: substance33
-  creditlink: https://github.com/substance33
+  creditlink: https://github.com/simonward86
 comments: false
 modified: 2016-02-11
 ---
