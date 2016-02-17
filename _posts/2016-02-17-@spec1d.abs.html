@@ -1,0 +1,111 @@
+---
+layout: post
+title: "@spec1d.abs"
+tags:
+- spec1d
+- abs
+- ref
+comments: true
+
+---
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/abs</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="reference_abs.m"><style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/abs</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/abs</p><p>This function gives a new spectra where the absolute y values of the imput spectra <i>s</i> are used.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Usage</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li><li><a href="#5">Example 1</a></li></ul></div><h2>Usage<a name="1"></a></h2><pre>  s_out = abs(s)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - single or vector of spec1d objects</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - spec1d object of the same size as the input array</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/abs</p><h2>Example 1<a name="5"></a></h2><pre class="codeinput">s = spec1d(-5:5,-5:5,0.1);
+s_1 = abs(s);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/abs 
+% This is a the reference documentation for the function @spec1d/abs
+%
+% This function gives a new spectra where the absolute y values of the
+% imput spectra _s_ are used.
+%%
+
+%% Usage 
+% 
+%    s_out = abs(s)
+
+%% Inputs
+% 
+% * _s_ - single or vector of spec1d objects 
+% 
+
+%% Outputs
+% 
+% * _s_out_ - spec1d object of the same size as the input array
+
+%% Example
+% This is an example on using @spec1d/abs
+
+%% Example 1
+
+s = spec1d(-5:5,-5:5,0.1);
+s_1 = abs(s);
+
+##### SOURCE END #####
+--></body></html>
