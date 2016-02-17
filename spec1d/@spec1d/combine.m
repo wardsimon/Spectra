@@ -42,7 +42,7 @@ p = inputParser;
 p.CaseSensitive = false;
 p.addRequired('toll',@(x) isnumeric(x) && isreal(x));
 p.addRequired('s_in',@iscell);
-p.addOptional('indexing','relative',@ischar)
+p.addParameter('indexing','relative',@ischar)
 p.addParameter('method','counts',@ischar);
 
 p.parse(toll,s,varargin{:});

@@ -1,12 +1,13 @@
 %% @spec1d/combine
-% This is a the reference documentation for the function @spec1d/combine
+% This is a the reference documentation for the function @spec1d/combine.
+%
 % This function to combines two or more spectra. If the x values of two points differ by less
-% than tolerance 'toll', then the points are combined.
+% than tolerance _toll_, then the points are combined.
 %%
 
-%% Usage 
+%% Syntax 
 % 
-%  # s_out = combine(toll,s,varargin)
+%   s_out = combine(toll,s,varargin)
 %
 
 %% Inputs
@@ -18,45 +19,65 @@
 
 %% Optional Inputs
 % 
-% Depending on the optional 'method', points are combined as
-% 'mean'    : Simple means for x and y, errors are averaged in quadrature.
-% 'counts'	: Restablishes normalisation and original counts assuming
-%             square-root statistics, is correct for normalised counts
-% 'weight'	: Weights to inverse error. For more general data.
-% Default is 'counts'
+% Depending on the optional *method*, points are combined as
 %
-% Depending on the optional 'indexing', points are indexed as
-% 'relative'    : Histogram bining of size 'toll'. This is the same as
+% # *mean*    : Simple means for x and y, errors are averaged in quadrature.
+% # *counts*	: Restablishes normalisation and original counts assuming
+%             square-root statistics, is correct for normalised counts
+% # *weight*	: Weights to inverse error. For more general data.
+%
+% Default is *counts*
+%
+% Depending on the optional *indexing*, points are indexed as
+%
+% # *relative*    : Histogram bining of size 'toll'. This is the same as
 %                 using the rebin function except for multiple spectum.
-% 'absolute'	: The gap between the points is  always greater then 'toll'
+% # *absolute*	: The gap between the points is  always greater then 'toll'
 %                 before any averaging.
-% 'legacy'      : Replicate the original @spec1d/combine
+% # *legacy*      : Replicate the original @spec1d/combine
+%
+% Default is *relative* due to speed considerations.
 
 %% Outputs
 % 
 % * _s_out_ - spec1d object
 
-%% Notes
-% 
-% * Default 'indexing' is 'relative' due to speed considerations.
-% 
-
 %% Examples
-% These are some examples on using @spec1d/combine. Combining spectra s1,s2 and s3 when x values differ by less than 0.5.
+% These are some examples on using @spec1d/combine. Combining spectra _s1_, _s2_ and _s3_ when x values differ by less than 0.5.
 
-%%% Example 1
-% Combine s1,s2,s3 by counts method
+%% Example 1
+% Combine _s1_, _s2_, _s3_ by counts method
 s1 = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s2 = spec1d((1:0.2:5) + 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) - 0.2*rand(1,21),0.1);
 s3 = spec1d((1:0.2:5) - 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) + 0.2*rand(1,21),0.1);
 
-s_out = combine(0.5,s1,s2,s3);
+s_out1 = combine(0.5,s1,s2,s3);
 
 figure
-plot(s1,s2,s3,s_out)
+plot(s1,s2,s3,s_out1)
 
-% 
-% > % 
-% >r = combine(0.01,s1,s2,s3,'method','mean') % combine s1,s2,s3 by mean method
-% >r = combine(0.01,s1,s2,s3,'method','weight','indexing',absolute) % combine s1,s2,s3 by
-% weight method and indexing 'absolute'
+%% Example 2
+% Combine by the 'mean' method
+s_out2 = combine(0.5,s1,s2,s3,'method','mean');
+
+figure
+plot(s1,s2,s3,s_out2)
+
+%% Example 3
+% Combine _s1_, _s2_, _s3_ by weight method and indexing 'absolute'
+s_out3 = combine(0.5,s1,s2,s3,'method','weight','indexing','absolute');
+
+figure
+plot(s1,s2,s3,s_out3)
+
+%% Notes
+% The binning method and indexing results in different final objects. It is
+% important to note the advantages/disadvantages of each method. 
+
+figure
+hold on
+plot(get(s1,'x'),get(s1,'y'),'r-')
+plot(s_out1,s_out2,s_out3)
+
+%% See Also
+% <html><a href="{{ site.url }}/@spec1d.rebin/index.html">Rebin</a></html>

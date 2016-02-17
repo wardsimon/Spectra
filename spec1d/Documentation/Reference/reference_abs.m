@@ -1,12 +1,13 @@
 %% @spec1d/abs 
 % This is a the reference documentation for the function @spec1d/abs
+%
 % This function gives a new spectra where the absolute y values of the
-% imput spectra are used.
+% imput spectra _s_ are used.
 %%
 
 %% Usage 
 % 
-%  # s_out = abs(s)
+%    s_out = abs(s)
 
 %% Inputs
 % 
@@ -20,7 +21,7 @@
 %% Example
 % This is an example on using @spec1d/abs
 
-%%% Example 1
+%% Example 1
 
 s = spec1d(-5:5,-5:5,0.1);
 s_1 = abs(s);

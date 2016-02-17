@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>@spec1d/times</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-13"><meta name="DC.source" content="reference_times.m"><style type="text/css">
+      --><title>@spec1d/times</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="reference_times.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,66 +66,67 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>@spec1d/times</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/times This function gives a new spectra with a value of spectra s1 multiplied by a value or spectra s2.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Usage</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Notes</a></li><li><a href="#5">Examples</a></li><li><a href="#6">Example 1</a></li><li><a href="#7">Example 2</a></li><li><a href="#8">Example 3</a></li></ul></div><h2>Usage<a name="1"></a></h2><pre># s_out = times(s1,s2)
-# s_out = s1 * s2
-# s_out = s1 * a
-# s_out = a * s1</pre><h2>Inputs<a name="2"></a></h2><div><ul><li>s1 - spec1d object</li><li>s2(a) - spec1d object or value</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li>s_out - spec1d object</li></ul></div><h2>Notes<a name="4"></a></h2><div><ul><li>If spectra are not the same length, s2 is interpolated to the x values of s1</li></ul></div><h2>Examples<a name="5"></a></h2><p>These are some examples on using @spec1d/times</p><h2>Example 1<a name="6"></a></h2><p>Multiplication of spectra and value;</p><pre class="codeinput">s = spec1d(1:5,1:5,0.1);
+  </style></head><body><div class="content"><h1>@spec1d/times</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/times</p><p>This function gives a new spectra with a value of spectra <i>s1</i> multiplied by a value or spectra <i>s2</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Examples</a></li><li><a href="#5">Example 1</a></li><li><a href="#6">Example 2</a></li><li><a href="#7">Example 3</a></li><li><a href="#8">Notes</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = times(s1,s2)
+  s_out = s1 * s2
+  s_out = s1 * a
+  s_out = a * s1</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s1</i> - spec1d object</li><li><i>s2(a)</i> - spec1d object or value</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Examples<a name="4"></a></h2><p>These are some examples on using @spec1d/times</p><h2>Example 1<a name="5"></a></h2><p>Multiplication of spectra and value;</p><pre class="codeinput">s = spec1d(1:5,1:5,0.1);
 s_1 = s * 5;
 s_1 = 5 * s;
-</pre><h2>Example 2<a name="7"></a></h2><p>Multiplication two spectra (equal points)</p><pre class="codeinput">s2 = spec1d(1:5,2:6,0.15);
+</pre><h2>Example 2<a name="6"></a></h2><p>Multiplication two spectra (equal points)</p><pre class="codeinput">s2 = spec1d(1:5,2:6,0.15);
 s_2 = s * s2;
-</pre><h2>Example 3<a name="8"></a></h2><p>Addition two spectra (unequal points). This using interpolation on s3</p><pre class="codeinput">s3 = spec1d(1:5 + 0.1,2:6,0.15);
+</pre><h2>Example 3<a name="7"></a></h2><p>Addition two spectra (unequal points). This using interpolation on <i>s3</i></p><pre class="codeinput">s3 = spec1d(1:5 + 0.1,2:6,0.15);
 s_3 = s * s3;
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+</pre><h2>Notes<a name="8"></a></h2><div><ul><li>If spectra are not the same length, <i>s2</i> is interpolated to the x values of <i>s1</i>.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% @spec1d/times 
 % This is a the reference documentation for the function @spec1d/times
-% This function gives a new spectra with a value of spectra s1 multiplied by a value or spectra s2.
+%
+% This function gives a new spectra with a value of spectra _s1_ multiplied by a value or spectra _s2_.
 %%
 
-%% Usage 
+%% Syntax 
 % 
-%  # s_out = times(s1,s2)
-%  # s_out = s1 * s2
-%  # s_out = s1 * a
-%  # s_out = a * s1
+%    s_out = times(s1,s2)
+%    s_out = s1 * s2
+%    s_out = s1 * a
+%    s_out = a * s1
 
 %% Inputs
 % 
-% * s1 - spec1d object
-% * s2(a) - spec1d object or value
+% * _s1_ - spec1d object
+% * _s2(a)_ - spec1d object or value
 % 
 
 %% Outputs
 % 
-% * s_out - spec1d object
-
-%% Notes
-% 
-% * If spectra are not the same length, s2 is interpolated to the x values of s1
-% 
+% * _s_out_ - spec1d object
 
 %% Examples
 % These are some examples on using @spec1d/times
 
-%%% Example 1
+%% Example 1
 % Multiplication of spectra and value; 
 
 s = spec1d(1:5,1:5,0.1);
 s_1 = s * 5;
 s_1 = 5 * s;
 
-%%% Example 2
+%% Example 2
 % Multiplication two spectra (equal points)
 
 s2 = spec1d(1:5,2:6,0.15);
 s_2 = s * s2;
 
-%%% Example 3
-% Addition two spectra (unequal points). This using interpolation on s3
+%% Example 3
+% Addition two spectra (unequal points). This using interpolation on _s3_
 
 s3 = spec1d(1:5 + 0.1,2:6,0.15);
 s_3 = s * s3;
 
+%% Notes
+% 
+% * If spectra are not the same length, _s2_ is interpolated to the x
+% values of _s1_.
+% 
 ##### SOURCE END #####
 --></body></html>
