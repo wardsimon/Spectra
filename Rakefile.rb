@@ -1,6 +1,7 @@
 require "rubygems"
 require "bundler/setup"
 require "stringex"
+require "html/proofer"
 
 ## -- Config -- ##
 
@@ -87,3 +88,17 @@ def ask(message, valid_options)
   end
   answer
 end
+
+
+task :default => [:test]
+
+task :test do
+	HTML::Proofer.new("dist/", {
+		:href_ignore => [
+			"#",
+			# The additional anchor link is picked up from the Geomap JSON, but shouldn't be flagged
+			"\\\"#\\\""
+			],
+		:disable_external => true,
+		:ext => ".html"
+	}).run
