@@ -1,0 +1,174 @@
+---
+layout: post
+title: "@spec1d.rebin"
+tags:
+- spec1d
+- rebin
+- ref
+comments: true
+
+---
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/rebin</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-18"><meta name="DC.source" content="reference_rebin.m"><style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/rebin</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/rebin.</p><p>This function re-bins a spec1d spectrum <i>s</i> to the bins specified by <i>dx</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Examples</a></li><li><a href="#6">Example 1</a></li><li><a href="#7">Example 2</a></li><li><a href="#8">Notes</a></li><li><a href="#9">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre class="language-matlab">s_out = rebin(s,dx,varargin)
+</pre><h2>Inputs<a name="2"></a></h2><p><ul style="list-style-type:square">
+ <li><i>s</i> - Single spec1d object or array</li>
+ <li><i>dx</i> - Binning argument</li>
+ <ul>
+ <li><i>scalar</i> - Specifies bin widths.</li>
+ <li><i>vector</i> - Specifies the bin centers.</li>
+ <li><i>sped1d</i> - Uses x-values of dx as bin centers</li>
+ <li><i>string</i> - Use a binning algorithm described in the documentation histcounts.</li></ul>
+ <li><i>varargin</i> - Optional Parameter/Value pairs</li>
+</ul>
+</p><h2>Optional Inputs<a name="3"></a></h2><p>The optional <b>method</b> controls how the x-value of the bin is interpreted. Options are:</p><div><ol><li><b>average</b> : New x values are average within bins (weighted by error)</li><li><b>force</b>   : New x values are as specified in dx</li><li><b>interp</b>  : New x-values as specified by dx, y and e interpolated from 'average'-x,</li></ol></div><p>The default is <b>average</b></p><p>The methods above can also have the <b>byError</b> flag.</p><div><ol><li><b>0</b> : Data is binned by x. 'Default'</li><li><b>1</b> : Data is binned to a constant error. Only <b>method</b>, <b>average</b> is supported.</li></ol></div><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Examples<a name="5"></a></h2><p>These are some examples on using @spec1d/rebin. Rebin spectra <i>s1</i>.</p><h2>Example 1<a name="6"></a></h2><p>Rebin <i>s</i> to x-value steps 0.5</p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_out1 = rebin(s,0.5);
+
+figure
+plot(s,s_out1)
+</pre><figure><a href="{{ site.url }}/images/2016-02-18-reference_rebin_01.png"><img src="{{ site.url }}/images/2016-02-18-reference_rebin_01.png" alt="2016-02-18-reference_rebin_01"></a></figure> <h2>Example 2<a name="7"></a></h2><p>Rebin <i>s</i> to an x vector</p><pre class="codeinput">x = 1:0.4:5;
+x(3:4:end) = [];
+s_out2 = rebin(s,x);
+
+figure
+plot(s,s_out2)
+</pre><pre class="codeoutput">Warning: Supplied bin range does not cover data. Removing points. 
+</pre><figure><a href="{{ site.url }}/images/2016-02-18-reference_rebin_02.png"><img src="{{ site.url }}/images/2016-02-18-reference_rebin_02.png" alt="2016-02-18-reference_rebin_02"></a></figure> <h2>Notes<a name="8"></a></h2><p>The width of boundary bins is twice the distance to neighbour bin.</p><h2>See Also<a name="9"></a></h2><p><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/rebin
+% This is a the reference documentation for the function @spec1d/rebin.
+%
+% This function re-bins a spec1d spectrum _s_ to the bins specified by _dx_.
+%%
+
+%% Syntax 
+% 
+%   s_out = rebin(s,dx,varargin)
+%
+
+%% Inputs
+% 
+% <html><ul style="list-style-type:square">
+%  <li><i>s</i> - Single spec1d object or array</li>
+%  <li><i>dx</i> - Binning argument</li>
+%  <ul> 
+%  <li><i>scalar</i> - Specifies bin widths.</li>
+%  <li><i>vector</i> - Specifies the bin centers.</li>
+%  <li><i>sped1d</i> - Uses x-values of dx as bin centers</li>
+%  <li><i>string</i> - Use a binning algorithm described in the documentation histcounts.</li></ul>
+%  <li><i>varargin</i> - Optional Parameter/Value pairs</li>
+% </ul>
+% </html>
+% 
+
+%% Optional Inputs
+% The optional *method* controls how the x-value of the bin is interpreted.
+% Options are:
+%
+% # *average* : New x values are average within bins (weighted by error)
+% # *force*   : New x values are as specified in dx
+% # *interp*  : New x-values as specified by dx, y and e interpolated from 'average'-x,
+%
+% The default is *average*
+%
+% The methods above can also have the *byError* flag.
+%                    
+% # *0* : Data is binned by x. 'Default'
+% # *1* : Data is binned to a constant error. Only *method*, *average* is supported.
+
+%% Outputs
+% 
+% * _s_out_ - spec1d object
+
+%% Examples
+% These are some examples on using @spec1d/rebin. Rebin spectra _s1_.
+
+%% Example 1
+% Rebin _s_ to x-value steps 0.5 
+s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_out1 = rebin(s,0.5);
+
+figure
+plot(s,s_out1)
+
+%% Example 2
+% Rebin _s_ to an x vector
+x = 1:0.4:5;
+x(3:4:end) = []; 
+s_out2 = rebin(s,x);
+
+figure
+plot(s,s_out2)
+
+%% Notes
+% The width of boundary bins is twice the distance to neighbour bin.
+
+%% See Also
+% <html><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></html>
+##### SOURCE END #####
+--></body></html>
