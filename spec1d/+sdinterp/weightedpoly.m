@@ -13,7 +13,7 @@ for j = n:-1:1
     V(:,j) = x.*V(:,j+1);
 end
 % Solve least squares problem.
-if verLessThan('matlab','R2014a')
+if verLessThan('matlab','8.3')
     [Q, R] = qr_lite(bsxfun(@times,V,w));
 else
     [Q,R] = qr(bsxfun(@times,V,w),0);

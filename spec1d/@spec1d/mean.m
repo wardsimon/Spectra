@@ -33,19 +33,19 @@ for i = 1:length(s)
     gpuCompute = 0;
     if isa(y,'gpuArray')
         gpuCompute = 1;
-        if ~strcmp(method,'counts')
+        if ~strcmpi(method(1),'c')
             warning('spec1d:mean:GpuUnsuportedMethod','%s is not a valid method. Switching to counts',p.Results.method)
             method = 'counts';
         end
     end
     
     ind = ones(size(y));
-    switch method
-        case 'mean'
+    switch lower(method(1))
+        case 'm'
             % Simple mean
             ys = accumarray(ind(:),y(:),[],@mean);
             es = accumarray(ind(:),e(:),[],@(x) sqrt(sum(x.^2))/length(x));
-        case 'counts'
+        case 'c'
             % Counts
             if gpuCompute
                 m = zeros(size(e),'gpuArray');
@@ -59,7 +59,7 @@ for i = 1:length(s)
             ms = accumarray(ind(:),m(:),[],@sum);
             ys = accumarray(ind(:),y(:).*m(:),[],@sum)./ms;
             es = (accumarray(ind(:),(e(:).*m(:)).^2,[],@sum).^0.5)./ms;
-        case 'weight'
+        case 'w'
             % Weight
             ms = accumarray(ind(:),1./e(:),[],@(x) max(sum(x),eps));
             ys = accumarray(ind(:),y(:)./e(:),[],@sum)./ms;

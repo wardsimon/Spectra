@@ -1,4 +1,4 @@
-function sout = cumsum(varargin)
+function s_out = cumsum(varargin)
 %
 % function r = cumsum(s1..sn)
 %
@@ -7,16 +7,27 @@ function sout = cumsum(varargin)
 % Simon Ward 27/01/2016 - simon.ward@psi.ch
 %
 
-s1 = [varargin{:}];
+s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
+s = varargin(s_ind);
+varargin = varargin(~s_ind);
+s = [s{:}];
 
-for i = 1:length(s1);
-    r = s1(i);
-    r.y = cumsum(s1(i).y);
-    r.e = sqrt(sum(s(i).e.^2));
+for i = 1:length(s);
+    r = s(i);
+    if isempty(varargin)
+        r.y = cumsum(s(i).y);
+    else
+        r.y = cumsum(s(i).y,varargin{:});
+    end
+    r.e = sqrt(cumsum(s(i).e.^2));
     
-    if ~isempty(s1(i).yfit)
-        r.yfit = cumsum(s1(i).yfit);
+    if ~isempty(s(i).yfit)
+        if isempty(varargin)
+            r.yfit = cumsum(s(i).yfit);
+        else
+            r.yfit = cumsum(s(i).yfit,varargin{:});
+        end
     end
     
-    sout(i) = spec1d(r);
+    s_out(i) = spec1d(r);
 end

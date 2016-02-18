@@ -1,5 +1,5 @@
 %% @spec1d/times 
-% This is a the reference documentation for the function @spec1d/times
+% This is the reference documentation for the function @spec1d/times
 %
 % This function gives a new spectra with a value of spectra _s1_ multiplied by a value or spectra _s2_.
 %%
@@ -23,22 +23,32 @@
 
 %% Examples
 % These are some examples on using @spec1d/times
-
-%% Example 1
-% Multiplication of spectra and value; 
+% 
+% <html><h3>Example 1</h3></html>
+%
+% Multiplication of spectra and value
+%
 
 s = spec1d(1:5,1:5,0.1);
 s_1 = s * 5;
 s_1 = 5 * s;
 
-%% Example 2
+%% 
+% 
+% <html><h3>Example 2</h3></html>
+%
 % Multiplication two spectra (equal points)
+%
 
 s2 = spec1d(1:5,2:6,0.15);
 s_2 = s * s2;
 
-%% Example 3
+%% 
+% 
+% <html><h3>Example 3</h3></html>
+%
 % Addition two spectra (unequal points). This using interpolation on _s3_
+%
 
 s3 = spec1d(1:5 + 0.1,2:6,0.15);
 s_3 = s * s3;

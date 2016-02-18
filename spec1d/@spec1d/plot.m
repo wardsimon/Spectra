@@ -36,43 +36,70 @@ s = [p.Results.s_in{:}];
 plot_opt = p.Unmatched;
 
 if p.Results.trace && sdex.getpref('experimental').val
-        INFO = 'STACK TRACE\n-----------\n';
-        
-        [st, ~] = dbstack('-completenames');
-        f = 0;
-        for i = 1:length(st)
-            [pathstr, ~, ~] = fileparts(st(i).file);
-            % This assumes we are working from the home directory
-            if ~isempty(strfind(pathstr,cast(java.lang.System.getProperty('user.home'),'char'))) && f == 0;
-                rdir = pathstr;
-                f = 1;
-            end
-            file_list{i} = st(i).file;
-            line_list(i) = st(i).line;
+    INFO = 'STACK TRACE\n-----------\n';
+    
+    [st, ~] = dbstack('-completenames');
+    f = 0;
+    for i = 1:length(st)
+        [pathstr, ~, ~] = fileparts(st(i).file);
+        % This assumes we are working from the home directory
+        if ~isempty(strfind(pathstr,cast(java.lang.System.getProperty('user.home'),'char'))) && f == 0;
+            rdir = pathstr;
+            f = 1;
         end
-        [file_list, ind] = unique(file_list);
-        INFO = sprintf('%sUser base directory is assumed to be: %s\nLine\tFile',INFO,rdir);
-        for i = ind
-            INFO = sprintf('%s\n%i\t%s\n',INFO,line_list(i),file_list{i});
-        end
+        file_list{i} = st(i).file;
+        line_list(i) = st(i).line;
+    end
+    [file_list, ind] = unique(file_list);
+    INFO = sprintf('%sUser base directory is assumed to be: %s\nLine\tFile',INFO,rdir);
+    for i = ind
+        INFO = sprintf('%s\n%i\t%s\n',INFO,line_list(i),file_list{i});
+    end
 end
 
 %% Plot the data
 %  Work out limits on graph
-min_x = Inf;
-max_x = -Inf;
-min_y = Inf;
-max_y = -Inf;
+min_x = min(arrayfun(@(x) min(x.x),struct(s)));
+max_x = max(arrayfun(@(x) max(x.x),struct(s)));
+min_y = min(arrayfun(@(x) min(x.y - x.e),struct(s)));
+max_y = max(arrayfun(@(x) max(x.y + x.e),struct(s)));
 
-for i = 1:length(s)
-    if min(s(i).x) < min_x; min_x = min(s(i).x); end
-    if max(s(i).x) > max_x; max_x = max(s(i).x); end
-    if min(s(i).y - s(i).e) < min_y; min_y = min(s(i).y - s(i).e); end
-    if max(s(i).y + s(i).e) > max_y; max_y = max(s(i).y + s(i).e); end
+if ishold(gcf) && ~isempty(get(gcf,'Children'))
+    temp_x = get(gca,'XLim');
+    temp_y = get(gca,'YLim');
+    if temp_x(1) < min_x
+        min_x = temp_x(1);
+        pm(1) = 0.05*(max_x - min_x);
+    else
+        pm(1) = 0;
+    end
+    if temp_x(2) > max_x
+        max_x = temp_x(2);
+        pm(1) = 0.05*(max_x - min_x);
+    end
+    if temp_y(1) < min_y
+        min_y = temp_y(1);
+        pm(2) = 0.05*(max_y - min_y);
+    else
+        pm(2) = 0;
+    end
+    
+    if temp_y(2) > max_y
+        max_y = temp_y(2);
+        pm(2) = 0.05*(max_y - min_y);
+    end
+    axis([min_x max_x min_y max_y])
+    c_pos = length(findobj(get(gca,'Children'),'-regexp','Tag','[^'']'));
+else
+    if max(arrayfun(@(x) length(x.x),struct(s))) == 1
+        pm = [0.05 0.05];
+    else
+        pm = [0.05*(max_x - min_x) 0.05*(max_y - min_y)];
+    end
+    c_pos = 0;
 end
-pm = [0.05*(max_x - min_x) 0.05*(max_y - min_y)];
-axis([min_x-pm(1) max_x+pm(1) min_y-pm(2) max_y+pm(2)])
 
+axis([min_x-pm(1) max_x+pm(1) min_y-pm(2) max_y+pm(2)])
 
 hout  = [];
 hbout = [];
@@ -93,10 +120,14 @@ for i = 1:length(s)
     ytop = (y + err)';
     ybot = (y - err)';
     if isnan(p.Results.tLenght)
-        tee = 0.075*min(diff(x));  % make tee distance for error bars
+        if length(x) == 1
+            tee = 0.075;
+        else
+            tee = 0.075*min(diff(x));  % make tee distance for error bars
+        end
     else
         if p.Results.tLenght > 0
-            tee = p.Results.tLenght*min(diff(x)); % Allow for user scaling 
+            tee = p.Results.tLenght*min(diff(x)); % Allow for user scaling
         else
             tee = -1*p.Results.tLenght; % Allow for user supplied value
         end
@@ -105,16 +136,16 @@ for i = 1:length(s)
     xright = (x+tee)';
     x_eb = cell2mat(arrayfun(@(xl, xr, x) [xl xr NaN x x NaN xl xr NaN],xleft,xright,x(:)','UniformOutput',0));
     y_eb = cell2mat(arrayfun(@(yb, yt) [yb yb NaN yb yt NaN yt yt NaN],ybot,ytop,'UniformOutput',0));
-%     for j = 1:length(x)
-%         x_eb((((j-1)*9)+1):(j*9)) = [xleft(j) xright(j) NaN x(j) x(j) NaN xleft(j) xright(j) NaN];
-%         y_eb((((j-1)*9)+1):(j*9)) = [ybot(j) ybot(j) NaN ybot(j) ytop(j) NaN ytop(j) ytop(j) NaN];
-%     end
+    %     for j = 1:length(x)
+    %         x_eb((((j-1)*9)+1):(j*9)) = [xleft(j) xright(j) NaN x(j) x(j) NaN xleft(j) xright(j) NaN];
+    %         y_eb((((j-1)*9)+1):(j*9)) = [ybot(j) ybot(j) NaN ybot(j) ytop(j) NaN ytop(j) ytop(j) NaN];
+    %     end
     hle = plot(x_eb,y_eb,'Color',[128 128 128]/255,'LineStyle','-','LineWidth',1,'Marker','None');
     hEGroup = hggroup;
     set(hle,'Parent',hEGroup)
     
     %----- Do the actual plotting
-    hll=plot(x,y,'LineStyle','None','Marker',markerorder{1+mod(i-1,7)},'MarkerFaceColor',colourorder(1+mod(i-1,7),:),...
+    hll=plot(x,y,'LineStyle','None','Marker',markerorder{1+mod(i-1,7)},'MarkerFaceColor',colourorder(1+mod(i-1 + c_pos,7),:),...
         'MarkerSize',7,'MarkerEdgeColor','None','Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
     
     if ~isempty(plot_opt)
@@ -137,13 +168,13 @@ for i = 1:length(s)
         % HG2 Way
         hle.LegendDisplay = 'off';
     else
-        try 
+        try
             % The undocumented way
             hasbehavior(hle,'legend',0)
         catch
-        % Foolproof way!
-        set(get(get(hEGroup,'Annotation'),'LegendInformation'),...
-            'IconDisplayStyle','off');
+            % Foolproof way!
+            set(get(get(hEGroup,'Annotation'),'LegendInformation'),...
+                'IconDisplayStyle','off');
         end
     end
     

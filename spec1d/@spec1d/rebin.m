@@ -32,7 +32,7 @@ p.parse(s,dx,varargin{:})
 s = p.Results.s;
 dx = p.Results.dx;
 method = p.Results.method;
-if ischar(dx) && verLessThan('matlab','R2014b')
+if ischar(dx) && verLessThan('matlab','8.4')
     error('spec1d:rebin:MatlabVerionError','This option needs the function histcounts which is not available on your MATLAB version.')
 end
 
@@ -55,7 +55,7 @@ for i = 1:length(s)
             centers = get(dx,'x');
             d = diff(centers)/2;
             edges = [centers(1)-d(1); centers(1:end-1)+d; centers(end)+d(end)];
-            if verLessThan('matlab','R2014b')
+            if verLessThan('matlab','8.4')
                 [N,ind] = histc(x(:),edges);
             else
                 [N,~,ind] = histcounts(x(:),edges);
@@ -71,7 +71,7 @@ for i = 1:length(s)
             % This is the numeric case
             if length(dx) == 1;
                 % This is the scalar case
-                if verLessThan('matlab','R2014b')
+                if verLessThan('matlab','8.4')
                     edges = linspace(min(x),max(x),round((max(x)-min(x))/dx));
                     [N, ind] = histc(x(:),edges);
                 else
@@ -82,7 +82,7 @@ for i = 1:length(s)
                 centers = dx;
                 d = diff(centers)/2;
                 edges = [centers(1)-d(1), centers(1:end-1)+d, centers(end)+d(end)];
-                if verLessThan('matlab','R2014b')
+                if verLessThan('matlab','8.4')
                     [N, ind] = histc(x(:),edges);
                 else
                     [N,~,ind] = histcounts(x(:),edges);

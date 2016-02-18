@@ -4,4 +4,7 @@ publishToGithub('reference_times.m','title','@spec1d.times','tags',{'spec1d','ti
 publishToGithub('reference_plus.m','title','@spec1d.plus','tags',{'spec1d','plus','ref'})
 publishToGithub('reference_cut.m','title','@spec1d.cut','tags',{'spec1d','cut','ref'})
 publishToGithub('reference_combine.m','title','@spec1d.combine','tags',{'spec1d','combine','ref'})
+publishToGithub('reference_rebin.m','title','@spec1d.rebin','tags',{'spec1d','rebin','ref'})
+publishToGithub('reference_cumsum.m','title','@spec1d.cumsum','tags',{'spec1d','cumsum','ref'})
+publishToGithub('reference_sum.m','title','@spec1d.sum','tags',{'spec1d','sum','ref'})
 

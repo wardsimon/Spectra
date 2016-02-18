@@ -1,5 +1,5 @@
 %% @spec1d/plus 
-% This is a the reference documentation for the function @spec1d/plus
+% This is the reference documentation for the function @spec1d/plus
 %
 % This function gives a new spectra with a value of spectra _s1_ plus a value or an addition of values from spectra _s1_ and _s2_.
 %%
@@ -31,22 +31,32 @@
 
 %% Examples
 % These are some examples on using @spec1d/plus
-
-%% Example 1
-% Addition of spectra and value; 
+% 
+% <html><h3>Example 1</h3></html>
+%
+% Addition of spectra and value
+%
 
 s = spec1d(1:5,1:5,0.1);
 s_1 = s + 5;
 s_1 = 5 + s;
 
-%% Example 2
+%%
+% 
+% <html><h3>Example 2</h3></html>
+%
 % Addition two spectra (equal points)
+%
 
 s2 = spec1d(1:5,2:6,0.15);
 s_2 = s + s2;
 
-%% Example 3
+%%
+% 
+% <html><h3>Example 3</h3></html>
+%
 % Addition two spectra (unequal points). This using interpolation on _s3_
+%
 
 s3 = spec1d(1:5 + 0.1,2:6,0.15);
 s_3 = s + s3;

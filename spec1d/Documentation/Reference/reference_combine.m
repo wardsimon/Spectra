@@ -1,5 +1,5 @@
 %% @spec1d/combine
-% This is a the reference documentation for the function @spec1d/combine.
+% This is the reference documentation for the function @spec1d/combine.
 %
 % This function to combines two or more spectra. If the x values of two points differ by less
 % than tolerance _toll_, then the points are combined.
@@ -44,9 +44,12 @@
 
 %% Examples
 % These are some examples on using @spec1d/combine. Combining spectra _s1_, _s2_ and _s3_ when x values differ by less than 0.5.
-
-%% Example 1
+% 
+% <html><h3>Example 1</h3></html>
+%
 % Combine _s1_, _s2_, _s3_ by counts method
+%
+
 s1 = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s2 = spec1d((1:0.2:5) + 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) - 0.2*rand(1,21),0.1);
 s3 = spec1d((1:0.2:5) - 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) + 0.2*rand(1,21),0.1);
@@ -56,15 +59,25 @@ s_out1 = combine(0.5,s1,s2,s3);
 figure
 plot(s1,s2,s3,s_out1)
 
-%% Example 2
+%% 
+%
+% <html><h3>Example 2</h3></html>
+%
 % Combine by the 'mean' method
+%
+
 s_out2 = combine(0.5,s1,s2,s3,'method','mean');
 
 figure
 plot(s1,s2,s3,s_out2)
 
-%% Example 3
+%% 
+% 
+% <html><h3>Example 3</h3></html>
+%
 % Combine _s1_, _s2_, _s3_ by weight method and indexing 'absolute'
+%
+
 s_out3 = combine(0.5,s1,s2,s3,'method','weight','indexing','absolute');
 
 figure

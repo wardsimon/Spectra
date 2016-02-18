@@ -5,6 +5,12 @@ s = size(s_in);
 s_in = s_in(:);
 
 for i = 1:length(s_in)
+    s_in(i).x = s_in(i).x(:);
+    s_in(i).y = s_in(i).y(:);
+    s_in(i).e = s_in(i).e(:);
+    if ~isempty(s_in(i).yfit)
+        s_in(i).yfit = s_in(i).yfit(:);
+    end
     s_out(i) = spec1d(s_in(i));
 end
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>@spec1d/abs</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="reference_abs.m"><style type="text/css">
+      --><title>@spec1d/abs</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-18"><meta name="DC.source" content="reference_abs.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,9 +66,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>@spec1d/abs</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/abs</p><p>This function gives a new spectra where the absolute y values of the imput spectra <i>s</i> are used.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Usage</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li><li><a href="#5">Example 1</a></li></ul></div><h2>Usage<a name="1"></a></h2><pre>  s_out = abs(s)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - single or vector of spec1d objects</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - spec1d object of the same size as the input array</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/abs</p><h2>Example 1<a name="5"></a></h2><pre class="codeinput">s = spec1d(-5:5,-5:5,0.1);
+  </style></head><body><div class="content"><h1>@spec1d/abs</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/abs</p><p>This function gives a new spectra where the absolute y values of the imput spectra <i>s</i> are used.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = abs(s)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - single or vector of spec1d objects</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - spec1d object of the same size as the input array</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/abs</p><p><h3>Example 1</h3></p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s_1 = abs(s);
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+
+figure
+plot(s,s_1)
+legend({<span class="string">'s'</span>,<span class="string">'abs(s)'</span>},<span class="string">'Location'</span>,<span class="string">'SouthWest'</span>)
+</pre><img vspace="5" hspace="5" src="reference_abs_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% @spec1d/abs 
 % This is a the reference documentation for the function @spec1d/abs
@@ -77,7 +81,7 @@ s_1 = abs(s);
 % imput spectra _s_ are used.
 %%
 
-%% Usage 
+%% Syntax 
 % 
 %    s_out = abs(s)
 
@@ -92,11 +96,15 @@ s_1 = abs(s);
 
 %% Example
 % This is an example on using @spec1d/abs
+% 
+% <html><h3>Example 1</h3></html>
+%
 
-%% Example 1
-
-s = spec1d(-5:5,-5:5,0.1);
+s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s_1 = abs(s);
 
+figure
+plot(s,s_1)
+legend({'s','abs(s)'},'Location','SouthWest')
 ##### SOURCE END #####
 --></body></html>

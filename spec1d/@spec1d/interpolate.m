@@ -72,7 +72,7 @@ for i = 1:length(s)
     end
     switch lower(method)
         case 'linear'
-            temp = mat2cell((x(:,ones(1,length(x_new))) - x_new),length(x),ones(size(x_new)));
+            temp = mat2cell(bsxfun(@minus,x(:,ones(1,length(x_new))),x_new),length(x),ones(size(x_new)));
             [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
             [rind2,~] = cellfun(@(x) find(x >  0,1,'first'),temp);
             y_new = arrayfun(@(x_new,n1,n2) y(n1)*(x(n2)-x_new)/(x(n2)-x(n1))+...
@@ -103,9 +103,9 @@ for i = 1:length(s)
                 [pp, S] = sdinterp.weightedpoly(x,y,e,p.Results.order);
                 [y_new, e_new] = polyval(pp,x_new,S);
             end
-            temp = mat2cell((x(:,ones(1,length(x_new))) - x_new),length(x),ones(size(x_new)));
+            temp = mat2cell(bsxfun(@minus,x(:,ones(1,length(x_new))),x_new),length(x),ones(size(x_new)));
             [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
-            [rind2,~] = cellfun(@(x) find(x >  0,1,'first'),temp);
+            [rind2,~] = cellfun(@(x) find(x >=  0,1,'first'),temp);
             e_new = e_new + arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
                 (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
         case 'builtin'

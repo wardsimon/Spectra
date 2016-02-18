@@ -98,7 +98,7 @@ if iscell( param.Filename ) || isstruct( param.Filename )
     param.isdataset = true;
 elseif ischar( param.Filename )
     if strcmpi('start_server',param.Filename)
-        code = system(sprintf('cd %s\n bundle exec jekyll serve &',base_dir));
+        code = system(sprintf('cd %s\n bundle exec jekyll serve --config _config.yml,_config_dev.yml &',base_dir));
         if code ~=0
             error()
         end
