@@ -7,4 +7,11 @@ publishToGithub('reference_combine.m','title','@spec1d.combine','tags',{'spec1d'
 publishToGithub('reference_rebin.m','title','@spec1d.rebin','tags',{'spec1d','rebin','ref'})
 publishToGithub('reference_cumsum.m','title','@spec1d.cumsum','tags',{'spec1d','cumsum','ref'})
 publishToGithub('reference_sum.m','title','@spec1d.sum','tags',{'spec1d','sum','ref'})
+publishToGithub('reference_mean.m','title','@spec1d.mean','tags',{'spec1d','mean','ref'})
+publishToGithub('reference_extract.m','title','@spec1d.extract','tags',{'spec1d','extract','ref'})
+publishToGithub('reference_get.m','title','@spec1d.get','tags',{'spec1d','get','ref'})
+publishToGithub('reference_set.m','title','@spec1d.set','tags',{'spec1d','set','ref'})
+publishToGithub('reference_sqrt.m','title','@spec1d.sqrt','tags',{'spec1d','sqrt','ref'})
+publishToGithub('reference_power.m','title','@spec1d.power','tags',{'spec1d','power','mpower','ref'})
+
 

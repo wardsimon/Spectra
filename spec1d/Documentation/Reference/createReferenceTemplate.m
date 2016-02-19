@@ -8,7 +8,7 @@ if fid <=0
 end
 
 fprintf(fid,'%%%% @spec1d/%s\n',fun);
-fprintf(fid,'% This is the reference documentation for the function @spec1d/%s\n',fun);
+fprintf(fid,'%% This is the reference documentation for the function @spec1d/%s\n',fun);
 fprintf(fid,'%%\n');
 fprintf(fid,'%% This function \n');
 fprintf(fid,'%%%%\n');
@@ -43,3 +43,5 @@ fprintf(fid,'%%%% See Also\n');
 fprintf(fid,'%% <html><a href="{{ site.url }}/@spec1d.plus/index.html">Plus</a>, <a href="{{ site.url }}/@spec1d.sum/index.html">Sum</a></html>');
 
 fclose(fid);
+
+edit(out)

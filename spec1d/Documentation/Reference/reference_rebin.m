@@ -43,6 +43,9 @@
 % 
 % * _s_out_ - spec1d object
 
+%% Notes
+% The width of boundary bins is twice the distance to neighbour bin.
+
 %% Examples
 % These are some examples on using @spec1d/rebin. Rebin spectra _s1_.
 %
@@ -71,8 +74,6 @@ s_out2 = rebin(s,x);
 figure
 plot(s,s_out2)
 
-%% Notes
-% The width of boundary bins is twice the distance to neighbour bin.
 
 %% See Also
 % <html><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></html>

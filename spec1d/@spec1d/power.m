@@ -1,20 +1,26 @@
-function s_out = power(varargin)
+function s_out = power(s,p)
 
-    p = inputParser;
-    p.addRequired('spec1d',@(x) isa(x,'spec1d'))
-    p.addRequired('power',@(x) isnumeric(x) && isreal(x))
-    
-    p.parse(varargin{:})
-    
-    results = p.Results;
-    
-    s = results.spec1d;
-    p = results.power;
-    
     for i = 1:length(s)
-        s_out(i) = s(i);
-        s_out(i).y = s_out(i).y.^p;
-        s_out(i).e = p*s_out(i).y .* (s(i).e./s(i).y);
+        r = s(i);
+        r.y = r.y.^p;
+        if any(~isreal(r.y))
+            error('spec1d:power:imaginaryY','Some or all y-values in the spec1d object are imaginary. spec1d does not support imaginary numbers.')
+        end
+        r.e = p*r.y .* (s(i).e./s(i).y);
+        if any(isnan(r.e)) || any(isinf(r.e)) || any(~isreal(r.e))
+            warning('spec1d:power:errorError','Some or all e-values in the spec1d object are imaginary/NaN/Inf. These points have been removed.')
+            ind = isnan(r.e) | isinf(r.e) | ~isreal(r.e);
+            r.x(ind) = [];
+            r.y(ind) = [];
+            r.e(ind) = [];
+            if ~ isempty(r.yfit)
+                r.yfit(ind)  = [];
+            end
+        end
+        if ~ isempty(r.yfit)
+            r.yfit  = r.yfit.^p;
+        end
+        s_out(i) = spec1d(r);
     end
     
         

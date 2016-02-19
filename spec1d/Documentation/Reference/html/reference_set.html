@@ -1,0 +1,139 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/set</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-19"><meta name="DC.source" content="reference_set.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/set</h1><!--introduction--><p>This function is an implementation of the get/set routine from the handle class. Using <i>set</i> it is possible to set the field/s in a spec1d object.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li><li><a href="#5">Note</a></li><li><a href="#6">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = set(s,'m',m,...)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - Singlespec1d object.</li><li>'_m_' - Fieldname to be set.</li><li><i>m</i> - Vector corresponding to field '_m_'.</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - Spec1d object with changed field/s</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/set</p><p><h3>Example 1</h3></p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_1 = set(s,<span class="string">'e'</span>,0.1*rand(21,1));
+
+fprintf(<span class="string">'e (s)\te (s_1)\n'</span>)
+fprintf(<span class="string">'%0.03f\t%0.03f\n'</span>,[get(s,<span class="string">'e'</span>) get(s_1,<span class="string">'e'</span>)]')
+</pre><pre class="codeoutput">e (s)	e (s_1)
+0.100	0.099
+0.100	0.096
+0.100	0.034
+0.100	0.016
+0.100	0.042
+0.100	0.055
+0.100	0.003
+0.100	0.087
+0.100	0.089
+0.100	0.050
+0.100	0.021
+0.100	0.072
+0.100	0.070
+0.100	0.046
+0.100	0.017
+0.100	0.079
+0.100	0.089
+0.100	0.014
+0.100	0.094
+0.100	0.000
+0.100	0.044
+</pre><h2>Note<a name="5"></a></h2><div><ul><li>The vector being set must have an equal number of points as the current fields in <i>s</i>.</li><li>Multiple fields in <i>s</i> can be changed at once by adding arguments.</li></ul></div><h2>See Also<a name="6"></a></h2><p><a href="{{ site.url }}/@spec1d.get/index.html">Get</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/set
+%
+% This function is an implementation of the get/set routine from the handle
+% class. Using _set_ it is possible to set the field/s in a spec1d object.
+%%
+
+%% Syntax
+%
+%    s_out = set(s,'m',m,...)
+%
+
+%% Inputs
+%
+% * _s_ - Singlespec1d object.
+% * '_m_' - Fieldname to be set.
+% * _m_ - Vector corresponding to field '_m_'.
+%
+
+%% Outputs
+%
+% * _s_out_ - Spec1d object with changed field/s
+
+%% Example
+% This is an example on using @spec1d/set
+%
+% <html><h3>Example 1</h3></html>
+%
+
+s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_1 = set(s,'e',0.1*rand(21,1));
+
+fprintf('e (s)\te (s_1)\n')
+fprintf('%0.03f\t%0.03f\n',[get(s,'e') get(s_1,'e')]')
+
+%% Note
+% * The vector being set must have an equal number of points as the current fields in _s_.  
+% * Multiple fields in _s_ can be changed at once by adding arguments.
+
+%% See Also
+% <html><a href="{{ site.url }}/@spec1d.get/index.html">Get</a></html>
+##### SOURCE END #####
+--></body></html>

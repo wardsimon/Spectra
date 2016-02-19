@@ -32,7 +32,8 @@ s(1) = spec1d(1:5,1:5,0.1);
 s(2) = spec1d(1:5,2:6,0.075);
 
 yy = sum(s);
-disp(yy)
+fprintf('\ts(1)\ts(2)\n')
+fprintf('sum:\t%0.03f\t%0.03f\n',yy)
 
 %%
 % 
@@ -42,9 +43,9 @@ disp(yy)
 %
 
 [yy, ee] = sum(s);
-fprintf('s(1)\ts(2)\n')
-fprintf('%0.03f\t%0.03f\n',yy)
-fprintf('%0.03f\t%0.03f\n',ee)
+fprintf('\ts(1)\ts(2)\n')
+fprintf('sum:\t%0.03f\t%0.03f\n',yy)
+fprintf('error:\t%0.03f\t%0.03f\n',ee)
 
 %% See Also
 % <html><a href="{{ site.url }}/@spec1d.plus/index.html">Plus</a>, <a href="{{ site.url }}/@spec1d.cumsum/index.html">Cumsum</a></html>

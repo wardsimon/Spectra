@@ -10,6 +10,9 @@ function sout = sqrt(varargin)
 s1 = [varargin{:}];
 
 for i=1:length(s1)
+    if any(s1(i).y < 0)
+        error('spec1d:sqrt:NegativeY','Some or all y-values in the input spec1d object are negative. spec1d does not support imaginary numbers.')
+    end
     r = s1(i);
     r.x = s1(i).x;
     r.y = sqrt(s1(i).y);
