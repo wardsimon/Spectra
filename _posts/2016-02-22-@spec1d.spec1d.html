@@ -1,0 +1,171 @@
+---
+layout: post
+title: "@spec1d.spec1d"
+tags:
+- spec1d
+- constructor
+- ref
+comments: true
+
+---
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/spec1d</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_spec1d.m"><style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/spec1d</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/spec1d</p><p>This function creates a spec1d object.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Notes</a></li><li><a href="#6">Examples</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = spec1d(x,y,e,varargin);
+  s_out = spec1d(struct);
+  s_out = spec1d(s);</pre><h2>Inputs<a name="2"></a></h2><p>Create a spec1d object with data points. * <i>x</i> - Single or vector of x-points for the spec1d object * <i>y</i> - Single or vector of y-points for the spec1d object * <i>e</i> - Single or vector of e-points for the spec1d object</p><p>Create a spec1d object with a structure * <i>struct</i> - Structure with fields x, y, e.</p><p>Reform or validate a spec1d object. * <i>s</i> - A spec1d object.</p><h2>Optional Inputs<a name="3"></a></h2><div><ul><li><i>x_label</i> - String, automatic x-label for plotting.</li><li><i>y_label</i> - String, automatic y-label for plotting.</li><li><i>datafile</i> - String, automatic title for plotting or data identifier.</li><li><i>yfit</i> - Single or vector of y-points corresponding to a fit.</li></ul></div><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - Spec1d object</li></ul></div><h2>Notes<a name="5"></a></h2><div><ul><li>Error can be given as a number and replicated for all y-points.</li><li>If no arguments are given an empty spec1d is returned.</li><li>If not all fields are present, they are padded with zeros. For example spec1d(0:5) will retrun a spec1d object with x = 0:5 and with zeros in y and e.</li><li>Pre 2013 spec1d objects are converted into the new data structure automatically.</li></ul></div><h2>Examples<a name="6"></a></h2><p>These are examples on using @spec1d/spec1d</p><p><h3>Example 1</h3></p><pre class="codeinput">x = 1:0.2:5;
+y = sin(linspace(0,2*pi,21));
+e = 0.1;
+
+s = spec1d(x,y,e);
+</pre><p><h3>Example 2</h3></p><pre class="codeinput">v.x = x;
+v.y = y;
+v.e = e;
+
+s_1 = spec1d(v);
+</pre><p><h3>Example 3</h3></p><pre class="codeinput">s_3 = spec1d(x,y,e,<span class="string">'x_label'</span>,<span class="string">'X (points)'</span>);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/spec1d
+% This is the reference documentation for the function @spec1d/spec1d
+%
+% This function creates a spec1d object.
+%%
+
+%% Syntax
+%
+%    s_out = spec1d(x,y,e,varargin);
+%    s_out = spec1d(struct);
+%    s_out = spec1d(s);
+%
+
+%% Inputs
+%
+% Create a spec1d object with data points.
+% * _x_ - Single or vector of x-points for the spec1d object
+% * _y_ - Single or vector of y-points for the spec1d object
+% * _e_ - Single or vector of e-points for the spec1d object
+%
+% Create a spec1d object with a structure
+% * _struct_ - Structure with fields x, y, e.
+%
+% Reform or validate a spec1d object.
+% * _s_ - A spec1d object.
+%
+
+%% Optional Inputs
+% * _x_label_ - String, automatic x-label for plotting.
+% * _y_label_ - String, automatic y-label for plotting.
+% * _datafile_ - String, automatic title for plotting or data identifier.
+% * _yfit_ - Single or vector of y-points corresponding to a fit. 
+
+%% Outputs
+%
+% * _s_out_ - Spec1d object
+
+%% Notes
+% * Error can be given as a number and replicated for all y-points.  
+% * If no arguments are given an empty spec1d is returned.
+% * If not all fields are present, they are padded with zeros. For example
+% spec1d(0:5) will retrun a spec1d object with x = 0:5 and with zeros in y
+% and e.
+% * Pre 2013 spec1d objects are converted into the new data structure
+% automatically.
+
+%% Examples
+% These are examples on using @spec1d/spec1d
+%
+% <html><h3>Example 1</h3></html>
+%
+
+x = 1:0.2:5;
+y = sin(linspace(0,2*pi,21));
+e = 0.1;
+
+s = spec1d(x,y,e);
+
+%%
+%
+% <html><h3>Example 2</h3></html>
+%
+
+v.x = x;
+v.y = y;
+v.e = e;
+
+s_1 = spec1d(v);
+
+
+%%
+%
+% <html><h3>Example 3</h3></html>
+%
+
+s_3 = spec1d(x,y,e,'x_label','X (points)');
+
+##### SOURCE END #####
+--></body></html>

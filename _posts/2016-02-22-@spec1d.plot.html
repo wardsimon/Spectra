@@ -1,0 +1,235 @@
+---
+layout: post
+title: "@spec1d.plot"
+tags:
+- spec1d
+- plot
+- ref
+comments: true
+
+---
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/plot</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_plot.m"><style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/plot</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/plot</p><p>This function creates a plot of a given spectra or vecor of spec1d objects.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Optional Outputs</a></li><li><a href="#5">Notes</a></li><li><a href="#6">Examples</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  varagout = plot(s,varargin)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - Single or vector of spec1d objects</li></ul></div><h2>Optional Inputs<a name="3"></a></h2><p>There are a few built in common options. Which can be used by passing parameter/value pairs. These are:</p><p>The option <b>semilogy</b></p><div><ul><li><b>0</b>: The y-axis is not in log scale. (Default)</li><li><b>1</b>: The y-axis is not in log scale.</li></ul></div><p>The option <b>semilogx</b></p><div><ul><li><b>0</b>: The x-axis is not in log scale. (Default)</li><li><b>1</b>: The x-axis is not in log scale.</li></ul></div><p>The option <b>loglog</b></p><div><ul><li><b>0</b>: The x-axis and y-axis is not in log scale. (Default)</li><li><b>1</b>: The x-axis and y-axis  is not in log scale.</li></ul></div><p>The option <b>tLength</b> sets the length of the error bar tees</p><div><ul><li><b>NaN</b>: tee length is calculated as 0.075 * the minimum distance between points.</li><li><b>x&gt;0</b>: tee length is calculated as <b>x</b> * the minimum distance between points.</li><li><b>x&lt;0</b>: tee length is supplied by the value <b>x</b>.</li></ul></div><h2>Optional Outputs<a name="4"></a></h2><div><ul><li><i>h_plot</i> - Single or vector array of handles corresponding to plot points.</li><li><i>h_ebar</i> - Single or vector array of handles corresponding to error bars.</li><li><i>h_fits</i> - Single or vector array of handles corresponding to fit line.</li></ul></div><h2>Notes<a name="5"></a></h2><div><ul><li>It is not possible to currently pass arguments such as '-r*' as in normal plotting.</li><li>Any overload arguments supplied are valid for every spec1d object.</li></ul></div><h2>Examples<a name="6"></a></h2><p>These are examples using @spec1d/plot</p><p><h3>Example 1</h3></p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+
+figure
+plot(s)
+legend(<span class="string">'s'</span>)
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_01.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_01.png" alt="2016-02-22-reference_plot_01"></a></figure> <p><h3>Example 2</h3></p><p>Get and use handles</p><pre class="codeinput">figure
+h = plot(s);
+legend(h,<span class="string">'s'</span>)
+set(h,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>)
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_02.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_02.png" alt="2016-02-22-reference_plot_02"></a></figure> <p><h3>Example 3</h3></p><p>Overload the function and use handles</p><pre class="codeinput">figure
+h = plot(s,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>);
+legend(h,<span class="string">'s'</span>)
+set(h,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'k'</span>)
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_03.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_03.png" alt="2016-02-22-reference_plot_03"></a></figure> <p><h3>Example 4</h3></p><p>Spec1d object with a fit and use the handles</p><pre class="codeinput">s_1 = set(s,<span class="string">'yfit'</span>,get(s,<span class="string">'y'</span>));
+
+figure
+[h,~,f] = plot(s_1,<span class="string">'MarkerEdgeColor'</span>,<span class="string">'w'</span>);
+legend([h f],{<span class="string">'s'</span>, <span class="string">'Fit (s)'</span>})
+set(h,<span class="string">'MarkerFaceColor'</span>,<span class="string">'r'</span>)
+set(f,<span class="string">'Color'</span>,<span class="string">'k'</span>)
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_04.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_04.png" alt="2016-02-22-reference_plot_04"></a></figure> <p><h3>Example 4</h3></p><p>Multiple spec1d objects</p><pre class="codeinput">s(2) = spec1d(linspace(0,2*pi,20),linspace(-1,1,20),0.1*rand(20,1));
+
+figure
+plot(s)
+legend([h f],{<span class="string">'s(1)'</span>, <span class="string">'s(2)'</span>})
+
+s_3 = spec1d(linspace(0,2*pi,20),linspace(1,-1,20),0.1*rand(20,1));
+
+figure
+h = plot(s,s_3);
+legend(h,{<span class="string">'s(1)'</span>, <span class="string">'s(2)'</span>, <span class="string">'s_3'</span>})
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_05.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_05.png" alt="2016-02-22-reference_plot_05"></a></figure> <figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_06.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_06.png" alt="2016-02-22-reference_plot_06"></a></figure> <figure><a href="{{ site.url }}/images/2016-02-22-reference_plot_07.png"><img src="{{ site.url }}/images/2016-02-22-reference_plot_07.png" alt="2016-02-22-reference_plot_07"></a></figure> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/plot
+% This is the reference documentation for the function @spec1d/plot
+%
+% This function creates a plot of a given spectra or vecor of spec1d objects. 
+%%
+
+%% Syntax
+%
+%    varagout = plot(s,varargin)
+
+%% Inputs
+%
+% * _s_ - Single or vector of spec1d objects
+% 
+
+%% Optional Inputs
+%
+% There are a few built in common options. Which can be used by passing
+% parameter/value pairs. These are:
+%
+% The option *semilogy*
+%
+% * *0*: The y-axis is not in log scale. (Default)
+% * *1*: The y-axis is not in log scale.
+%
+% The option *semilogx*
+%
+% * *0*: The x-axis is not in log scale. (Default)
+% * *1*: The x-axis is not in log scale.
+%
+% The option *loglog*
+%
+% * *0*: The x-axis and y-axis is not in log scale. (Default)
+% * *1*: The x-axis and y-axis  is not in log scale.
+%
+% The option *tLength* sets the length of the error bar tees
+%
+% * *NaN*: tee length is calculated as 0.075 * the minimum distance between points.
+% * *x>0*: tee length is calculated as *x* * the minimum distance between points. 
+% * *x<0*: tee length is supplied by the value *x*.
+%
+
+%% Optional Outputs
+%
+% * _h_plot_ - Single or vector array of handles corresponding to plot points.
+% * _h_ebar_ - Single or vector array of handles corresponding to error bars.
+% * _h_fits_ - Single or vector array of handles corresponding to fit line.
+%
+
+%% Notes
+% 
+% * It is not possible to currently pass arguments such as '-r*' as in
+% normal plotting.
+% * Any overload arguments supplied are valid for every spec1d object.
+% 
+
+%% Examples
+% These are examples using @spec1d/plot
+%
+% <html><h3>Example 1</h3></html>
+%
+
+s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+
+figure
+plot(s)
+legend('s')
+
+%%
+% <html><h3>Example 2</h3></html>
+%
+% Get and use handles
+%
+
+figure
+h = plot(s);
+legend(h,'s')
+set(h,'LineStyle','-')
+
+%%
+% <html><h3>Example 3</h3></html>
+%
+% Overload the function and use handles
+%
+
+figure
+h = plot(s,'LineStyle','-');
+legend(h,'s')
+set(h,'MarkerEdgeColor','k')
+
+
+%%
+% <html><h3>Example 4</h3></html>
+%
+% Spec1d object with a fit and use the handles
+%
+
+s_1 = set(s,'yfit',get(s,'y'));
+
+figure
+[h,~,f] = plot(s_1,'MarkerEdgeColor','w');
+legend([h f],{'s', 'Fit (s)'})
+set(h,'MarkerFaceColor','r')
+set(f,'Color','k')
+
+%%
+% <html><h3>Example 4</h3></html>
+%
+% Multiple spec1d objects
+%
+
+s(2) = spec1d(linspace(0,2*pi,20),linspace(-1,1,20),0.1*rand(20,1));
+
+figure
+plot(s)
+legend([h f],{'s(1)', 's(2)'})
+
+s_3 = spec1d(linspace(0,2*pi,20),linspace(1,-1,20),0.1*rand(20,1));
+
+figure
+h = plot(s,s_3);
+legend(h,{'s(1)', 's(2)', 's_3'})
+
+##### SOURCE END #####
+--></body></html>

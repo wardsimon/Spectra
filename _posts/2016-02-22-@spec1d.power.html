@@ -1,0 +1,129 @@
+---
+layout: post
+title: "@spec1d.power"
+tags:
+- spec1d
+- power
+- mpower
+- ref
+comments: true
+
+---
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/power</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_power.m"><style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/power</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/power</p><p>This function raises the y-values of a single or vecor of spec1d objects to a power specified.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li><li><a href="#5">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = power(s,m)
+  s_out = s^m
+  s_out = s.^m</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - Single or vector of spec1d objects.</li><li><i>m</i> - Single value corresponding to the power to raise spectra <i>s</i> by.</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - Spec1d object of the same size as the input array</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/power</p><p><h3>Example 1</h3></p><pre class="codeinput">s = spec1d(1:0.2:5,linspace(1,2,21),0.1);
+s_1 = s.^2;
+
+figure
+plot(s,s_1)
+legend({<span class="string">'s'</span>,<span class="string">'power(s,2)'</span>},<span class="string">'Location'</span>,<span class="string">'NorthWest'</span>)
+</pre><figure><a href="{{ site.url }}/images/2016-02-22-reference_power_01.png"><img src="{{ site.url }}/images/2016-02-22-reference_power_01.png" alt="2016-02-22-reference_power_01"></a></figure> <h2>See Also<a name="5"></a></h2><p><a href="{{ site.url }}/@spec1d.sqrt/index.html">Sqrt</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/power
+% This is the reference documentation for the function @spec1d/power
+%
+% This function raises the y-values of a single or vecor of spec1d
+% objects to a power specified.
+%%
+
+%% Syntax
+%
+%    s_out = power(s,m)
+%    s_out = s^m
+%    s_out = s.^m
+%
+
+%% Inputs
+%
+% * _s_ - Single or vector of spec1d objects.
+% * _m_ - Single value corresponding to the power to raise spectra _s_ by.
+%
+
+%% Outputs
+%
+% * _s_out_ - Spec1d object of the same size as the input array
+
+%% Example
+% This is an example on using @spec1d/power
+%
+% <html><h3>Example 1</h3></html>
+%
+
+s = spec1d(1:0.2:5,linspace(1,2,21),0.1);
+s_1 = s.^2;
+
+figure
+plot(s,s_1)
+legend({'s','power(s,2)'},'Location','NorthWest')
+
+%% See Also
+% <html><a href="{{ site.url }}/@spec1d.sqrt/index.html">Sqrt</a></html>
+##### SOURCE END #####
+--></body></html>
