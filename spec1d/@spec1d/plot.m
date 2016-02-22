@@ -9,7 +9,6 @@ function varargout = plot(varargin)
 %        2. Possibility to choose axes type:   >> plot(s1,'semilogy',1)
 %                                              >> plot(s1,'semilogx',1)
 %                                              >> plot(s1,'loglog',1)
-%        3. More plot options                  >> plot(s1,'r-*') etc.
 %
 %        !!! EXPERIMENTAL !!!
 %        4. Create a log to go with the plot. This means we can trace
@@ -21,6 +20,7 @@ s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
 s = varargin(s_ind);
 varargin(s_ind) = [];
 p = inputParser;
+p.KeepUnmatched = true;
 p.addRequired('s_in',@iscell);
 p.addParameter('semilogx',0,@isnumeric);
 p.addParameter('semilogy',0,@isnumeric);

@@ -5,7 +5,6 @@ function s = spec1d(a,varargin)
 % SPEC1D/spec1d Create a spec1d spectra object
 %
 % Usage:    1. s = spec1d(x,y,e);
-%           2. s = spec1d('x',x,'y',y,'e',e);
 %           3. s = spec1d(x,y,,e,'datafile',file,'x_label',xlabel,'y_label',ylabel);
 %
 % Update : Start GPU work.
