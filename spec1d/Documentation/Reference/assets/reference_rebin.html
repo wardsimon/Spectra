@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>@spec1d/rebin</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-18"><meta name="DC.source" content="reference_rebin.m"><style type="text/css">
+      --><title>@spec1d/rebin</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_rebin.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>@spec1d/rebin</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/rebin.</p><p>This function re-bins a spec1d spectrum <i>s</i> to the bins specified by <i>dx</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Examples</a></li><li><a href="#7">Notes</a></li><li><a href="#8">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre class="language-matlab">s_out = rebin(s,dx,varargin)
+  </style></head><body><div class="content"><h1>@spec1d/rebin</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/rebin.</p><p>This function re-bins a spec1d spectrum <i>s</i> to the bins specified by <i>dx</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Notes</a></li><li><a href="#6">Examples</a></li><li><a href="#8">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre class="language-matlab">s_out = rebin(s,dx,varargin)
 </pre><h2>Inputs<a name="2"></a></h2><p><ul style="list-style-type:square">
  <li><i>s</i> - Single spec1d object or array</li>
  <li><i>dx</i> - Binning argument</li>
@@ -77,7 +77,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
  <li><i>string</i> - Use a binning algorithm described in the documentation histcounts.</li></ul>
  <li><i>varargin</i> - Optional Parameter/Value pairs</li>
 </ul>
-</p><h2>Optional Inputs<a name="3"></a></h2><p>The optional <b>method</b> controls how the x-value of the bin is interpreted. Options are:</p><div><ol><li><b>average</b> : New x values are average within bins (weighted by error)</li><li><b>force</b>   : New x values are as specified in dx</li><li><b>interp</b>  : New x-values as specified by dx, y and e interpolated from 'average'-x,</li></ol></div><p>The default is <b>average</b></p><p>The methods above can also have the <b>byError</b> flag.</p><div><ol><li><b>0</b> : Data is binned by x. 'Default'</li><li><b>1</b> : Data is binned to a constant error. Only <b>method</b>, <b>average</b> is supported.</li></ol></div><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Examples<a name="5"></a></h2><p>These are some examples on using @spec1d/rebin. Rebin spectra <i>s1</i>.</p><p><h3>Example 1</h3></p><p>Rebin <i>s</i> to x-value steps 0.5</p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+</p><h2>Optional Inputs<a name="3"></a></h2><p>The optional <b>method</b> controls how the x-value of the bin is interpreted. Options are:</p><div><ol><li><b>average</b> : New x values are average within bins (weighted by error)</li><li><b>force</b>   : New x values are as specified in dx</li><li><b>interp</b>  : New x-values as specified by dx, y and e interpolated from 'average'-x,</li></ol></div><p>The default is <b>average</b></p><p>The methods above can also have the <b>byError</b> flag.</p><div><ol><li><b>0</b> : Data is binned by x. 'Default'</li><li><b>1</b> : Data is binned to a constant error. Only <b>method</b>, <b>average</b> is supported.</li></ol></div><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Notes<a name="5"></a></h2><p>The width of boundary bins is twice the distance to neighbour bin.</p><h2>Examples<a name="6"></a></h2><p>These are some examples on using @spec1d/rebin. Rebin spectra <i>s1</i>.</p><p><h3>Example 1</h3></p><p>Rebin <i>s</i> to x-value steps 0.5</p><pre class="codeinput">s = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s_out1 = rebin(s,0.5);
 
 figure
@@ -89,10 +89,10 @@ s_out2 = rebin(s,x);
 figure
 plot(s,s_out2)
 </pre><pre class="codeoutput">Warning: Supplied bin range does not cover data. Removing points. 
-</pre><img vspace="5" hspace="5" src="reference_rebin_02.png" alt=""> <h2>Notes<a name="7"></a></h2><p>The width of boundary bins is twice the distance to neighbour bin.</p><h2>See Also<a name="8"></a></h2><p><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="reference_rebin_02.png" alt=""> <h2>See Also<a name="8"></a></h2><p><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% @spec1d/rebin
-% This is a the reference documentation for the function @spec1d/rebin.
+% This is the reference documentation for the function @spec1d/rebin.
 %
 % This function re-bins a spec1d spectrum _s_ to the bins specified by _dx_.
 %%
@@ -136,6 +136,9 @@ plot(s,s_out2)
 % 
 % * _s_out_ - spec1d object
 
+%% Notes
+% The width of boundary bins is twice the distance to neighbour bin.
+
 %% Examples
 % These are some examples on using @spec1d/rebin. Rebin spectra _s1_.
 %
@@ -164,8 +167,6 @@ s_out2 = rebin(s,x);
 figure
 plot(s,s_out2)
 
-%% Notes
-% The width of boundary bins is twice the distance to neighbour bin.
 
 %% See Also
 % <html><a href="{{ site.url }}/@spec1d.combine/index.html">Combine</a></html>

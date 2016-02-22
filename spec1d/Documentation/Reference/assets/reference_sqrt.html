@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>@spec1d/times</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_times.m"><style type="text/css">
+      --><title>@spec1d/sqrt</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_sqrt.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,77 +66,66 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>@spec1d/times</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/times</p><p>This function gives a new spectra with a value of spectra <i>s1</i> multiplied by a value or spectra <i>s2</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Examples</a></li><li><a href="#7">Notes</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = times(s1,s2)
-  s_out = s1 * s2
-  s_out = s1 * a
-  s_out = a * s1</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s1</i> - spec1d object</li><li><i>s2(a)</i> - spec1d object or value</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Examples<a name="4"></a></h2><p>These are some examples on using @spec1d/times</p><p><h3>Example 1</h3></p><p>Multiplication of spectra and value</p><pre class="codeinput">s = spec1d(1:5,1:5,0.1);
-s_1 = s * 5;
-s_1 = 5 * s;
-</pre><p><h3>Example 2</h3></p><p>Multiplication two spectra (equal points)</p><pre class="codeinput">s2 = spec1d(1:5,2:6,0.15);
-s_2 = s * s2;
-</pre><p><h3>Example 3</h3></p><p>Addition two spectra (unequal points). This using interpolation on <i>s3</i></p><pre class="codeinput">s3 = spec1d(1:5 + 0.1,2:6,0.15);
-s_3 = s * s3;
-</pre><h2>Notes<a name="7"></a></h2><div><ul><li>If spectra are not the same length, <i>s2</i> is interpolated to the x values of <i>s1</i>.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>@spec1d/sqrt</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/sqrt</p><p>This function takes the square root of a single or vecor of spec1d objects.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Outputs</a></li><li><a href="#4">Example</a></li><li><a href="#6">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = sqrt(s)</pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>s</i> - Single or vector of spec1d objects</li></ul></div><h2>Outputs<a name="3"></a></h2><div><ul><li><i>s_out</i> - Spec1d object of the same size as the input array</li></ul></div><h2>Example<a name="4"></a></h2><p>This is an example on using @spec1d/sqrt</p><p><h3>Example 1</h3></p><pre class="codeinput">s(1) = spec1d(1:5,1:5,0.1);
+s(2) = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_1 = sqrt(s(1));
+
+figure
+plot(s(1),s_1)
+legend({<span class="string">'s'</span>,<span class="string">'sqrt(s)'</span>},<span class="string">'Location'</span>,<span class="string">'NorthWest'</span>)
+</pre><img vspace="5" hspace="5" src="reference_sqrt_01.png" alt=""> <p><h3>Example 2</h3></p><p>Immaginary numbers are not supported</p><pre class="codeinput">s_2 = sqrt(s(2));
+</pre><pre class="codeoutput error">Error using spec1d/sqrt (line 14)
+Some or all y-values in the input spec1d object are negative. spec1d does not support imaginary numbers.
+
+Error in reference_sqrt (line 43)
+s_2 = sqrt(s(2));
+</pre><h2>See Also<a name="6"></a></h2><p><a href="{{ site.url }}/@spec1d.power/index.html">Power</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% @spec1d/times 
-% This is the reference documentation for the function @spec1d/times
+%% @spec1d/sqrt
+% This is the reference documentation for the function @spec1d/sqrt
 %
-% This function gives a new spectra with a value of spectra _s1_ multiplied by a value or spectra _s2_.
+% This function takes the square root of a single or vecor of spec1d
+% objects.
 %%
 
-%% Syntax 
-% 
-%    s_out = times(s1,s2)
-%    s_out = s1 * s2
-%    s_out = s1 * a
-%    s_out = a * s1
+%% Syntax
+%
+%    s_out = sqrt(s)
 
 %% Inputs
-% 
-% * _s1_ - spec1d object
-% * _s2(a)_ - spec1d object or value
-% 
+%
+% * _s_ - Single or vector of spec1d objects
+%
 
 %% Outputs
-% 
-% * _s_out_ - spec1d object
+%
+% * _s_out_ - Spec1d object of the same size as the input array
 
-%% Examples
-% These are some examples on using @spec1d/times
-% 
+%% Example
+% This is an example on using @spec1d/sqrt
+%
 % <html><h3>Example 1</h3></html>
 %
-% Multiplication of spectra and value
+
+s(1) = spec1d(1:5,1:5,0.1);
+s(2) = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
+s_1 = sqrt(s(1));
+
+figure
+plot(s(1),s_1)
+legend({'s','sqrt(s)'},'Location','NorthWest')
+
+
+%%
 %
-
-s = spec1d(1:5,1:5,0.1);
-s_1 = s * 5;
-s_1 = 5 * s;
-
-%% 
-% 
 % <html><h3>Example 2</h3></html>
 %
-% Multiplication two spectra (equal points)
+% Immaginary numbers are not supported
 %
 
-s2 = spec1d(1:5,2:6,0.15);
-s_2 = s * s2;
+s_2 = sqrt(s(2));
 
-%% 
-% 
-% <html><h3>Example 3</h3></html>
-%
-% Addition two spectra (unequal points). This using interpolation on _s3_
-%
-
-s3 = spec1d(1:5 + 0.1,2:6,0.15);
-s_3 = s * s3;
-
-%% Notes
-% 
-% * If spectra are not the same length, _s2_ is interpolated to the x
-% values of _s1_.
-% 
+%% See Also
+% <html><a href="{{ site.url }}/@spec1d.power/index.html">Power</a></html>
 ##### SOURCE END #####
 --></body></html>

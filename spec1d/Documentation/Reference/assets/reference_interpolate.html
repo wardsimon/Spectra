@@ -1,0 +1,218 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>@spec1d/interpolate</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_interpolate.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>@spec1d/interpolate</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/interpolate</p><p>This function is to interpolate the given spectra <i>s</i> for the x-ranges given by the vector <i>x_new</i>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Notes</a></li><li><a href="#6">Examples</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>  s_out = interpolate(s,x_new,options)</pre><h2>Inputs<a name="2"></a></h2><p><ul style="list-style-type:square">
+ <li><i>s</i> - Single spec1d object or array</li>
+ <li><i>x_new</i> - New x-axis</li>
+ <ul>
+ <li><i>vector</i> - Specifies the new x-points.</li>
+ <li><i>sped1d</i> - Use x-values from the spec1d object as the new x-points.</li>
+</ul>
+</p><h2>Optional Inputs<a name="3"></a></h2><p>Depending on the optional <b>method</b>, points are interpolated as * <b>weightedpoly</b> : Adaptive polynomial interpolation where errors are calculated and minimised for a n-length polynomial function. * <b>linear</b>	   : Nearest neighbout interpolation where values are weighted by inverse distance (including errors) * <b>builtin</b>	   : Use the MATLAB interp1 function. Optional arguments can be passed * <b>FUNCTION</b>     : The value FUNCTION is a function which can be explained with the documentation "help('sdinterp')". Optional arguments can be passed.</p><p>Default is <b>weightedpoly</b>. Use 'builtin' or 'linear' for speed or non-uniform data.</p><p>If the <b>method</b> <b>weightedpoly</b> is selected, the optional <b>order</b>, parameter is available. The value is a positive integer and corresponds to the order of the fitted polynomial. Default is -1, which optimises for least error.</p><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - Spec1d object of the same size as the input array</li></ul></div><h2>Notes<a name="5"></a></h2><div><ul><li><i>x_new</i> is a vecor of arbitary length where min(<i>x_new</i>) &lt; min(<i>s</i>.x) and max(<i>x_new</i>) &lt; max(<i>s</i>.x)</li><li>Error calculation is accurate when square-root statistics is valid. Otherwise the error is an approximation.</li></ul></div><h2>Examples<a name="6"></a></h2><p>These are  examples using @spec1d/interpolate</p><p><h3>Example 1</h3></p><pre class="codeinput">s = spec1d(linspace(0,2*pi,10),sin(linspace(0,2*pi,10)),0.1);
+x_new = 0.1:0.1:(2*pi);
+s_1 = interpolate(s,x_new);
+
+figure
+plot(s);
+hold <span class="string">on</span>
+plot(s_1,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'MarkerSize'</span>,4)
+legend({<span class="string">'s'</span>,<span class="string">'interpolate(s)'</span>})
+</pre><img vspace="5" hspace="5" src="reference_interpolate_01.png" alt=""> <p><h3>Example 2</h3></p><p>Specify the order of the polynominal to be used.</p><pre class="codeinput">s_2 = interpolate(s,x_new,<span class="string">'order'</span>,3);
+
+figure
+plot(s);
+hold <span class="string">on</span>
+plot(s_2,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'MarkerSize'</span>,4)
+legend({<span class="string">'s'</span>,<span class="string">'interpolate(s)'</span>})
+</pre><img vspace="5" hspace="5" src="reference_interpolate_02.png" alt=""> <p><h3>Example 3</h3></p><p>Use the linear interpolation method.</p><pre class="codeinput">s_3 = interpolate(s,x_new,<span class="string">'method'</span>,<span class="string">'linear'</span>);
+
+figure
+plot(s);
+hold <span class="string">on</span>
+plot(s_3,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'MarkerSize'</span>,4)
+legend({<span class="string">'s'</span>,<span class="string">'interpolate(s)'</span>})
+</pre><img vspace="5" hspace="5" src="reference_interpolate_03.png" alt=""> <p><h3>Example 5</h3></p><p>Interpolation using a function in the sdinterp library</p><pre class="codeinput">s_4 = interpolate(s,x_new,<span class="string">'method'</span>,<span class="string">'cbezier'</span>);
+
+figure
+plot(s);
+hold <span class="string">on</span>
+plot(s_4,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'MarkerSize'</span>,4)
+legend({<span class="string">'s'</span>,<span class="string">'interpolate(s)'</span>})
+</pre><img vspace="5" hspace="5" src="reference_interpolate_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% @spec1d/interpolate
+% This is the reference documentation for the function @spec1d/interpolate
+%
+% This function is to interpolate the given spectra _s_ for the x-ranges given by the vector _x_new_.
+%%
+
+%% Syntax
+%
+%    s_out = interpolate(s,x_new,options)
+
+%% Inputs
+%
+% <html><ul style="list-style-type:square">
+%  <li><i>s</i> - Single spec1d object or array</li>
+%  <li><i>x_new</i> - New x-axis</li>
+%  <ul> 
+%  <li><i>vector</i> - Specifies the new x-points.</li>
+%  <li><i>sped1d</i> - Use x-values from the spec1d object as the new x-points.</li>
+% </ul>
+% </html>
+%
+
+%% Optional Inputs
+%
+% Depending on the optional *method*, points are interpolated as
+% * *weightedpoly* : Adaptive polynomial interpolation where errors are calculated and minimised for a n-length polynomial function.
+% * *linear*	   : Nearest neighbout interpolation where values are weighted by inverse distance (including errors)
+% * *builtin*	   : Use the MATLAB interp1 function. Optional arguments can be passed
+% * *FUNCTION*     : The value FUNCTION is a function which can be explained with the documentation "help('sdinterp')". Optional arguments can be passed.
+%
+% Default is *weightedpoly*. Use 'builtin' or 'linear' for speed or non-uniform data.
+%
+% If the *method* *weightedpoly* is selected, the optional *order*, parameter
+% is available. The value is a positive integer and corresponds to the
+% order of the fitted polynomial. Default is -1, which optimises for least
+% error.
+%
+
+%% Outputs
+%
+% * _s_out_ - Spec1d object of the same size as the input array
+
+%% Notes
+%
+% * _x_new_ is a vecor of arbitary length where min(_x_new_) < min(_s_.x) and
+% max(_x_new_) < max(_s_.x)
+% * Error calculation is accurate when square-root statistics is valid. Otherwise the error is an approximation. 
+
+%% Examples
+% These are  examples using @spec1d/interpolate
+%
+% <html><h3>Example 1</h3></html>
+%
+
+s = spec1d(linspace(0,2*pi,10),sin(linspace(0,2*pi,10)),0.1);
+x_new = 0.1:0.1:(2*pi);
+s_1 = interpolate(s,x_new);
+
+figure
+plot(s);
+hold on
+plot(s_1,'LineStyle','-','MarkerSize',4)
+legend({'s','interpolate(s)'})
+
+%%
+%
+% <html><h3>Example 2</h3></html>
+%
+% Specify the order of the polynominal to be used.
+%
+
+s_2 = interpolate(s,x_new,'order',3);
+
+figure
+plot(s);
+hold on
+plot(s_2,'LineStyle','-','MarkerSize',4)
+legend({'s','interpolate(s)'})
+
+%%
+%
+% <html><h3>Example 3</h3></html>
+%
+% Use the linear interpolation method.
+%
+
+s_3 = interpolate(s,x_new,'method','linear');
+
+figure
+plot(s);
+hold on
+plot(s_3,'LineStyle','-','MarkerSize',4)
+legend({'s','interpolate(s)'})
+
+%%
+%
+% <html><h3>Example 5</h3></html>
+%
+% Interpolation using a function in the sdinterp library
+%
+
+
+s_4 = interpolate(s,x_new,'method','cbezier');
+
+figure
+plot(s);
+hold on
+plot(s_4,'LineStyle','-','MarkerSize',4)
+legend({'s','interpolate(s)'})
+##### SOURCE END #####
+--></body></html>
