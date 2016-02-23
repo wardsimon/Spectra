@@ -68,7 +68,7 @@ function s = spec1d(a,varargin)
     for i = 1:length(s_in)
         s_in(i).x = s_in(i).x(:);
         s_in(i).y = s_in(i).y(:);
-        if length(s_in(i).e(:))==1
+        if length(s_in(i).e(:)) == 1
             s_in(i).e = s_in(i).e(:)*ones(size(s_in(i).x(:)));
         end
         s_in(i).e = s_in(i).e(:);
