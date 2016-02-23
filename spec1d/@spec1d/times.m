@@ -1,4 +1,4 @@
-function rvec = times(s1,s2)
+function s_out = times(s1,s2)
 %
 % function r = times(s1,s2)
 %
@@ -8,33 +8,48 @@ function rvec = times(s1,s2)
 %
 
 if isa(s1,'spec1d')
-    s(1) = s1;
+    s = s1;
     if isa(s2,'spec1d')
-        s(2) = s2;
         fac = [];
+        if length(s2)>1 && length(s)==1
+            temp = s2;
+            s2 = s;
+            s = temp;
+            clear temp;
+        elseif length(s2)>1 && length(s)>=1 
+            error('spec1d:times:InputLengthError','Times can not be used for two spectrum both with dimensions greater than 1')
+        end
     else
         fac = s2;
+        s2 = [];
     end
 else
     fac = s1;
-    s(1) = s2;
+    s = s2;
+    s2 = [];
 end
 
 if isempty(fac)
-    % Multiply spec1d objects
-    if length(s(1).x)~=length(s(2).x)
-        warning('Objects are not the same length. Using interpolation for second object')
-        s(2) = interpolate(s(2),s(1));
+    for i = 1:length(s)
+        % Multiply spec1d objects
+        if length(s(i).x)~=length(s2.x)
+            warning('Objects are not the same length. Using interpolation for second object')
+            s2 = interpolate(s2,s(i));
+        end
+        
+        rvec = s(i);
+        rvec.y = rvec.y .* s2.y;
+        rvec.e = sqrt((s(i).e./s(i).y).^2 + (s2.e./s2.y).^2).*abs(rvec.y);
+        rvec.yfit = rvec.yfit .* s2.yfit;
+        s_out(i) = spec1d(rvec);
     end
-    
-    rvec = s(1);
-    rvec.y = rvec.y .* s(2).y;
-    rvec.e = sqrt((s(1).e./s(1).y).^2 + (s(2).e./s(2).y).^2).*abs(rvec.y);
-    rvec.yfit = rvec.yfit .* s(2).yfit;
 else
-    rvec   = s(1);
-    rvec.y = fac*rvec.y;
-    rvec.e = abs(fac)*rvec.e;
-    rvec.yfit = fac*rvec.yfit;
+    for i = 1:length(s)
+        rvec   = s(i);
+        rvec.y = fac*rvec.y;
+        rvec.e = abs(fac)*rvec.e;
+        rvec.yfit = fac*rvec.yfit;
+        s_out(i) = spec1d(rvec);
+    end
 end
     
