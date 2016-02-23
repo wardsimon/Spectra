@@ -32,6 +32,30 @@ classdef spectraMathsTests < matlab.unittest.TestCase
             s_test = struct(times(testCase.s,testCase.s));
             testCase.verifyEqual(s_test.y,testCase.ref.timesS(3).y);
             testCase.verifyEqual(s_test.e,testCase.ref.timesS(3).e);
+            
+            s_test = struct(times([testCase.s testCase.s],testCase.p));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.timesS(1).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.timesS(1).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.timesS(1).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.timesS(1).e);
+            
+            s_test = struct(times(testCase.p,[testCase.s testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.timesS(2).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.timesS(2).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.timesS(2).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.timesS(2).e);
+            
+            s_test = struct(times([testCase.s testCase.s],testCase.s));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.timesS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.timesS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.timesS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.timesS(3).e);
+            
+            s_test = struct(times(testCase.s,[testCase.s,testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.timesS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.timesS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.timesS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.timesS(3).e);
         end
         function divideSolution(testCase)
             s_test = struct(rdivide(testCase.s,testCase.p));
@@ -43,6 +67,30 @@ classdef spectraMathsTests < matlab.unittest.TestCase
             s_test = struct(rdivide(testCase.s,testCase.s));
             testCase.verifyEqual(s_test.y,testCase.ref.divideS(3).y);
             testCase.verifyEqual(s_test.e,testCase.ref.divideS(3).e);
+            
+            s_test = struct(rdivide([testCase.s testCase.s],testCase.p));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.divideS(1).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.divideS(1).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.divideS(1).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.divideS(1).e);
+            
+            s_test = struct(rdivide(testCase.p,[testCase.s testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.divideS(2).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.divideS(2).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.divideS(2).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.divideS(2).e);
+            
+            s_test = struct(rdivide([testCase.s testCase.s],testCase.s));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.divideS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.divideS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.divideS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.divideS(3).e);
+            
+            s_test = struct(rdivide(testCase.s,[testCase.s testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.divideS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.divideS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.divideS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.divideS(3).e);
         end
         function expSolution(testCase)
             s_test = struct(exp(testCase.s));
