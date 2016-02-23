@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>@spec1d/combine</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-18"><meta name="DC.source" content="reference_combine.m"><style type="text/css">
+      --><title>@spec1d/combine</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="reference_combine.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>@spec1d/combine</h1><!--introduction--><p>This is a the reference documentation for the function @spec1d/combine.</p><p>This function to combines two or more spectra. If the x values of two points differ by less than tolerance <i>toll</i>, then the points are combined.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Examples</a></li><li><a href="#8">Notes</a></li><li><a href="#9">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre class="language-matlab">s_out = combine(toll,s,varargin)
+  </style></head><body><div class="content"><h1>@spec1d/combine</h1><!--introduction--><p>This is the reference documentation for the function @spec1d/combine.</p><p>This function to combines two or more spectra. If the x values of two points differ by less than tolerance <i>toll</i>, then the points are combined.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Inputs</a></li><li><a href="#3">Optional Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">Examples</a></li><li><a href="#8">Notes</a></li><li><a href="#9">See Also</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre class="language-matlab">s_out = combine(toll,s,varargin)
 </pre><h2>Inputs<a name="2"></a></h2><div><ul><li><i>toll</i> - single value</li><li><i>s</i> - single spec1d object or array</li><li><i>varargin</i> - Optional Parameter/Value pairs</li></ul></div><h2>Optional Inputs<a name="3"></a></h2><p>Depending on the optional <b>method</b>, points are combined as</p><div><ol><li><b>mean</b>    : Simple means for x and y, errors are averaged in quadrature.</li><li><b>counts</b>	: Restablishes normalisation and original counts assuming             square-root statistics, is correct for normalised counts</li><li><b>weight</b>	: Weights to inverse error. For more general data.</li></ol></div><p>Default is <b>counts</b></p><p>Depending on the optional <b>indexing</b>, points are indexed as</p><div><ol><li><b>relative</b>    : Histogram bining of size 'toll'. This is the same as                 using the rebin function except for multiple spectum.</li><li><b>absolute</b>	: The gap between the points is  always greater then 'toll'                 before any averaging.</li><li><b>legacy</b>      : Replicate the original @spec1d/combine</li></ol></div><p>Default is <b>relative</b> due to speed considerations.</p><h2>Outputs<a name="4"></a></h2><div><ul><li><i>s_out</i> - spec1d object</li></ul></div><h2>Examples<a name="5"></a></h2><p>These are some examples on using @spec1d/combine. Combining spectra <i>s1</i>, <i>s2</i> and <i>s3</i> when x values differ by less than 0.5.</p><p><h3>Example 1</h3></p><p>Combine <i>s1</i>, <i>s2</i>, <i>s3</i> by counts method</p><pre class="codeinput">s1 = spec1d(1:0.2:5,sin(linspace(0,2*pi,21)),0.1);
 s2 = spec1d((1:0.2:5) + 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) - 0.2*rand(1,21),0.1);
 s3 = spec1d((1:0.2:5) - 0.2*rand(1,21),(sin(linspace(0,2*pi,21))) + 0.2*rand(1,21),0.1);
@@ -88,10 +88,10 @@ plot(s1,s2,s3,s_out3)
 hold <span class="string">on</span>
 plot(get(s1,<span class="string">'x'</span>),get(s1,<span class="string">'y'</span>),<span class="string">'r-'</span>)
 plot(s_out1,s_out2,s_out3)
-</pre><img vspace="5" hspace="5" src="reference_combine_04.png" alt=""> <h2>See Also<a name="9"></a></h2><p><a href="{{ site.url }}/@spec1d.rebin/index.html">Rebin</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="reference_combine_04.png" alt=""> <h2>See Also<a name="9"></a></h2><p><a href="{{ site.url }}/@spec1d.rebin/index.html">Rebin</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% @spec1d/combine
-% This is a the reference documentation for the function @spec1d/combine.
+% This is the reference documentation for the function @spec1d/combine.
 %
 % This function to combines two or more spectra. If the x values of two points differ by less
 % than tolerance _toll_, then the points are combined.

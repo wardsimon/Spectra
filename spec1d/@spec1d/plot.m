@@ -6,11 +6,11 @@ function varargout = plot(varargin)
 %
 % Usage: 1. Simple plot or overlay of spectra: >> plot(s1,s2,s3)
 %                                              >> plot(s1,10.*s2)
+%                                              >> plot(s1,10.*s2,'r-')
+%                                              >> plot(s1,10.*s2,'r-','Marker','s')
 %        2. Possibility to choose axes type:   >> plot(s1,'semilogy',1)
 %                                              >> plot(s1,'semilogx',1)
 %                                              >> plot(s1,'loglog',1)
-%        3. More plot options                  >> plot(s1,'r-*') etc.
-%
 %        !!! EXPERIMENTAL !!!
 %        4. Create a log to go with the plot. This means we can trace
 %           files and 'remember' how data was analysed.
@@ -21,21 +21,37 @@ s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
 s = varargin(s_ind);
 varargin(s_ind) = [];
 p = inputParser;
+p.KeepUnmatched = true;
 p.addRequired('s_in',@iscell);
-p.addParameter('semilogx',0,@isnumeric);
-p.addParameter('semilogy',0,@isnumeric);
-p.addParameter('loglog',0,@isnumeric);
-p.addParameter('semilog',0,@isnumeric);
-p.addParameter('trace',0,@isnumeric);
-p.addParameter('tLenght',NaN,@isnumeric);
+p.addParamValue('semilogx',0,@isnumeric);
+p.addParamValue('semilogy',0,@isnumeric);
+p.addParamValue('loglog',0,@isnumeric);
+p.addParamValue('semilog',0,@isnumeric);
+p.addParamValue('trace',0,@isnumeric);
+p.addParamValue('tLenght',NaN,@isnumeric);
+% Try to deal with the 'ro' arguments etc...
+% This is a total hack but matlab does not have an alternative.
+if mod(length(varargin),2)
+    p.addOptional('plot_spec',[],@ischar)
+    p.parse(s,varargin{1},varargin{2:end});
+    warning('off','MATLAB:structOnObject');
+    p = struct(p);
+    warning('on','MATLAB:structOnObject');
+else
+    p.parse(s,varargin{:});
+    warning('off','MATLAB:structOnObject');
+    p = struct(p);
+    warning('on','MATLAB:structOnObject');
+    p.Results.plot_spec = [];
+end
 
-p.parse(s,varargin{:});
 
 s = [p.Results.s_in{:}];
 
 plot_opt = p.Unmatched;
+plot_spec = p.Results.plot_spec;
 
-if p.Results.trace && sdex.getpref('experimental').val
+if p.Results.trace && sdext.getpref('experimental').val
     INFO = 'STACK TRACE\n-----------\n';
     
     [st, ~] = dbstack('-completenames');
@@ -145,8 +161,10 @@ for i = 1:length(s)
     set(hle,'Parent',hEGroup)
     
     %----- Do the actual plotting
-    hll=plot(x,y,'LineStyle','None','Marker',markerorder{1+mod(i-1,7)},'MarkerFaceColor',colourorder(1+mod(i-1 + c_pos,7),:),...
-        'MarkerSize',7,'MarkerEdgeColor','None','Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
+    hll=plot(x,y,'MarkerSize',7,'MarkerEdgeColor','None',...
+        'Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
+    de_opt = parse_opts(plot_spec);
+    set(hll,de_opt{:})
     
     if ~isempty(plot_opt)
         f = fieldnames(plot_opt);
@@ -283,3 +301,35 @@ end
 % Put axis on the top
 set(gca,'Layer','Top')
 
+
+    function default = parse_opts(in)
+        ls = {'-','--',':','-.'};
+        ma = {'o' '+' '*' '.' 'x' 's' 'd' '^' 'v' '>' '<' 'p' 'h'};
+        co = {'y' 'm' 'c' 'r' 'g' 'b' 'w','k'};
+        
+        default = {'LineStyle','None','Marker',markerorder{1+mod(i-1,7)},'MarkerFaceColor',colourorder(1+mod(i-1 + c_pos,7),:)};
+        
+        for q = 1:length(in)
+            c = in(q);
+            if any(strcmp(c,ls))
+                if length(in)>q
+                    if any(strcmp(in(q+1),{'-','.'}))
+                        c = in(q:(q+1));
+                        in(q+1) = ' ';
+                    end
+                end
+                default{2} = c;
+                default{7} = 'Color';
+                default{8} = default{6};
+            end
+            if any(strcmp(c,ma))
+                default{4} = c;
+            end
+            if any(strcmp(c,co))
+                default{6} = c;
+                default{7} = 'Color';
+                default{8} = c;
+            end
+        end
+    end
+end

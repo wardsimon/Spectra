@@ -16,7 +16,7 @@ function s_out = interpolate(s_in,x_new,varargin)
 % 'FUNCTION'     : The value FUNCTION is a function which can be explained
 %                  with the documentation "help('sdinterp')". Optional
 %                  arguments can be passed.
-% Default is 'weightedpoly'. 'builtin' or 'linear' is suggested for speed.
+% Default is 'linear'. 'builtin' or 'linear' is suggested for speed.
 %
 % If the method 'weightedpoly' is selected, the optional 'order', paramter
 % is available. The value is a positive integer and corresponds to the
@@ -48,7 +48,7 @@ p = inputParser;
 p.addRequired('s',@(x)isa(x,'spec1d'));
 p.addRequired('x_new',@(x) (isnumeric(x) && isreal(x)) || (isa(x,'spec1d') && length(x)==1))
 p.addOptional('order',-1,@(x) (isnumeric(x) && isreal(x)))
-p.addOptional('method','weightedpoly',@ischar)
+p.addOptional('method','linear',@ischar)
 p.KeepUnmatched = 1;
 
 p.parse(s_in,x_new,varargin{:})
@@ -74,7 +74,7 @@ for i = 1:length(s)
         case 'linear'
             temp = mat2cell(bsxfun(@minus,x(:,ones(1,length(x_new))),x_new),length(x),ones(size(x_new)));
             [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
-            [rind2,~] = cellfun(@(x) find(x >  0,1,'first'),temp);
+            [rind2,~] = cellfun(@(x) find(x >= 0,1,'first'),temp);
             y_new = arrayfun(@(x_new,n1,n2) y(n1)*(x(n2)-x_new)/(x(n2)-x(n1))+...
                 y(n2)*(x(n1)-x_new)/(x(n1)-x(n2)),x_new,rind1,rind2);
             e_new = arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
@@ -105,7 +105,7 @@ for i = 1:length(s)
             end
             temp = mat2cell(bsxfun(@minus,x(:,ones(1,length(x_new))),x_new),length(x),ones(size(x_new)));
             [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
-            [rind2,~] = cellfun(@(x) find(x >=  0,1,'first'),temp);
+            [rind2,~] = cellfun(@(x) find(x >= 0,1,'first'),temp);
             e_new = e_new + arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
                 (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
         case 'builtin'

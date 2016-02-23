@@ -13,5 +13,8 @@ publishToGithub('reference_get.m','title','@spec1d.get','tags',{'spec1d','get','
 publishToGithub('reference_set.m','title','@spec1d.set','tags',{'spec1d','set','ref'})
 publishToGithub('reference_sqrt.m','title','@spec1d.sqrt','tags',{'spec1d','sqrt','ref'})
 publishToGithub('reference_power.m','title','@spec1d.power','tags',{'spec1d','power','mpower','ref'})
+publishToGithub('reference_interpolate.m','title','@spec1d.interpolate','tags',{'spec1d','interpolate','ref'})
+publishToGithub('reference_plot.m','title','@spec1d.plot','tags',{'spec1d','plot','ref'})
+publishToGithub('reference_spec1d.m','title','@spec1d.spec1d','tags',{'spec1d','constructor','ref'})
 
 

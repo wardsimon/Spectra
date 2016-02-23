@@ -52,10 +52,10 @@ bin = p.Results.toll;
 method = p.Results.method;
 indexing = p.Results.indexing;
 
-x = [s.x];
+x = vertcat(s(:).x);
 [x, ind ] = sort(x(:));
-y = [s.y]; y = y(ind);
-e = [s.e]; e = e(ind);
+y = vertcat(s(:).y); y = y(ind);
+e = vertcat(s(:).e); e = e(ind);
 
 switch lower(indexing(1))
     case 'r'
