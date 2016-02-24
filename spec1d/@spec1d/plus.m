@@ -18,53 +18,63 @@ function s_out = plus(s1,s2)
 %
 
 if isa(s1,'spec1d')
-    s(1) = s1;
+    s = s1;
     if isa(s2,'spec1d')
-        s(2) = s2;
         val = [];
+        if length(s2)>1 && length(s)==1
+            temp = s2;
+            s2 = s;
+            s = temp;
+            clear temp;
+        elseif length(s2)>1 && length(s)>=1
+            error('spec1d:times:InputLengthError','Times can not be used for two spectrum both with dimensions greater than 1')
+        end
     else
         val = s2;
+        s2 = [];
     end
 else
     val = s1;
-    s(1) = s2;
+    s = s2;
+    s2 = [];
 end
 
-if isempty(val)
-    if length(s(1).x)~=length(s(2).x)
-        warning('spec1d:plus:UnevenSpectra','Number of points in s1 and s2 are not equal. Using Interpolation')
-        s(2) = interpolate(s(2),s(1));
-    end
-    
-    r = s(1);
-    r.y = r.y + s(2).y;
-    r.e = sqrt(r.e.^2 + s(2).e.^2);
-    if ~all([isempty(r.yfit) isempty(s(2).yfit)])
-        if isempty(r.yfit) || isempty(s(2).yfit)
-            warning('spec1d:plus:EmptyYFit','The y-fit of spectrum s1 or s2 is empty. No summation has occured on the fit channel')
-            if ~isempty(s(2).yfit)
-                r.yfit = s(2).yfit;
+for i = 1:length(s)
+    if isempty(val)
+        if length(s(i).x)~=length(s2.x)
+            warning('spec1d:plus:UnevenSpectra','Number of points in s1 and s2 are not equal. Using Interpolation')
+            s2 = interpolate(s2,s(i),'method','builtin');
+        end
+        
+        r = s(i);
+        r.y = r.y + s2.y;
+        r.e = sqrt(r.e.^2 + s2.e.^2);
+        if ~all([isempty(r.yfit) isempty(s2.yfit)])
+            if isempty(r.yfit) || isempty(s2.yfit)
+                warning('spec1d:plus:EmptyYFit','The y-fit of spectrum s1 or s2 is empty. No summation has occured on the fit channel')
+                if ~isempty(s2.yfit)
+                    r.yfit = s2.yfit;
+                end
+            else
+                r.yfit = r.yfit + s2.yfit;
             end
-        else
-            r.yfit = r.yfit + s(2).yfit;
-        end
-    end
-else
-    r   = s(1);
-    if length(val)==1
-        r.y = val + r.y;
-        if ~isempty(r.yfit)
-            r.yfit = val + r.yfit;
-        end
-    elseif length(val)==2
-        r.x = r.x + val(1);
-        r.y = r.y + val(2);
-        if ~isempty(r.yfit)
-            r.yfit = r.yfit + val(2);
         end
     else
-        error('spec1d:plus:InvalidNumberArray','Length of constant is invalid. See documentation')
+        r   = s(i);
+        if length(val)==1
+            r.y = val + r.y;
+            if ~isempty(r.yfit)
+                r.yfit = val + r.yfit;
+            end
+        elseif length(val)==2
+            r.x = r.x + val(1);
+            r.y = r.y + val(2);
+            if ~isempty(r.yfit)
+                r.yfit = r.yfit + val(2);
+            end
+        else
+            error('spec1d:plus:InvalidNumberArray','Length of constant is invalid. See documentation')
+        end
     end
+    s_out(i) = spec1d(r);
 end
-
-s_out = spec1d(r);

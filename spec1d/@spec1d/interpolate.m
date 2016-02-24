@@ -64,6 +64,12 @@ for i = 1:length(s)
     y = s(i).y(:);
     e = s(i).e(:);
     
+    if isa(x_new,'spec1d')
+        x_new = x_new.x(:);
+    end
+    
+    x_new = x_new(:)';
+    
     if (min(x_new) < min(x)) || (max(x) < max(x_new))
         warning('spec1d:interpolate:MinMaxXnewValues','The supplied interpolation range is out of the spectra range.')
         if any(strcmpi(method,{'linear','weightedpoly'}))
@@ -109,8 +115,8 @@ for i = 1:length(s)
             e_new = e_new + arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
                 (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
         case 'builtin'
-            y_new = interp1(x,y,x_new);
-            e_new = sqrt(interp1(x,e.^2,x_new));
+            y_new = interp1(x,y,x_new,'linear','extrap');
+            e_new = sqrt(interp1(x,e.^2,x_new,'linear','extrap'));
         otherwise
             try
                 y_new = feval(sprintf('sdinterp.%s',method),x,y,x_new,varargin{:});

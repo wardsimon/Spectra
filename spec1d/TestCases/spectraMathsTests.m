@@ -21,6 +21,31 @@ classdef spectraMathsTests < matlab.unittest.TestCase
             s_test = struct(plus(testCase.s,testCase.s));
             testCase.verifyEqual(s_test.y,testCase.ref.plusS(3).y);
             testCase.verifyEqual(s_test.e,testCase.ref.plusS(3).e);
+            
+            s_test = struct(plus([testCase.s testCase.s],testCase.p));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.plusS(1).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.plusS(1).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.plusS(1).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.plusS(1).e);
+            
+            s_test = struct(plus(testCase.p,[testCase.s testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.plusS(2).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.plusS(2).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.plusS(2).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.plusS(2).e);
+            
+            s_test = struct(plus([testCase.s testCase.s],testCase.s));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.plusS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.plusS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.plusS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.plusS(3).e);
+            
+            s_test = struct(plus(testCase.s,[testCase.s testCase.s]));
+            testCase.verifyEqual(s_test(1).y,testCase.ref.plusS(3).y);
+            testCase.verifyEqual(s_test(1).e,testCase.ref.plusS(3).e);
+            testCase.verifyEqual(s_test(2).y,testCase.ref.plusS(3).y);
+            testCase.verifyEqual(s_test(2).e,testCase.ref.plusS(3).e);
+            
         end
         function timesSolution(testCase)
             s_test = struct(times(testCase.s,testCase.p));

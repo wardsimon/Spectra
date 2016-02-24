@@ -37,7 +37,7 @@ if isempty(fac)
         % Divide spec1d objects
         if length(s(i).x)~=length(s2.x)
             warning('Objects are not the same length. Using interpolation for second object')
-            s2 = interpolate(s2,s(i));
+            s2 = interpolate(s2,s(i),'method','builtin');
         end
         
         rvec = s(i);
