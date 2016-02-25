@@ -56,6 +56,7 @@ x = vertcat(s(:).x);
 [x, ind ] = sort(x(:));
 y = vertcat(s(:).y); y = y(ind);
 e = vertcat(s(:).e); e = e(ind);
+y_fit = vertcat(s(:).y_fit); y_fit = y_fit(ind);
 
 switch lower(indexing(1))
     case 'r'
@@ -94,6 +95,11 @@ switch lower(method(1))
         xs = accumarray(ind(:),x(:),[],@sum,NaN)./N(:);
         ys = accumarray(ind(:),y(:),[],@sum)./N(:);
         es = sqrt(accumarray(ind(:),e(:).^2,[],@sum))./N(:);
+        if ~isempty(y_fit)
+            y_fit_s = accumarray(ind(:),y_fit(:),[],@sum)./N(:);
+        else
+            y_fit_s = [];
+        end
     case 'c'
         % Counts
         % Reconstruct the montor count.
@@ -112,6 +118,11 @@ switch lower(method(1))
         ms(ms < eps) = eps; % Check for possibility of rounding errors
         xs = accumarray(ind(:),x(:).*m(:),[],@sum,NaN)./ms;
         ys = accumarray(ind(:),y(:).*m(:),[],@sum)./ms;
+        if ~isempty(y_fit)
+            y_fit_s = accumarray(ind(:),y_fit(:).*m(:),[],@sum)./ms;
+        else
+            y_fit_s = [];
+        end
         es = (accumarray(ind(:),(e(:).*m(:)).^2,[],@sum).^0.5)./(ms.*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
     case 'w'
         % Weight
@@ -119,10 +130,22 @@ switch lower(method(1))
         ms(ms < eps) = eps; % Check for possibility of rounding errors
         xs = accumarray(ind(:),x(:)./e(:).^2,[],@sum,NaN)./ms;
         ys = accumarray(ind(:),y(:)./e(:).^2,[],@sum)./ms;
+        if ~isempty(y_fit)
+            y_fit_s = accumarray(ind(:),y_fit(:)./e(:).^2,[],@sum)./ms;
+        else
+            y_fit_s = [];
+        end
         es = 1./(sqrt(accumarray(ind(:),1./e(:).^2,[],@sum)).*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
     otherwise
         error('spec1d:combine:NotValidMethod','%s is not a valid method. See documentation',p.Results.method)
 end
 
-s_out = spec1d(xs(~isnan(xs)),ys(~isnan(xs)),es(~isnan(xs))); % This takes into account the possibility of non-continuous indexing
+% This takes into account the possibility of non-continuous indexing
+r = s(1);
+r.x = xs(~isnan(xs));
+r.y = ys(~isnan(xs));
+r.e = es(~isnan(xs));
+r.y_fit = y_fit_s;
+
+s_out = spec1d(r);
 
