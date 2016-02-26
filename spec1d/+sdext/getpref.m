@@ -22,7 +22,7 @@ function rPref = getpref(prefName)
 %
 % default values
 
-path_ind = strfind(mfilename('fullpath'),'/');
+path_ind = strfind(mfilename('fullpath'),filesep);
 path_d =  mfilename('fullpath');
 path_d = path_d(1:path_ind(end-3));
 
