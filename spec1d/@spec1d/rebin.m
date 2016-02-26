@@ -127,7 +127,7 @@ for i = 1:length(s)
             end
         case 'f'
             % Force xs, convert bin edges to centers
-            xs = edges(1:(end-1)) + diff(edges)/2;
+            xs = edges(1:(end-1)) + diff(edges)/2; xs = xs(:);
             ys = accumarray(ind(:),y(:),[],@sum)./N(:);
             es = sqrt(accumarray(ind(:),e(:).^2,[],@sum))./N(:);
             if ~isempty(yfit)
@@ -138,12 +138,13 @@ for i = 1:length(s)
     end
     
     % Make output object
+    ind = ~isnan(xs) & ~isnan(es);
     r = s(i);
-    r.x = xs(~isnan(xs));
-    r.y = ys(~isnan(xs));
-    r.e = es(~isnan(xs));
+    r.x = xs(ind);
+    r.y = ys(ind);
+    r.e = es(ind);
     if ~isempty(r.yfit)
-        r.yfit = yfits(~isnan(xs));
+        r.yfit = yfits(ind);
     end
     s_out = spec1d(r);
     

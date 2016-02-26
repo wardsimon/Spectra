@@ -85,6 +85,14 @@ for i = 1:length(s)
                 y(n2)*(x(n1)-x_new)/(x(n1)-x(n2)),x_new,rind1,rind2);
             e_new = arrayfun(@(x_new,n1,n2) sqrt((e(n1)*(x(n2)-x_new)/(x(n2)-x(n1)))^2+...
                 (e(n2)*(x(n1)-x_new)/(x(n1)-x(n2)))^2),x_new,rind1,rind2);
+            
+            if ~isempty(s(i).yfit)
+                y_fit = s(i).yfit(:);
+                y_fit_new = arrayfun(@(x_new,n1,n2) y(n1)*(x(n2)-x_new)/(x(n2)-x(n1))+...
+                    y(n2)*(x(n1)-x_new)/(x(n1)-x(n2)),y_fit,rind1,rind2);
+            else
+                y_fit_new = [];
+            end
         case 'weightedpoly'
             if p.Results.order < 1
                 c = onCleanup(@() [warning('on','MATLAB:nearlySingularMatrix'), warning('on','MATLAB:polyval:ZeroDOF')]);
@@ -105,9 +113,26 @@ for i = 1:length(s)
                 [~, ind] = min(var_poly);
                 [pp, S] = sdinterp.weightedpoly(x,y,e,ind);
                 [y_new, e_new] = polyval(pp,x_new,S); % This is the error for the interpolation. We need to add on the error for the points.
+                
+                if ~isempty(s(i).yfit)
+                    y_fit = s(i).y_fit(:);
+                    [pp, S] = sdinterp.weightedpoly(x,y_fit,e,ind);
+                    y_fit_new = polyval(pp,x_new,S);
+                else
+                    y_fit_new = [];
+                end
+                
             else
                 [pp, S] = sdinterp.weightedpoly(x,y,e,p.Results.order);
                 [y_new, e_new] = polyval(pp,x_new,S);
+                
+                if ~isempty(s(i).yfit)
+                    y_fit = s(i).y_fit(:);
+                    [pp, S] = sdinterp.weightedpoly(x,y_fit,e,p.Results.order);
+                    y_fit_new = polyval(pp,x_new,S);
+                else
+                    y_fit_new = [];
+                end
             end
             temp = mat2cell(bsxfun(@minus,x(:,ones(1,length(x_new))),x_new),length(x),ones(size(x_new)));
             [rind1,~] = cellfun(@(x) find(x <= 0,1,'last'),temp);
@@ -117,10 +142,22 @@ for i = 1:length(s)
         case 'builtin'
             y_new = interp1(x,y,x_new,'linear','extrap');
             e_new = sqrt(interp1(x,e.^2,x_new,'linear','extrap'));
+            if ~isempty(s(i).yfit)
+                y_fit = s(i).y_fit(:);
+                y_fit_new = interp1(x,y_fit,x_new,'linear','extrap');
+            else
+                y_fit_new = [];
+            end
         otherwise
             try
                 y_new = feval(sprintf('sdinterp.%s',method),x,y,x_new,varargin{:});
                 e_new = sqrt(interp1(x,e.^2,x_new));
+                if ~isempty(s(i).yfit)
+                    y_fit = s(i).y_fit(:);
+                    y_fit_new = feval(sprintf('sdinterp.%s',method),x,y_fit,x_new,varargin{:});
+                else
+                    y_fit_new = [];
+                end
             catch
                 help('sdinterp')
                 error('spec1d:interpolate:ErrorInInterpolation','The function %s has thrown an error or doesnt exist. See documentation',method)
@@ -142,5 +179,8 @@ for i = 1:length(s)
     r.x = x_new(~rind);
     r.y = y_new(~rind);
     r.e = e_new(~rind);
+    if ~isempty(y_fit_new)
+        r.y_fit = y_fit_new(~rind);
+    end
     s_out(i) = spec1d(r);
 end
