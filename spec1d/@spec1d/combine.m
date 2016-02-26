@@ -56,7 +56,10 @@ x = vertcat(s(:).x);
 [x, ind ] = sort(x(:));
 y = vertcat(s(:).y); y = y(ind);
 e = vertcat(s(:).e); e = e(ind);
-y_fit = vertcat(s(:).yfit); y_fit = y_fit(ind);
+y_fit = vertcat(s(:).yfit); 
+if ~isempty(y_fit)
+    y_fit = y_fit(ind);
+end
 
 switch lower(indexing(1))
     case 'r'
