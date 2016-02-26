@@ -40,8 +40,8 @@ varargin(s_ind) = [];
 
 p = inputParser;
 p.CaseSensitive = false;
-p.addRequired('toll',@(x) isnumeric(x) && isreal(x));
-p.addRequired('s_in',@iscell);
+p. addParamValue('toll',@(x) isnumeric(x) && isreal(x));
+p.a addParamValue('s_in',@iscell);
 p.addParameter('indexing','relative',@ischar)
 p.addParameter('method','counts',@ischar);
 

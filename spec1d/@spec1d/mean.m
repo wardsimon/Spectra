@@ -17,7 +17,7 @@ varargin(s_ind) = [];
 p = inputParser;
 p.CaseSensitive = false;
 p.addRequired('s_in',@iscell);
-p.addParameter('method','mean',@ischar);
+p.addParamValue('method','mean',@ischar);
 p.parse(s,varargin{:});
 
 method = p.Results.method;

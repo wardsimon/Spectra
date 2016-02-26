@@ -24,8 +24,8 @@ function s_out = rebin(s,dx,varargin)
 p = inputParser;
 p.addRequired('s',@(x)isa(x,'spec1d'));
 p.addRequired('dx',@(x) (isnumeric(x) && isreal(x)) || (isa(x,'spec1d') && length(x)==1) || ischar(x))
-p.addParameter('method','average',@ischar)
-p.addParameter('byError',0,@isnumeric)
+p.addParamValue('method','average',@ischar)
+p.addParamValue('byError',0,@isnumeric)
 
 p.parse(s,dx,varargin{:})
 
