@@ -56,7 +56,7 @@ x = vertcat(s(:).x);
 [x, ind ] = sort(x(:));
 y = vertcat(s(:).y); y = y(ind);
 e = vertcat(s(:).e); e = e(ind);
-y_fit = vertcat(s(:).y_fit); y_fit = y_fit(ind);
+y_fit = vertcat(s(:).yfit); y_fit = y_fit(ind);
 
 switch lower(indexing(1))
     case 'r'
@@ -145,7 +145,7 @@ r = s(1);
 r.x = xs(~isnan(xs));
 r.y = ys(~isnan(xs));
 r.e = es(~isnan(xs));
-r.y_fit = y_fit_s;
+r.yfit = y_fit_s;
 
 s_out = spec1d(r);
 
