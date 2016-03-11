@@ -1,29 +1,39 @@
 classdef spec1d
-    properties
+        
+    properties (SetAccess=protected)
         x
         y
         e
         yfit
+    end
+    
+    properties
+        userdata
+    end
+    
+    properties (Hidden=true)
         datafile
         x_label
         y_label
-        userdata
     end
+    
+    properties (SetAccess=immutable,Hidden=true)
+        ident;
+    end
+        
     methods
         function s = spec1d(varargin)
             if nargin == 0
+                s.ident = java.rmi.server.UID();
                 return
             else
                 s = spec1d;
-                p = properties(s);
                 s_in = constructor(varargin{:});
-                for i = 1:length(p)
-                    s.(p{i}) = s_in.(p{i});
-                end
+                s = s.copy(s_in);
                 validate(s);
             end
         end
-        
+                
         function disp(s)
             if length(s) == 1
                 if isempty(s.datafile)
@@ -52,5 +62,19 @@ classdef spec1d
                 end
             end
         end
+        
+        function obj = equals(obj)
+            obj = obj.copy; % We do this so that the identity is always different.
+        end
+        
+    end
+    
+    methods (Hidden=true)
+       out = isempty(obj);
+       out = findID(obj,ID);
+    end
+    
+    methods (Access=protected)
+        names = fieldnames_s(obj); % Super/sub classes can use this.
     end
 end

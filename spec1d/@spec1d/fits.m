@@ -132,7 +132,7 @@ if options.multifit
 end
 
 %----- Loop over the number of spec1d objects
-sout = spec1d;
+sout = repmat(feval(class(s1(1))),size(s1));
 fitdata = struct;
 
 % This is for parallel fitting.
@@ -191,7 +191,7 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         sloop.y_label = s1(il).y_label;
         sloop.datafile = s1(il).datafile;
         sloop.yfit = yfit{il};
-        sout(il) = spec1d(sloop);
+        sout(il) = feval(class(sout(il)),sloop);
         
         fitdata(il).pvals = p{il};
         fitdata(il).evals = sig{il};
@@ -327,7 +327,7 @@ else % This is for normal fitting and multi-fitting.
         sloop.y_label = s1(il).y_label;
         sloop.datafile = s1(il).datafile;
         sloop.yfit = yfit;
-        sout(il) = spec1d(sloop);
+        sout(il) = feval(class(sout(il)),sloop);
         
         fitdata(il).pvals = p;
         fitdata(il).evals = sig;

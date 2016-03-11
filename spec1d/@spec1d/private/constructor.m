@@ -17,9 +17,9 @@ if nargin == 0
     p.addParamValue('y',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'y'))
     p.addParamValue('e',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'nonnegative','vector','real','finite','nonnan'},mfilename,'e'))
     p.addParamValue('yfit',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'real','finite','nonnan','2d'},mfilename,'yfit'))
-    p.addParamValue('x_label',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'x_label'))
-    p.addParamValue('y_label',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'y_label'))
-    p.addParamValue('datafile',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'datafile'))
+    p.addParamValue('x_label','',@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'x_label'))
+    p.addParamValue('y_label','',@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'y_label'))
+    p.addParamValue('datafile','',@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'datafile'))
     p.addParamValue('userdata',[])
     p.parse();
     s = p.Results;
@@ -39,9 +39,9 @@ if isstruct(a) || isa(a,'spec1d')
     p.addParamValue('y',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'y'))
     p.addParamValue('e',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'nonnegative','vector','real','finite','nonnan'},mfilename,'e'))
     p.addParamValue('yfit',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'real','finite','nonnan','2d'},mfilename,'yfit'))
-    p.addParamValue('x_label',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'x_label'))
-    p.addParamValue('y_label',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'y_label'))
-    p.addParamValue('datafile',[],@(x) isempty(x) || validateattributes(x,{'char'},{},mfilename,'datafile'))
+    p.addParamValue('x_label','',@(x) validateattributes(x,{'char'},{'2d'},mfilename,'x_label'))
+    p.addParamValue('y_label','',@(x) validateattributes(x,{'char'},{'2d'},mfilename,'y_label'))
+    p.addParamValue('datafile','',@(x) validateattributes(x,{'char'},{'2d'},mfilename,'datafile'))
     p.addParamValue('userdata',[])
 else
     if isempty(varargin)
@@ -54,9 +54,9 @@ else
     p.addRequired('y',@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'y'))
     p.addRequired('e',@(x) validateattributes(x,{'numeric','gpuArray'},{'nonnegative','vector','real','finite','nonnan'},mfilename,'e'))
     p.addParamValue('yfit',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'real','finite','nonnan','2d'},mfilename,'yfit'))
-    p.addParamValue('x_label',[],@(x) isempty(x) ||validateattributes(x,{'char'},{},mfilename,'x_label'))
-    p.addParamValue('y_label',[],@(x) isempty(x) ||validateattributes(x,{'char'},{},mfilename,'y_label'))
-    p.addParamValue('datafile',[],@(x) isempty(x) ||validateattributes(x,{'char'},{},mfilename,'datafile'))
+    p.addParamValue('x_label','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'x_label'))
+    p.addParamValue('y_label','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'y_label'))
+    p.addParamValue('datafile','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'datafile'))
     p.addParamValue('userdata',[])
 end
 

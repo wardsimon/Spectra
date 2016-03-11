@@ -29,5 +29,5 @@ for i = 1:length(s);
         end
     end
     
-    s_out(i) = spec1d(r);
+    s_out(i) = feval(class(r),r);
 end

@@ -76,5 +76,5 @@ for i = 1:length(s)
             error('spec1d:plus:InvalidNumberArray','Length of constant is invalid. See documentation')
         end
     end
-    s_out(i) = spec1d(r);
+    s_out(i) = feval(class(r),r);
 end

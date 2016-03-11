@@ -40,6 +40,10 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
 %             end
             iter_mem = iter_l;
         end
+                
+%         if ~isequal(cell2mat(arrayfun(@(x)[x.EXP.QH;x.EXP.QK;x.EXP.QL;x.EXP.W],ResFitScn,'UniformOutput',0))',cell2mat(arrayfun(@(x) x.resolution.HKLE',ResFitScn,'UniformOutput',0))')
+%            warning('Something has gone wrong') 
+%         end
         
         % Start the fitting
         y = zeros(size(x));
@@ -50,7 +54,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
             %Q = [(ResFitScn(i).resolution.abc.hkl2Frame\[ResFitScn(i).resolution.abc.cloud{1:3}]')' ResFitScn(i).resolution.abc.cloud{4}];
             Q = ResFitScn(i).resolution.rlu.cloud';
             if iscell(Q)
-                Q = ([ResFitScn(i).resolution.rlu.cloud{:}]');
+                Q = ([ResFitScn(i).resolution.rlu.cloud{:}]);
             end
             if isfield(ResFitScn(i).EXP,'NMC')
                 NMC = ResFitScn(i).EXP.NMC;
@@ -76,13 +80,10 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         if flag == 2
             % Start the fitting
             % Calculate the cross section
-            Q = zeros(length(ResFitScn),4);
-            for i = 1:length(ResFitScn)
-                Q(i,:) = ResFitScn(i).resolution.HKLE;
-            end
+            Q = cell2mat(arrayfun(@(x)[x.EXP.QH;x.EXP.QK;x.EXP.QL;x.EXP.W],ResFitScn,'UniformOutput',0))';
             S = feval(ResFitScn(1).SQW,Q,p);
             % Add on a background.
-            y = S + feval(ResFitScn(i).BG,Q,p);
+            y = S + feval(ResFitScn(1).BG,Q,p);
         else
             
             %----- Parameter names

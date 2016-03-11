@@ -10,25 +10,27 @@ if nargin < 2
     normval=1;
 end
 
-for n=1:length(s1)
-    x=s1(n).x;
-    y=s1(n).y;
-    e=s1(n).e;
-    yfit=s1(n).yfit;
+for n = 1:length(s1)
+    x = s1(n).x;
+    y = s1(n).y;
+    e = s1(n).e;
+    if ~isempty(s1(n).yfit)
+        yfit = s1(n).yfit;
+    end
+    
+    ymax = max(y);
+    yt = y/ymax*normval;
+    et = e/ymax*normval;
+    if ~isempty(s1(n).yfit)
+        yfitt = yfit/ymax*normval;
+    else
+        yfitt = [];
+    end
+    
+    r = s1(n);
+    r.y = yt;
+    r.e = et;
+    r.yfit = yfitt;
 
-    xt=x;
-    ymax=max(y);
-    yt=y/ymax*normval;
-    et=e/ymax*normval;
-    yfitt=yfit/ymax*normval;
-
-    r.x=xt;
-    r.y=yt;
-    r.e=et;
-    r.x_label=s1(n).x_label;
-    r.y_label=s1(n).y_label;
-    r.datafile=s1(n).datafile;
-    r.yfit=yfitt;
-
-    sn(n)=spec1d(r);
+    sn(n) = feval(class(r),r);
 end

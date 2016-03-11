@@ -75,10 +75,10 @@ end
 
 %% Plot the data
 %  Work out limits on graph
-min_x = min(arrayfun(@(x) min(x.x),struct(s)));
-max_x = max(arrayfun(@(x) max(x.x),struct(s)));
-min_y = min(arrayfun(@(x) min(x.y - x.e),struct(s)));
-max_y = max(arrayfun(@(x) max(x.y + x.e),struct(s)));
+min_x = min(arrayfun(@(x) min(x.x),s));
+max_x = max(arrayfun(@(x) max(x.x),s));
+min_y = min(arrayfun(@(x) min(x.y - x.e),s));
+max_y = max(arrayfun(@(x) max(x.y + x.e),s));
 
 if ishold(gcf) && ~isempty(get(gcf,'Children'))
     temp_x = get(gca,'XLim');
@@ -107,7 +107,7 @@ if ishold(gcf) && ~isempty(get(gcf,'Children'))
     axis([min_x max_x min_y max_y])
     c_pos = length(findobj(get(gca,'Children'),'-regexp','Tag','[^'']'));
 else
-    if max(arrayfun(@(x) length(x.x),struct(s))) == 1
+    if max(arrayfun(@(x) length(x.x),s)) == 1
         pm = [0.05 0.05];
     else
         pm = [0.05*(max_x - min_x) 0.05*(max_y - min_y)];
@@ -175,7 +175,7 @@ for i = 1:length(s)
     if ~isempty(yfit);
         hlf=plot(x,yfit,'Color',hsv2rgb([1 1 0.5].*rgb2hsv(get(hll,'MarkerFaceColor'))),...
             'LineStyle','-','LineWidth',2,'Marker','none','DisplayName',sprintf('Datafit %i',i));
-        set(hlf,'ButtonDownFcn','editline(gco);');
+%         set(hlf,'ButtonDownFcn','editline(gco);');
         set(hlf,'Parent',hEGroup)
     else
         hlf=[];

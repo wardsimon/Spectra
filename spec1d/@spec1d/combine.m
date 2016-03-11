@@ -150,5 +150,5 @@ r.y = ys(~isnan(xs));
 r.e = es(~isnan(xs));
 r.yfit = y_fit_s;
 
-s_out = spec1d(r);
+s_out = feval(class(r),r);
 
