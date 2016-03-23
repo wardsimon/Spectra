@@ -165,9 +165,9 @@ for i = 1:length(s)
         'Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
     de_opt = parse_opts(plot_spec);
     set(hll,de_opt{:})
-    
-    if ~isempty(plot_opt)
-        f = fieldnames(plot_opt);
+   
+    f = fieldnames(plot_opt);
+    if ~isempty(f)
         for j = 1:length(f)
             set(hll,f{j},plot_opt.(f{j}))
         end
@@ -199,7 +199,8 @@ for i = 1:length(s)
     hout  = [hout;hll];
     hbout = [hbout;hle];
     hfout = [hfout;hlf];
-end
+    end
+
 
 if ~held
     hold off

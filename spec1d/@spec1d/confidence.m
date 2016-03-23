@@ -43,7 +43,7 @@ function varargout = confidence(s,fit,conf,varargin)
     fprintf('Confidence level: %02.04f%% == %01.02f sigma. \n',100*(1-conf),sqrt(2)*erfinv(1-conf))
 
     resid = y0-yf;
-    jac = feval(@dfdp,s(i).x,yf,fit(i).pvals,fit(i).evals,fit(i).function);
+    jac = feval(@dfdp,s(i).x,yf,fit(i).pvals,fit(i).evals,fit(i).func);
     jac(:,fit(i).evals==0)=[];
     
     p = fit(i).pvals(fit(i).evals~=0);
@@ -57,8 +57,8 @@ function varargout = confidence(s,fit,conf,varargin)
     p2(fit(i).evals~=0) = p0(fit(i).evals~=0) - delta;
     
     
-    y1 = feval(fit(i).function,x,p1);
-    y2 = feval(fit(i).function,x,p2);
+    y1 = feval(fit(i).func,x,p1);
+    y2 = feval(fit(i).func,x,p2);
         
     if nargout == 1
         varargout{1}(:,1) = y1;

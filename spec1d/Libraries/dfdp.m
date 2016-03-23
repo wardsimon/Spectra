@@ -20,7 +20,9 @@ function prt = dfdp(x,f,p,dp,func,bounds)
     
     m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
     n=length(p);      %dimensions
-    
+    if nargin == 5
+        bounds = bsxfun(@times,[-1 1],Inf(length(p),2));
+    end
     if length(dp) ~= length(p)
         error('Fixed and Pin need to be the same length')
     end

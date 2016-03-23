@@ -53,7 +53,7 @@ for il=1:length(x_per_spec)
  
     vout(il).pvals    = pout;
     vout(il).evals    = eout;
-    vout(il).function = w.function;
+    vout(il).func = w.func;
     vout(il).pnames   = w.pnames;
     % I think this is the correct correction!
     vout(il).chisq    = (length(w.pvals)-sum(dpin==0))*w.chisq/param_keep(length(param_keep));

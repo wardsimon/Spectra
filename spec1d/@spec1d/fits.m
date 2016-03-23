@@ -70,14 +70,14 @@ else
     fcp = varargin{1};
 end
 p.addParamValue('bounds',[-Inf(length(pin),1) Inf(length(pin),1)],@(x) (size(x,1)==length(pin) & size(x,2)==2) | iscell(x))
-p.addParamValue('dfdp','specdfdp_multi',@(x) ischar(x))
+p.addParamValue('dfdp','specdfdp_multi',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('confidence',0.05,@(x) isnumeric(x) & length(x)==1 & x>0 & x<1)
 p.addParamValue('inequc',{zeros(length(pin),0) zeros(0,1)},@iscell)
 %     p.addParamValue('sep',cell(length(s1),1), @iscell)
-p.addParamValue('optimiser','spec_lm',@ischar)
+p.addParamValue('optimiser','spec_lm',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@length,x)==2))
 p.addParamValue('parallel',0,@(x) x==0 | x == 1)
-p.addParamValue('criteria','least_square',@(x) ischar(x))
+p.addParamValue('criteria','least_square',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('verbose',0,@(x) isnumeric(x) | islogical(x))
 if length(varargin) ~= 1
     p.parse(s1,func,pin,notfixed,varargin{:});
@@ -133,7 +133,7 @@ end
 
 %----- Loop over the number of spec1d objects
 sout = repmat(feval(class(s1(1))),size(s1));
-fitdata = struct;
+% fitdata = struct;
 
 % This is for parallel fitting.
 if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
@@ -151,15 +151,43 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         end
     end
     % Do the fitting
-    parfor n = 1:length(all_data)
-        switch  lower(options.optimiser)
-            case 'spec_lm'
+    yfit = cell(length(all_data),1);
+    RSq = cell(length(all_data),1);
+    ra2 = cell(length(all_data),1);
+    sig = cell(length(all_data),1);
+    switch  lower(options.optimiser)
+        case 'builtin'
+            infun = @(x,xin) feval(func,xin,x);
+            opt = optimset('MaxIter',fcp(2),'Display','Off','UseParallel',true);
+            for n = 1:length(all_data)
+                [p{n},resnorm,residual,exitflag,output,lambda,jacobian] = lsqcurvefit( @(p1, xdata) infun( interlace(pin(:), p1(:), ~notfixed), xdata),...
+                    pin(notfixed),all_data{n}{1},all_data{n}{2}, options.bounds(notfixed,1), options.bounds(notfixed,2),opt);
+                if exitflag ~= 1
+                    warning('spec1d:fits:AlgorithmError','A minimum has not been found or an error has occoured. Error code %i. See documentation',exitflag)
+                end
+                p{n} = interlace( pin(:), p{n}(:), ~notfixed);
+                yfit{n} = feval(func,all_data{n}{1},p{n});
+                r = corrcoef([all_data{n}{2}(:),yfit{n}(:)]);
+                RSq{n} = r(1,2).^2;
+                wt = 1./all_data{n}{3}(:);
+                Qinv = diag(wt.*wt);
+                Q = diag((0*wt+1)./(wt.^2));
+                m = length(all_data{n}{2});
+                nn = sum(notfixed);
+                covr = residual'*Qinv*residual*Q/(m-nn);                 %covariance of residuals
+                Vy = 1/(1-nn/m)*covr;  % Eq. 7-13-22, Bard         %covariance of the data
+                jtgjinv = pinv(jacobian'*Qinv*jacobian);
+                covp = jtgjinv*jacobian'*Qinv*Vy*Qinv*jacobian*jtgjinv; % Eq. 7-5-13, Bard %cov of parm est
+                sig{n} = interlace(zeros(size(pin)),sqrt(diag(covp)),~notfixed);
+                ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
+            end
+        case 'spec_lm'
+            parfor n = 1:length(all_data) %#ok<*PFUIX>
                 [yfit{n},p{n},cvg,iter,corp,covp,covr,stdresid,Z,RSq{n},ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options); %#ok<*ASGLU>
-            otherwise
-                warning('spec1d:fits:InvalidOptimiser','This optimiser has not been implemented for parallel fitting.')
-                [yfit{n},p{n},cvg,iter,corp,covp,covr,stdresid,Z,RSq{n},ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options);
-        end
-        ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
+                ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
+            end
+        otherwise
+            error('spec1d:fits:InvalidOptimiser','This optimiser has not been implemented for parallel fitting.')
     end
     
     % Set the return
@@ -171,15 +199,14 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
                 for i = 1:length(s1)
                     [p_new, ~, ind] = multifitp2p(p{i},notfixed,i);
                     [~, ~, temp] = feval(func,all_data{il}{1}(ind),p_new,1);
-                    pnames = [pnames(:); temp(:)];
+                    pnames = {pnames{:}; temp{:}};
                 end
             else
                 [~,~,pnames] = feval(func,all_data{il}{1},p,1);
             end
         else
-            pnames = cell(length(p),1);
-            for i=1:length(p)
-                pnames{i} = ['p' num2str(i)];
+            for i = 1:numel(p)
+                pnames{i} = num2str(i,'p%d');
             end
         end
         
@@ -192,13 +219,9 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
         sloop.datafile = s1(il).datafile;
         sloop.yfit = yfit{il};
         sout(il) = feval(class(sout(il)),sloop);
-        
-        fitdata(il).pvals = p{il};
-        fitdata(il).evals = sig{il};
-        fitdata(il).function = func;
-        fitdata(il).pnames = pnames;
-        fitdata(il).chisq = ChiSq{il};
-        fitdata(il).rsq = RSq{il};
+
+        fitdata(il) = specfit(p{il},sig{il},func,pnames,ChiSq{il},RSq{il});
+        fitdata(il).notfixed = notfixed;
     end
     
 else % This is for normal fitting and multi-fitting.
@@ -306,35 +329,29 @@ else % This is for normal fitting and multi-fitting.
                 for i = 1:length(s1)
                     [p_new, ~, ind] = multifitp2p(p,notfixed,i);
                     [~, ~, temp] = feval(func,x(ind),p_new,1);
-                    pnames = [pnames(:); temp(:)];
+                    pnames = {pnames{:}; temp{:}};
                 end
             else
                 if nargin(func)<3
-                    pnames = num2str((1:numel(p))','p%d');
+                    for i = 1:numel(p)
+                        pnames{i} = num2str(i,'p%d');
+                    end
                 else
                     [~,~,pnames] = feval(func,x,p,1);
                 end
             end
         else
-            pnames = num2str((1:numel(p))','p%d');
+            for i = 1:numel(p)
+                pnames{i} = num2str(i,'p%d');
+            end
         end
         
         % Make  the return spec1d objects
-        sloop.x = x;
-        sloop.y = y;
-        sloop.e = e;
-        sloop.x_label = s1(il).x_label;
-        sloop.y_label = s1(il).y_label;
-        sloop.datafile = s1(il).datafile;
-        sloop.yfit = yfit;
-        sout(il) = feval(class(sout(il)),sloop);
-        
-        fitdata(il).pvals = p;
-        fitdata(il).evals = sig;
-        fitdata(il).function = func;
-        fitdata(il).pnames = pnames;
-        fitdata(il).chisq = ChiSq;
-        fitdata(il).rsq = RSq;
+        sout(il) = s1(il).copy;
+        sout(il) = set(sout(il),'x',x,'y',y,'e',e,'yfit',yfit);
+        results = struct('pvals',p,'evals',sig,'func',func,'pnames',pnames,'chisq',ChiSq,'rsq',RSq,'notfixed',notfixed);
+        fitdata(il) = specfit(results);
+        sout(il) = sout(il).setfitdata(results);
     end
 end
 

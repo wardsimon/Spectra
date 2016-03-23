@@ -29,3 +29,6 @@ for i = 1:length(fn2)
         end
     end
 end
+
+out.fitdata.specID = out.ident;
+

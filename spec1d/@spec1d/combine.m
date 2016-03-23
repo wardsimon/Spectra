@@ -148,7 +148,8 @@ r = s(1);
 r.x = xs(~isnan(xs));
 r.y = ys(~isnan(xs));
 r.e = es(~isnan(xs));
-r.yfit = y_fit_s;
-
+if ~isempty(y_fit_s)
+    r.yfit = y_fit_s(~isnan(xs));
+end
 s_out = feval(class(r),r);
 

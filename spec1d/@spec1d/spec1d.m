@@ -5,6 +5,7 @@ classdef spec1d
         y
         e
         yfit
+        fitdata
     end
     
     properties
@@ -23,14 +24,24 @@ classdef spec1d
         
     methods
         function s = spec1d(varargin)
+            s.ident = java.rmi.server.UID();
             if nargin == 0
-                s.ident = java.rmi.server.UID();
+                s_in = constructor();
+                f = fieldnames(s_in);
+                for i = 1:length(f)
+                    s.(f{i}) = s_in.(f{i});
+                end
+                s.fitdata.specID = s.ident;
                 return
             else
-                s = spec1d;
+%                 s = spec1d;
                 s_in = constructor(varargin{:});
-                s = s.copy(s_in);
+                f = fieldnames(s_in);
+                for i = 1:length(f)
+                    s.(f{i}) = s_in.(f{i});
+                end
                 validate(s);
+                s.fitdata.specID = s.ident;
             end
         end
                 

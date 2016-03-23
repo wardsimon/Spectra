@@ -6,6 +6,7 @@ p.addParamValue('x',@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','
 p.addParamValue('y',@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'y'))
 p.addParamValue('e',@(x) validateattributes(x,{'numeric','gpuArray'},{'nonnegative','vector','real','finite','nonnan'},mfilename,'e'))
 p.addParamValue('yfit',[],@(x) validateattributes(x,{'numeric','gpuArray'},{'real','finite','nonnan','2d'},mfilename,'yfit'))
+p.addParamValue('fitdata',specfit(),@(x)isa(x,'specfit'))
 p.addParamValue('x_label','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'x_label'))
 p.addParamValue('y_label','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'y_label'))
 p.addParamValue('datafile','',@(x)validateattributes(x,{'char'},{'2d'},mfilename,'datafile'))
