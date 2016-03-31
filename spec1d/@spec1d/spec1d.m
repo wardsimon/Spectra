@@ -56,6 +56,12 @@ function s = spec1d(a,varargin)
         si = size(a);
         a = a(:);
         for i = 1:length(a)
+            [a(i).x, ind] = sort(a(i).x);
+            a(i).y = a(i).y(ind);
+            a(i).e = a(i).e(ind);
+            if ~isempty(a(i).yfit)
+                a(i).yfit = a(i).yfit(ind);
+            end
             s_in(i) = spec1d(a(i));
         end
         s = reshape(s_in,si);
