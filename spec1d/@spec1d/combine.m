@@ -17,6 +17,10 @@ function s_out = combine(toll,varargin)
 % Depending on the optional 'indexing', points are indexed as
 % 'relative'    : Histogram bining of size 'toll'. This is the same as
 %                 using the rebin function except for multiple spectum.
+%                 The end bin might not be a 'full' bin.
+% 'histogram'   : Histogram bining of size 'toll'. This is the same as
+%                 using the rebin function except for multiple spectum.
+%                 We try to make the first and last element 'toll'/2.
 % 'absolute'	: The gap between the points is  always greater then 'toll'
 %                 before any averaging.
 % 'legacy'      : Replicate the original @spec1d/combine
@@ -64,7 +68,13 @@ end
 switch lower(indexing(1))
     case 'r'
         % Relative
+        if x(1)==x(2)
+            x(2) = x(2)+eps;
+        end
         ind = [1; ceil(cumsum(diff(x(:)))/bin)]; % This is a faster way of [~,~,ind] = histcounts(x(:),min(x):bin:max(x));
+    case 'h'
+        % Histogram
+        ind = 1 + (ceil(x(end)/bin)*bin - floor(x(1)/bin)*bin)/bin - sum(bsxfun(@rdivide,x(:),linspace(floor(x(1)/bin)*bin-bin/2, ceil(x(end)/bin)*bin+bin/2, (ceil(x(end)/bin)*bin - floor(x(1)/bin)*bin)/bin+1))<1,2) +1;
     case 'a'
         % Absolute
         ind = zeros(size(x));
@@ -91,6 +101,12 @@ switch lower(indexing(1))
         error('spec1d:combine:NotValidIndexing','%s is not a valid indexing method. See documentation',p.Results.method)
 end
 
+% Do a quick check to see if we can use a simple mean (equal monitor measurement)
+m = y./e.^2;
+if all(m==m(1))
+    method = 'm';
+end
+
 switch lower(method(1))
     case 'm'
         % Simple mean - Remastered to be GPU compatible
@@ -107,12 +123,9 @@ switch lower(method(1))
         % Counts
         % Reconstruct the montor count.
         % For zero error, this is impossible, so we take average monitor value.
-        m = zeros(size(e),class(e)); % For GPU work.
         if any(y < 0)
             warning('spec1d:combine:NegativeY','Some Y values are negative. Using method "counts" is not recomended.')
-            m(e~=0) = abs(y(e~=0))./e(e~=0).^2;
-        else
-            m(e~=0) = y(e~=0)./e(e~=0).^2;
+            m = abs(m);
         end
         if any(e==0)
             m(e==0) = mean(m(e~=0));
@@ -126,7 +139,8 @@ switch lower(method(1))
         else
             y_fit_s = [];
         end
-        es = (accumarray(ind(:),(e(:).*m(:)).^2,[],@sum).^0.5)./(ms.*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
+        % We have attempted to re-establish sqrt statistics
+        es = (accumarray(ind(:),(y(:)./m(:)),[],@sum).^0.5)./ms;
     case 'w'
         % Weight
         ms = accumarray(ind(:),1./e(:).^2,[],@sum);
@@ -138,7 +152,7 @@ switch lower(method(1))
         else
             y_fit_s = [];
         end
-        es = 1./(sqrt(accumarray(ind(:),1./e(:).^2,[],@sum)).*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
+        es = sqrt(accumarray(ind(:),abs(y(:))./e(:).^2,[],@sum))./ms;%1./(sqrt(accumarray(ind(:),1./e(:).^2,[],@sum)).*accumarray(ind(:),ones(size(x)),[],@sum,NaN));
     otherwise
         error('spec1d:combine:NotValidMethod','%s is not a valid method. See documentation',p.Results.method)
 end
@@ -148,7 +162,8 @@ r = s(1);
 r.x = xs(~isnan(xs));
 r.y = ys(~isnan(xs));
 r.e = es(~isnan(xs));
-r.yfit = y_fit_s;
-
-s_out = spec1d(r);
+if ~isempty(y_fit_s)
+    r.yfit = y_fit_s(~isnan(xs));
+end
+s_out = feval(class(r),r);
 
