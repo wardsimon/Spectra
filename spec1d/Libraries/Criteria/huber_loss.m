@@ -1,5 +1,5 @@
 function OU = huber_loss(Signal, Error, Model, c)
-%HUBER_LOSS Summary of this function goes here
+%HUBER_LOSS: The Huber loss, defined below, is used mostly in real-valued regression, which is a smoothed version of the absolute loss.
 %   See https://en.wikipedia.org/wiki/Huber_loss
 if nargin == 1
     OP = Signal;

@@ -538,8 +538,8 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     %     %
     % This is the old stuff...
     try
-        Qinv = diag(wt.*wt);
-        Q = diag((0*wt+1)./(wt.^2));
+        Qinv = diag(wt.^2);
+        Q    = diag(1./(wt.^2));
         %[nrw ncw]=size(wt);
         %Q=ones(nrw,ncw)./wt; Q=diag(Q.*Q);
         resid = y-f;                                    %un-weighted residuals
@@ -624,7 +624,7 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     %%
     if (verbose)
         feval(dFdp,x,fbest,p,dp,F,bounds);
-        disp(' Least Squares Estimates of Parameters')
+        fprintf(' Least Squares Estimates of Parameters after %i itterations\n',iter)
         disp(p.')
         disp(' Correlation matrix of parameters estimated')
         disp(corp)

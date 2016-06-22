@@ -1,4 +1,4 @@
-function prt = specdfdp_multi (x, f, p, dp, func, bounds)
+function f_in = specdfdp_multi (f_in, s_in)
     % numerical partial derivatives (Jacobian) df/dp for use with leasqr
     % --------INPUT VARIABLES---------
     % x=vec or matrix of indep var(used as arg to func) x=[x0 x1 ....]
@@ -17,7 +17,24 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
     % prt= Jacobian Matrix prt(i,j)=df(i)/dp(j)
     %================================
     
+    
+    
+    x = s_in.x;
+    f = s_in.yfit;
+    p = f_in.pvals;
+    dp = f_in.fitdata.fcp(3);
+    func = f_in.func;
+    bounds = f_in.fitdata.bounds;
+    
     global param_keep x_per_spec multifit_ind
+    
+    if isfield(s_in.userdata,'x_per_spec')
+        x_per_spec = s_in.userdata.x_per_spec;
+        param_keep = s_in.userdata.param_keep;
+        multifit_ind = s_in.userdata.multifit_ind;
+    else
+        x_per_spec = [];
+    end
     
     if isempty(x_per_spec)
         m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
@@ -34,65 +51,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
         del(idx) = abs (del(idx)); % not for one-sided intervals, changed
         % direction of intervals could change
         % behavior of optimization without bounds
-%         min_del = min (abs (del), bounds(:, 2) - bounds(:, 1));
-%         
-%         tic
-%         parallel = 0;
-%         ps = repmat(p,1,n);
-%         % We treat the dp < 0 case....
-%         ps(diag(dp < 0)) = ps(diag(dp < 0)) + del(dp < 0);
-%         ind = (ps(diag(dp < 0)) < bounds(dp < 0, 1) | ps(diag(dp < 0)) > bounds(dp < 0, 2));
-%         if any(ind)
-%             t_del1 = max (bounds(ind, 1) - p(ind), - abs (del(ind)));
-%             t_del2 = min (bounds(ind, 2) - p(ind), abs (del(ind))); %
-%             del(-t_del1 > t_del2  & ind) = t_del1;
-%             del(-t_del1 <= t_del2 & ind) = t_del2;
-%             ps(diag(ind)) = p(ind) + del(ind);
-%         end
-%         % Prepare for dp > 0
-%         f2 = f;
-%         ind1 = (p(:) - del(:) < bounds(:, 1)) & (dp > 0);
-%         ind2 = (p(:) + del(:) < bounds(:, 2)) & (dp > 0);
-%         tp = ps;
-%         ps(diag(ind1)) = bounds(ind1,1) + min_del(ind1);
-%         tp(diag(ind1)) = bounds(ind1,1);
-%         ps(diag(ind2)) = bounds(ind2,2);
-%         tp(diag(ind2)) = ps(diag(ind2)) - min_del(ind2);
-%         ps(diag(~(ind1 | ind2) & (dp > 0))) = p(~(ind1 | ind2) & (dp > 0)) + del(~(ind1 | ind2) & (dp > 0));
-%         tp(diag(~(ind1 | ind2) & (dp > 0))) = p(~(ind1 | ind2) & (dp > 0)) - del(~(ind1 | ind2) & (dp > 0));
-%         min_del(~(ind1 | ind2) & (dp > 0)) = 2*min_del(~(ind1 | ind2) & (dp > 0));
-%         if parallel
-%             
-%         else
-%             % !!! Need to separate !!!
-%             prt(:,dp < 0) = cell2mat(cellfun(@(p_in,d_in) (feval(func,x,p_in)-f2)/d_in,mat2cell(ps(dp < 0,:)',ones(sum(dp < 0),1),n),mat2cell(del(dp < 0),ones(size(p(dp < 0))),1),'UniformOutput',0)');
-%             prt(:,dp > 0) = cell2mat(cellfun(@(p_in,t_in,d_in) (feval(func,x,p_in)-feval(func,x,t_in))/d_in,mat2cell(ps(dp > 0,:)',ones(sum(dp > 0),1),n),mat2cell(tp(dp > 0,:)',ones(sum(dp > 0),1),n),mat2cell(min_del((dp > 0)),ones(size(p(dp > 0))),1),'UniformOutput',0)');
-% 
-%             for j = 1:n
-%                 if dp(j) < 0
-% %                     f1 = feval(func,x,ps(:,j));
-% %                     prt(:, j) = (f1(:) - f2(:)) / del(j);
-%                 elseif dp(j) > 0;
-%                     f1 = feval(func,x,ps(:,j));
-%                     f2 = feval(func,x,tp(:,j));
-%                     prt(:, j) = (f1(:) - f2(:)) / min_del(j);
-%                 end
-%             end
-%         end
-%         t(1) = toc;
-%         prt2 = prt;
-%         
-        prt=zeros(m,n);       % initialise Jacobian to Zero
-        del = dp .* p; %cal delx=fract(dp)*param value(p)
-        idx = p == 0;
-        del(idx) = dp(idx); %if param=0 delx=fraction
-        idx = dp > 0;
-        del(idx) = abs (del(idx)); % not for one-sided intervals, changed
-        % direction of intervals could change
-        % behavior of optimization without bounds
         min_del = min (abs (del), bounds(:, 2) - bounds(:, 1));
-        
-%         tic
         for j=1:n
             ps = p;
             if (dp(j)~=0)
@@ -131,7 +90,6 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
                 end
             end
         end
-%         t(2) = toc;
     else
         m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
         n=length(p);      %dimensions
@@ -264,4 +222,5 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
             end
         end
     end
+    f_in.fitdata.J = prt;
 end

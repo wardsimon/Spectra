@@ -77,13 +77,18 @@ else
 end
 
 for i = 1:length(s_in)
-    s_in(i).x = s_in(i).x(:);
-    s_in(i).y = s_in(i).y(:);
+    [s_in(i).x, ind]= sort(s_in(i).x(:));
+%     s_in(i).x = s_in(i).x(:);
+    s_in(i).y = reshape(s_in(i).y(ind),[],1);
     if length(s_in(i).e(:)) == 1
         s_in(i).e = s_in(i).e(:)*ones(size(s_in(i).x(:)));
     end
-    s_in(i).e = s_in(i).e(:);
-    s_in(i).yfit = s_in(i).yfit(:);
+    s_in(i).e = reshape(s_in(i).e(ind),[],1);
+    if ~isempty(s_in(i).yfit)
+        s_in(i).yfit = reshape(s_in(i).yfit(ind),[],1);
+    else
+        s_in(i).yfit = s_in(i).yfit(:);
+    end
     
     if any(diff([length(s_in(i).x) length(s_in(i).y) length(s_in(i).e)]))
         warning('x, y and e are not of the same length!\nLength x:\t%i\nLength y:\t%i\nLength e:\t%i',length(s_in(i).x),length(s_in(i).y),length(s_in(i).e))

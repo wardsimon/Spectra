@@ -60,6 +60,15 @@ p = inputParser;
 p.CaseSensitive = false;
 p.KeepUnmatched = true;
 p.addRequired('spec1d',@(x) isa(x,'spec1d'))
+if isa(func,'specfit')
+    sf = true;
+    f_in = func;
+    func = f_in.func;
+    pin = f_in.pin;
+    notfixed = f_in.notfixed;
+else
+    sf = false;
+end
 p.addRequired('func',@(x) ischar(x) || isa(x,'function_handle'))
 p.addRequired('pin',@(x) isnumeric(x) | iscell(x))
 p.addRequired('fixed',@(x) isnumeric(x) | islogical(x))
@@ -117,18 +126,34 @@ if isempty(fcp)
     fcp = options.fcp;
 end
 
+
+f_in = specfit(func,pin,notfixed);
+f_in.specID = [s1.ident];
+f_in = f_in.setFitdata('Display',options.verbose,'MaxIter',options.fcp(2),...
+                'TolFun',options.fcp(1),'Algorithm',options.optimiser,...
+                'UseParallel',options.parallel,'TolGradCon',options.fcp(3),...
+                'CriteriaFcn',options.criteria,'JacobFcn',options.dfdp,...
+                'Bounds',options.bounds);
+f_in.userdata = struct('x_per_spec',[],'param_keep',[]);
+
 % Is this a multifit?
 if options.multifit
     if options.verbose
         warning('spec1d:fits:Multifit','This fit is a multifit.')
     end
     [s1, pin, notfixed] = multifit_ini(s1,pin,notfixed);
+    f_in = f_in.copy;
+    f_in.specID = s1.ident;
+    f_in.pvals = pin;
+    f_in.evals = nan(size(pin));
+    f_in.notfixed = notfixed;
     options.inequc = {zeros(length(pin),0) zeros(0,1)};
     if iscell(options.bounds)
         options.bounds = multifit_bounds(options.fixed,options.bounds);
     else
         options.bounds = [-Inf(length(pin),1) Inf(length(pin),1)];
     end
+    f_in = f_in.setFitdata('Bounds',options.bounds);
 end
 
 %----- Loop over the number of spec1d objects
@@ -226,24 +251,22 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
     
 else % This is for normal fitting and multi-fitting.
     for il=1:length(s1)
-        x=s1(il).x; y=s1(il).y; e=s1(il).e;
-        %----- Remove zeros from e
-        x(e==0 | isinf(e) | isnan(e))=[];
-        y(e==0 | isinf(e) | isnan(e))=[];
-        e(e==0 | isinf(e) | isnan(e))=[];
+        
+        s1(il) = clean(s1(il));
+        if isempty(s1(il).x)
+            error('spec1d:fits:NoDataPoints','There are no data points in the %s object, or all data points have been removed for being unsuitable for fitting',class(s1(il)))
+        end
         
         % Do we have a fitting window
         if options.window
-            e = e(x>=options.window(1) & x<=options.window(2));
-            y = y(x>=options.window(1) & x<=options.window(2));
-            x = x(x>=options.window(1) & x<=options.window(2));
+            s1(il) = cut(s1(il),options.window);
         end
         
         % When we just want to see the starting point
         if sum(notfixed) == 0
-            yfit = feval(func,x,pin);
+            yfit = feval(func,s1(il).x,pin);
             p = pin;
-            r = corrcoef([y(:),yfit(:)]);
+            r = corrcoef([s1(il).y(:),s1(il).yfit(:)]);
             RSq = r(1,2).^2;
             sig = zeros(size(p));
         else % The real fit
@@ -254,23 +277,24 @@ else % This is for normal fitting and multi-fitting.
             %----- Fit data
             switch  options.optimiser
                 case 'spec_lm'
-                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(x,y,e,pin,notfixed,func,fcp,options);
+%                     fitdata = speclsqr(f_in,s1(il));
+                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(s1(il).x,s1(il).y,s1(il).e,pin,notfixed,func,fcp,options);
                 case 'builtin'
                     infun = @(x,xin) feval(func,xin,x);
                     opt = optimset('MaxIter',fcp(2),'Display','Off');
                     [p,resnorm,residual,exitflag,output,lambda,jacobian] = lsqcurvefit( @(p1, xdata) infun( interlace(pin(:), p1(:), ~notfixed), xdata),...
-                        pin(notfixed), x, y, options.bounds(notfixed,1), options.bounds(notfixed,2),opt);
+                        pin(notfixed), s1(il).x, s1(il).y, options.bounds(notfixed,1), options.bounds(notfixed,2),opt);
                     if exitflag ~= 1
                         warning('spec1d:fits:AlgorithmError','A minimum has not been found or an error has occoured. Error code %i. See documentation',exitflag)
                     end
                     p = interlace( pin(:), p(:), ~notfixed);
-                    yfit = feval(func,x,p);
-                    r = corrcoef([y(:),yfit(:)]);
+                    yfit = feval(func,s1(il).x,p);
+                    r = corrcoef([s1(il).y(:),yfit(:)]);
                     RSq = r(1,2).^2;
-                    wt = 1./e(:);
+                    wt = 1./s1(il).e(:);
                     Qinv = diag(wt.*wt);
                     Q = diag((0*wt+1)./(wt.^2));
-                    m = length(y);
+                    m = length(s1(il).y);
                     n = sum(notfixed);
                     covr = residual'*Qinv*residual*Q/(m-n);                 %covariance of residuals
                     Vy = 1/(1-n/m)*covr;  % Eq. 7-13-22, Bard         %covariance of the data
@@ -287,9 +311,9 @@ else % This is for normal fitting and multi-fitting.
                         error('spec1d:fits:InvalidOptimiser','Optimiser %s is invalid. See available optimisers with sdext.getOptimisers',options.optimiser)
                     end
                     if strcmpi(options.criteria,'least_square')
-                        criteria_func = @(pars) sum(feval(options.criteria,y,e,FitFuncEval(func,x,pars,notfixed)));
+                        criteria_func = @(pars) sum(feval(options.criteria,s1(il).y,s1(il).e,FitFuncEval(func,s1(il).x,pars,notfixed)));
                     else
-                        criteria_func = @(pars) feval(options.criteria,y,e,FitFuncEval(func,x,pars,notfixed));
+                        criteria_func = @(pars) feval(options.criteria,s1(il).y,s1(il).e,FitFuncEval(func,s1(il).x,pars,notfixed));
                     end
                     % We may have specific options to pass to the
                     % optimiser.
@@ -309,18 +333,15 @@ else % This is for normal fitting and multi-fitting.
                     if flag ~= 0
                         warning('spec1d:fits:AlgorithmError','A minimum has not been found or an error has occoured. Error code %i. See documentation',flag)
                     end
-                    yfit = FitFuncEval(func,x,p,notfixed);
+                    yfit = FitFuncEval(func,s1(il).x,p,notfixed);
                     sig = output.parsHessianUncertainty;
-                    r = corrcoef([y(:),yfit(:)]);
+                    r = corrcoef([s1(il).y(:),yfit(:)]);
                     RSq = r(1,2).^2;
                     if nargout == 3
                         optional = output;
                     end
             end
         end
-        % Goodness of fit
-        v = length(y)-sum(logical(notfixed));
-        ChiSq = sum(((y-yfit)./e).^2 )/v;
         
         % Get names of fit variables
         if pn
@@ -348,10 +369,11 @@ else % This is for normal fitting and multi-fitting.
         
         % Make  the return spec1d objects
         sout(il) = s1(il).copy;
-        sout(il) = set(sout(il),'x',x,'y',y,'e',e,'yfit',yfit);
-        results = struct('pvals',p,'evals',sig,'func',func,'pnames',pnames,'chisq',ChiSq,'rsq',RSq,'notfixed',notfixed);
-        fitdata(il) = specfit(results);
-        sout(il) = sout(il).setfitdata(results);
+        sout(il) = set(sout(il),'x',s1(il).x,'y',s1(il).y,'e',s1(il).e,'yfit',yfit);
+        fitdata(il) = specfit(p,sig,func,notfixed,sout(il).ident,pnames);
+%         results = struct('pvals',p,'evals',sig,'func',func,'pnames',pnames,'chisq',ChiSq,'rsq',RSq,'notfixed',notfixed);
+%         fitdata(il) = specfit(results);
+        sout(il) = sout(il).setfitdata(fitdata(il));
     end
 end
 

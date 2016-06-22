@@ -1,5 +1,11 @@
 function s = bootstrapErrors(obj,s,varargin)
 
+if any(strcmp('Statistics and Machine Learning Toolbox',...
+        arrayfun(@(x)x.Name,ver,'UniformOutput',0)))
+    s = bootstrapErrorsST(obj,s,varargin{:});
+    return
+end
+
 if ~exist('s','var')
     try
         s = evalin('caller','s');
@@ -72,8 +78,8 @@ for i = 1:1:length(obj.pvals);
     % Create a synthetic dataset.
     switch lower(method(1))
         case 'e' % empirical
-             ind = ceil(length(s.x) * rand(length(s.x),n));
-             rsynth = zeros(size(ind));
+            ind = ceil(length(s.x) * rand(length(s.x),n));
+            rsynth = zeros(size(ind));
         case 'p' % parametric
             rsynth = sd*randn(length(s.x),n);
             ind = ceil(length(s.x) * rand(length(s.x),n));
@@ -81,7 +87,7 @@ for i = 1:1:length(obj.pvals);
             varargin{end +1} = 'criteria';
             varargin{end +1} = @bayesianMinimiser;
             ind = ceil(length(s.x) * rand(length(s.x),n));
-%             ind = repmat((1:length(s.x))',1,n);
+            %             ind = repmat((1:length(s.x))',1,n);
             rsynth = zeros(size(ind));
         otherwise
             error
@@ -142,42 +148,46 @@ obj2 = obj.copy;
 for i = 1:length(obj2.pvals)
     if obj2.notfixed(i)
         obj2.pvals(i) = median(TT(:,i));
-        obj2.evals(i) = max(abs(TT(round([n*bcaHi(i) n*bcaLo(i)]),i)-obj2.pvals(i)));
+        indi = round([n*bcaHi(i) n*bcaLo(i)]);
+        indi(indi==0) = 1;
+        obj2.evals(i) = max(abs(TT(indi,i)-obj2.pvals(i)));
         if plot_bootstrap
             figure;
             histogram(TT(:,i))
             hold on
             plot([obj2.pvals(i) obj2.pvals(i)],get(gca,'YLim'),'r-')
-            plot(TT(round([n*bcaLo(i) n*bcaLo(i)]),i),get(gca,'YLim'),'b-')
-            plot(TT(round([n*bcaHi(i) n*bcaHi(i)]),i),get(gca,'YLim'),'b-')
+            plot(TT([indi(1) indi(1)],i),get(gca,'YLim'),'b-')
+            plot(TT([indi(2) indi(2)],i),get(gca,'YLim'),'b-')
             try
                 title(sprintf('Bootstrap of parameter %s',obj2.pnames(i,:)))
                 xlabel(obj2.pnames(i,:))
             catch
-                title(sprintf('Bootstrap of parameter %s',obj2.pnames{i}))
-                xlabel(obj2.pnames{i})
+                try
+                    title(sprintf('Bootstrap of parameter %s',obj2.pnames{i}))
+                    xlabel(obj2.pnames{i})
+                catch
+                    xlabel(obj2.pnames)
+                end
             end
             ylabel(sprintf('Occourance/%i',n))
         end
     end
 end
-
-s = s.set('yfit',feval(obj2.func,s.x,obj2.pvals));
 r = corrcoef([s.y(:),s.yfit(:)]);
-obj2.rsq = r(1,2).^2;
 v = length(s.y)-sum(logical(obj.notfixed));
-obj2.chisq = sum(((s.y-s.yfit)./s.e).^2 )/v;
+s = s.set('yfit',feval(obj2.func,s.x,obj2.pvals));
+%,'rsq',r(1,2).^2,'chisq',sum(((s.y-s.yfit)./s.e).^2 )/v);
+s = s.setfitdata(obj2);
 
-s = s.set('fitdata',obj2);
 end
 
 function r = drchrnd(a,n)
 % take n samples from a dirichlet distribution with length of a.
-    p = length(a);
-    r = gamrnd(repmat(a,n,1),1,n,p);
-    r = r ./ repmat(sum(r,2),1,p);
+p = length(a);
+r = gamrnd(repmat(a,n,1),1,n,p);
+r = r ./ repmat(sum(r,2),1,p);
 end
 
 function f = bayesianMinimiser(Signal, Error, Model)
-    f = least_square(Signal, Error./drchrnd(ones(size(Signal)),1), Model);
+f = least_square(Signal, Error./drchrnd(ones(size(Signal(:)))',1)', Model);
 end

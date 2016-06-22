@@ -15,7 +15,7 @@ function varargout = plot(varargin)
 %        4. Create a log to go with the plot. This means we can trace
 %           files and 'remember' how data was analysed.
 %
-% Simon Ward 27/01/2016
+% Simon Ward 10/06/2016
 
 s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
 s = varargin(s_ind);
@@ -165,7 +165,7 @@ for i = 1:length(s)
         'Tag',num2str(i),'DisplayName',sprintf('Dataset %i',i));
     de_opt = parse_opts(plot_spec);
     set(hll,de_opt{:})
-   
+    
     f = fieldnames(plot_opt);
     if ~isempty(f)
         for j = 1:length(f)
@@ -175,7 +175,7 @@ for i = 1:length(s)
     if ~isempty(yfit);
         hlf=plot(x,yfit,'Color',hsv2rgb([1 1 0.5].*rgb2hsv(get(hll,'MarkerFaceColor'))),...
             'LineStyle','-','LineWidth',2,'Marker','none','DisplayName',sprintf('Datafit %i',i));
-%         set(hlf,'ButtonDownFcn','editline(gco);');
+        %         set(hlf,'ButtonDownFcn','editline(gco);');
         set(hlf,'Parent',hEGroup)
     else
         hlf=[];
@@ -199,7 +199,7 @@ for i = 1:length(s)
     hout  = [hout;hll];
     hbout = [hbout;hle];
     hfout = [hfout;hlf];
-    end
+end
 
 
 if ~held
@@ -269,9 +269,30 @@ if any([p.Results.semilogx p.Results.semilogy p.Results.loglog])
     end
     if p.Results.semilogx
         set(gca,'Xscale','log');
+        % Correct for position errors.
+        for k = 1:length(hbout)
+            eb_ind = hbout(k);
+            eb_ind.XData(1:9:end) = eb_ind.XData(4:9:end) - abs(eb_ind.XData(4:9:end)*tee);
+            eb_ind.XData(7:9:end) = eb_ind.XData(4:9:end) - abs(eb_ind.XData(4:9:end)*tee);
+            eb_ind.XData(2:9:end) = eb_ind.XData(4:9:end) + abs(eb_ind.XData(4:9:end)*tee);
+            eb_ind.XData(8:9:end) = eb_ind.XData(4:9:end) + abs(eb_ind.XData(4:9:end)*tee);
+        end
     end
     if p.Results.semilogy
         set(gca,'Yscale','log');
+        % Correct for position errors. Assuming error is way less then the
+        % value.
+%         for k = 1:length(hbout)
+%             eb_ind = hbout(k);
+%             dy = diff([reshape(eb_ind.YData(4:9:end),[],1) reshape(eb_ind.YData(5:9:end),[],1)]')/2;
+%             y = eb_ind.YData(1:9:end) + dy;
+%             eb_ind.YData(1:9:end) = y - abs(dy.*y);
+%             eb_ind.YData(2:9:end) = eb_ind.YData(1:9:end);
+%             eb_ind.YData(4:9:end) = eb_ind.YData(1:9:end);
+%             eb_ind.YData(5:9:end) = y + abs(dy.*y);
+%             eb_ind.YData(7:9:end) = eb_ind.YData(5:9:end);
+%             eb_ind.YData(8:9:end) = eb_ind.YData(5:9:end);
+%         end
     end
 end
 
