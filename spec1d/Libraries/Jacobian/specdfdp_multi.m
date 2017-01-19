@@ -82,7 +82,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
 %         t(1) = toc;
 %         prt2 = prt;
 %         
-        prt=zeros(m,n);       % initialise Jacobian to Zero
+        prt = zeros(m,n);       % initialise Jacobian to Zero
         del = dp .* p; %cal delx=fract(dp)*param value(p)
         idx = p == 0;
         del(idx) = dp(idx); %if param=0 delx=fraction
@@ -139,7 +139,7 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
         if length(dp) ~= length(p)
             error('Fixed and Pin need to be the same length')
         end
-        prt=zeros(m,n);       % initialise Jacobian to Zero
+        prt = zeros(m,n);       % initialise Jacobian to Zero
         del = zeros(n,1);
         % not for one-sided intervals, changed
         % direction of intervals could change

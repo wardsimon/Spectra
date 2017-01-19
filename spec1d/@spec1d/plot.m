@@ -80,7 +80,7 @@ max_x = max(arrayfun(@(x) max(x.x),s));
 min_y = min(arrayfun(@(x) min(x.y - x.e),s));
 max_y = max(arrayfun(@(x) max(x.y + x.e),s));
 
-if ishold(gcf) && ~isempty(get(gcf,'Children'))
+if ishold(gca) && ~isempty(get(gcf,'Children'))
     temp_x = get(gca,'XLim');
     temp_y = get(gca,'YLim');
     if temp_x(1) < min_x

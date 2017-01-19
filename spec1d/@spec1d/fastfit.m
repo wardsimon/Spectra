@@ -23,6 +23,7 @@ function varargout = fastfit(s1,func,pin,notfixed)
 xf = zeros(length(pin),length(s1));
 J = cell(1,length(s1));
 options = flmsolve_fast('default'); % Stops the repeated fn call.
+
 for il = 1:length(s1)
     criteria_func = @(pars) feval(@least_square,s1(il).y,s1(il).e,feval(func,s1(il).x,pars));
     [xf(:,il), ~, ~, flag, J{il}] = feval(@flmsolve_fast,criteria_func,pin,notfixed,options);

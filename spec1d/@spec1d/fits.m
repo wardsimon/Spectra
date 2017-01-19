@@ -43,7 +43,7 @@ function [sout,fitdata,optional]=fits(s1,func,pin,notfixed,varargin)
 %              structure as the last varargin in the function call. 
 %
 % The optional 'criteria' can also be changed. Criteria can be found by
-% running sdext.getCriteria. The lefault is least_squares.
+% running sdext.getCriteria. The default is least_squares.
 %
 % Note - Multifitting can also be performed. See the file
 % multifit_example.m for worked examples.
@@ -349,7 +349,13 @@ else % This is for normal fitting and multi-fitting.
                 pnames = {};
                 for i = 1:length(s1)
                     [p_new, ~, ind] = multifitp2p(p,notfixed,i);
-                    [~, ~, temp] = feval(func,x(ind),p_new,1);
+                    if nargin(func)<3
+                        for j = 1:numel(p_new)
+                            temp{j} = num2str(j,'p%d');
+                        end
+                    else
+                        [~, ~, temp] = feval(func,s1(il).x(ind),p_new,1);
+                    end
                     pnames = {pnames{:}; temp{:}};
                 end
             else
@@ -358,7 +364,7 @@ else % This is for normal fitting and multi-fitting.
                         pnames{i} = num2str(i,'p%d');
                     end
                 else
-                    [~,~,pnames] = feval(func,x,p,1);
+                    [~,~,pnames] = feval(func,s1(il).x,p,1);
                 end
             end
         else

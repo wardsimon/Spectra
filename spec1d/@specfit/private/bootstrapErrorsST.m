@@ -92,13 +92,13 @@ switch lower(method(1))
         fitit = @(xp) fits(subindex(s,ceil(length(s.x) * rand(length(xp),1))),obj.func,obj.pvals,obj.notfixed,varargin2{:});
         ind = zeros(size(s.x));
     otherwise
-        error
+        error('The bootstrapping method is not recognised.')
 end
 
 pstat = bootstrp(n,@(in) getp(fitit(in)),ind,'Options',statset('UseParallel',r.parallel));
-pstat = sort(pstat);
 
 if biasCorrect % Semi-Jackknife approach to remove cross correlation.
+    pstat = sort(pstat);
     if isempty(varargin)
         fitit = @(xp) feval(fitfunc,subindex(s,xp),obj.func,obj.pvals,obj.notfixed);
     else
@@ -129,7 +129,7 @@ for i = 1:size(pstat,2)
     end
 end
 
-obj2 = specfit(obj.func,arrayfun(@(x) x.mu,pd),arrayfun(@(x) x.sigma,pd),obj.notfixed,s);
+obj2 = specfit(arrayfun(@(x) x.mu,pd)',arrayfun(@(x) x.sigma,pd)',obj.func, obj.notfixed,s);
 s = set(s,'yfit',feval(obj.func,s.x,arrayfun(@(x) x.mu,pd)));
 s = s.setfitdata(obj2);
 

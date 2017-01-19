@@ -1,7 +1,7 @@
 function s = bootstrapErrors(obj,s,varargin)
 
 if any(strcmp('Statistics and Machine Learning Toolbox',...
-        arrayfun(@(x)x.Name,ver,'UniformOutput',0)))
+        arrayfun(@(x)x.Name,ver,'UniformOutput',0))) 
     s = bootstrapErrorsST(obj,s,varargin{:});
     return
 end
@@ -35,7 +35,7 @@ p = inputParser;
 p.KeepUnmatched = true;
 p.addParamValue('sigma',0.9544,@isnumeric)
 p.addParamValue('plot',0,@isnumeric)
-p.addParamValue('iter',500,@isnumeric)
+p.addParamValue('iter',200,@isnumeric)
 p.addParamValue('biasCor',1,@isnumeric)
 p.addParamValue('method','p',@ischar)
 p.parse(varargin{:});
