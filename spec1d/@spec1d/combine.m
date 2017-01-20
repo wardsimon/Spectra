@@ -119,8 +119,17 @@ switch lower(indexing(1))
 switch lower(indexing(1:2))
     case 'au'
         if isnan(bin)
+<<<<<<< HEAD
             bin = fminsearch(@optim_bin,(max(x)-min(x))/max(ceil(log2(numel(x))+1),1));
 >>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
+=======
+            bin_w = linspace((max(x) - min(x))/6E3,(max(x) - min(x))/4,100);
+            temp = arrayfun(@optim_bin,bin_w);
+            [~, ind] = sort(temp);
+            bin_w = bin_w(ind(1:20));
+            temp = arrayfun(@(i) fminsearch(@optim_bin,i),bin_w);
+            bin = min(temp);
+>>>>>>> 428a349a244a102fad1e11c0845d8377267e1a69
         end
         edges = calc_bins(bin);
     case 'sc'
@@ -319,16 +328,11 @@ s_out = feval(class(r),r);
     end
 
     function C = optim_bin(b)
-        bb = linspace(b - 0.8*b,b + 0.8*b,10);
-        for i = 1:length(bb)
-            EDG = calc_bins(bb(i));
-            ki = cellfun(@sum,(arrayfun(@(i) (x >= EDG(i)) & (x < EDG(i+1)),1:(length(EDG)-1),'UniformOutput',0)));
-            k = mean(ki);
-            v = sum((ki - k).^2)/(length(EDG) - 1);
-            C(i) = abs((2*k - v)/(bb(i)^2));
-        end
-        C = interp1(bb,C,bb([1 end]),'pchip');
-        C = mean(C);
+        EDG = calc_bins(b);
+        ki = cellfun(@sum,(arrayfun(@(i) (x >= EDG(i)) & (x < EDG(i+1)),1:(length(EDG)-1),'UniformOutput',0)));
+        k = mean(ki);
+        v = sum((ki - k).^2)/(length(EDG) - 1);
+        C = abs((2*k - v)/(b^2));
     end
 end
 
