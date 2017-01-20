@@ -4,7 +4,7 @@ function [x, y, err, xname, yname,mname,optpars] = FRMdatdata(filespec)
 % V 1.1, March 2012 
 % V 1.2, Sept  2015
 % Simon Ward, simon.ward@psi.ch
-initial
+
 x=[]; y= []; err=[]; yname=''; xname=''; mname = '';
 
 %----- Parse filespec --------------------------------------
