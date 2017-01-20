@@ -11,31 +11,11 @@ classdef spec1d
     properties
         userdata
     end
-    
-<<<<<<< HEAD
-    if length(a) > 1 && isstruct(a)
-        si = size(a);
-        a = a(:);
-        for i = 1:length(a)
-            [a(i).x, ind] = sort(a(i).x);
-            a(i).y = a(i).y(ind);
-            a(i).e = a(i).e(ind);
-            if ~isempty(a(i).yfit)
-                a(i).yfit = a(i).yfit(ind);
-            end
-            s_in(i) = spec1d(a(i));
-        end
-        s = reshape(s_in,si);
-        return
-    else
-        p.parse(a,varargin{:});
-        s_in = p.Results;
-=======
+   
     properties (Hidden=true)
         datafile
         x_label
         y_label
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
     end
     
     properties (SetAccess=immutable,Hidden=true)

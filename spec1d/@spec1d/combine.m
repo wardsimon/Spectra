@@ -15,16 +15,6 @@ function s_out = combine(toll,varargin)
 % Default is 'counts'
 %
 % Depending on the optional 'indexing', points are indexed as
-<<<<<<< HEAD
-% 'relative'    : Histogram bining of size 'toll'. This is the same as
-%                 using the rebin function except for multiple spectum.
-%                 The end bin might not be a 'full' bin.
-% 'histogram'   : Histogram bining of size 'toll'. This is the same as
-%                 using the rebin function except for multiple spectum.
-%                 We try to make the first and last element 'toll'/2.
-% 'absolute'	: The gap between the points is  always greater then 'toll'
-%                 before any averaging.
-=======
 %                   'auto'   The default 'auto' algorithm chooses a bin
 %                            width to cover the data range and reveal the
 %                            shape of the underlying distribution.
@@ -44,8 +34,7 @@ function s_out = combine(toll,varargin)
 %                            widely used in other software packages. It
 %                            chooses the number of bins to be
 %                            CEIL(SQRT(NUMEL(X))).
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
-% 'legacy'      : Replicate the original @spec1d/combine
+%                 'legacy'   Replicate the original @spec1d/combine
 % Default is 'relative' due to speed considerations.
 %
 % s1,s2,... can be single spectra or arrays of spectra.
@@ -87,49 +76,15 @@ if ~isempty(y_fit)
     y_fit = y_fit(ind);
 end
 
-<<<<<<< HEAD
-switch lower(indexing(1))
-    case 'r'
-        % Relative
-        if x(1)==x(2)
-            x(2) = x(2)+eps;
-        end
-        ind = [1; ceil(cumsum(diff(x(:)))/bin)]; % This is a faster way of [~,~,ind] = histcounts(x(:),min(x):bin:max(x));
-    case 'h'
-        % Histogram
-        ind = 1 + (ceil(x(end)/bin)*bin - floor(x(1)/bin)*bin)/bin - sum(bsxfun(@rdivide,x(:),linspace(floor(x(1)/bin)*bin-bin/2, ceil(x(end)/bin)*bin+bin/2, (ceil(x(end)/bin)*bin - floor(x(1)/bin)*bin)/bin+1))<1,2) +1;
-    case 'a'
-        % Absolute
-        ind = zeros(size(x));
-        ind(1) = 1;
-        xtemp = x(1);
-        for i = 2:length(x)
-            if isempty(xtemp)
-                xtemp = x(i);
-            else
-                xtemp = [xtemp x(i)]; %#ok<AGROW>
-            end
-            if diff(xtemp([1 end])) > bin
-                ind(i) = ind(i-1)+1;
-                xtemp = [];
-            else
-                ind(i) = ind(i-1);
-            end
-=======
 switch lower(indexing(1:2))
     case 'au'
         if isnan(bin)
-<<<<<<< HEAD
-            bin = fminsearch(@optim_bin,(max(x)-min(x))/max(ceil(log2(numel(x))+1),1));
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
-=======
             bin_w = linspace((max(x) - min(x))/6E3,(max(x) - min(x))/4,100);
             temp = arrayfun(@optim_bin,bin_w);
             [~, ind] = sort(temp);
             bin_w = bin_w(ind(1:20));
             temp = arrayfun(@(i) fminsearch(@optim_bin,i),bin_w);
             bin = min(temp);
->>>>>>> 428a349a244a102fad1e11c0845d8377267e1a69
         end
         edges = calc_bins(bin);
     case 'sc'
@@ -148,12 +103,9 @@ switch lower(indexing(1:2))
         error('spec1d:combine:NotValidIndexing','%s is not a valid indexing method. See documentation',p.Results.method)
 end
 
-<<<<<<< HEAD
-=======
 ind = arrayfun(@(i) i*((x >= edges(i)) & (x < edges(i+1))),1:(length(edges)-1),'UniformOutput',0);
 ind = sum([ind{:}],2);
 
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
 % Do a quick check to see if we can use a simple mean (equal monitor measurement)
 m = y./e.^2;
 if all(m==m(1))
@@ -195,10 +147,7 @@ switch lower(method(1))
         end
         % We have attempted to re-establish sqrt statistics
         es = (accumarray(ind(:),(y(:)./m(:)),[],@sum).^0.5)./ms;
-<<<<<<< HEAD
-=======
         %         es = accumarray(ind(:),(y(:)./m(:)),[],@norm)./ms;
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
     case 'w'
         % Weight
         ms = accumarray(ind(:),1./e(:).^2,[],@sum);
@@ -224,9 +173,6 @@ if ~isempty(y_fit_s)
     r.yfit = y_fit_s(~isnan(xs));
 end
 s_out = feval(class(r),r);
-<<<<<<< HEAD
-=======
-
 
     function edges = calc_bins(varargin)
         maxx = max(x);
@@ -335,6 +281,3 @@ s_out = feval(class(r),r);
         C = abs((2*k - v)/(b^2));
     end
 end
-
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
-

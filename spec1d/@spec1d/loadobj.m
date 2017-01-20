@@ -9,17 +9,6 @@ f = fieldnames(s);
 s = repmat(s,size(s_in));
 
 for i = 1:length(s_in)
-<<<<<<< HEAD
-    s_in(i).x = s_in(i).x(:);
-    [s_in(i).x, ind] = sort(s_in(i).x);
-    s_in(i).y = s_in(i).y(:);
-    s_in(i).y = s_in(i).y(ind);
-    s_in(i).e = s_in(i).e(:);
-    s_in(i).e = s_in(i).e(ind);
-    if ~isempty(s_in(i).yfit)
-        s_in(i).yfit = s_in(i).yfit(:);
-        s_in(i).yfit = s_in(i).yfit(ind);
-=======
     for j = 1:length(f)
         if isfield(s_in(i),f{j})
             s(i).(f{j}) = s_in(i).(f{j});
@@ -29,7 +18,6 @@ for i = 1:length(s_in)
                 end
             end
         end
->>>>>>> 636511af990e58b16bd962036363f5ae877ec4b8
     end
     validate(s(i));
 end
