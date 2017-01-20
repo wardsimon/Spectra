@@ -72,7 +72,7 @@ for i = 1:length(s)
             if length(dx) == 1;
                 % This is the scalar case
                 if verLessThan('matlab','8.4')
-                    edges = linspace(min(x),max(x),round((max(x)-min(x))/dx));
+                    edges = linspace(min(x)-dx/2,max(x)+dx/2,round((max(x)-min(x))/dx)+1);
                     [N, ind] = histc(x(:),edges);
                 else
                     [N,edges,ind] = histcounts(x(:),'BinWidth',dx);

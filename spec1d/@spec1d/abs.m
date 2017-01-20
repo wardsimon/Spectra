@@ -21,11 +21,11 @@ for n = 1:length(s1)
         yfit = abs(yfit);
     end
 
-    r = s1(n);
+    r = s1(n).copy;
     r.y = yabs;
     r.e = e;
     r.yfit = yfit;
 
-    sout(n) = spec1d(r);
+    sout(n) = feval(class(r),r);
     
 end

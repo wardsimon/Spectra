@@ -1,4 +1,4 @@
-function [sout, pout, dpin]=multifit_ini(s,pin,flag,sep)
+function [s_out, pout, dpin] = multifit_ini(s,pin,flag,sep)
 %% Multifit initialisation procedure
 % s = arrray of spec1d objects
 % pin = parameters for fitting
@@ -21,24 +21,28 @@ global  x_per_spec param_keep
 %      ones. Also, memorize the number of points per spec1d file so that
 %      this operation stays reversible!
 
-x_per_spec=zeros(1,length(s));
+x_per_spec = zeros(1,length(s));
 
-x=[]; y=[]; e=[];
+x = []; y = []; e = [];
 
-for il=1:length(s)
+for il = 1:length(s)
     [xil, yil, eil] = extract(s(il)); 
 %----- Remove zeros from e
-    xil(eil==0)=[]; 
-    yil(eil==0)=[]; 
-    eil(eil==0)=[];
-    x_per_spec(il)=length(xil);
+    xil(eil==0) = []; 
+    yil(eil==0) = []; 
+    eil(eil==0) = [];
+    x_per_spec(il) = length(xil);
 %----- Fold all data in the same array
-    x((length(x)+1):length(x)+length(xil))=xil(:);
-    y((length(y)+1):length(y)+length(yil))=yil(:);
-    e((length(e)+1):length(e)+length(eil))=eil(:);
+    x((length(x)+1):length(x)+length(xil)) = xil(:);
+    y((length(y)+1):length(y)+length(yil)) = yil(:);
+    e((length(e)+1):length(e)+length(eil)) = eil(:);
 end
 
-sout=spec1d(x,y,e);
+s_out = s(1);
+s_out.x = x;
+s_out.y = y;
+s_out.e = e;
+s_out = feval(class(s(1)),s_out);
 
 %---- Take care of the parameters!
 pin_old=pin(:); 
@@ -50,9 +54,9 @@ dpin_old=flag(:);
 
 %----- Also, param_keep will store the order of the parameters
 
-pout=zeros(1,(length(pin)+length(find(flag>1))*(length(s)-1)));
-dpin=pout;
-param_keep=dpin;
+pout = zeros(1,(length(pin)+length(find(flag>1))*(length(s)-1)));
+dpin = pout;
+param_keep = dpin;
 
 ll = 1;
 for j = 1:length(dpin_old)

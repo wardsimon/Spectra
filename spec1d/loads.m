@@ -187,14 +187,14 @@ if ~isempty(findstr(S1D_datafile,'['))
    for n=1:length(expnumbers)
       [x,y,err,xlab,ylab]=feval(filetype,[filefront,num2str(expnumbers(n),['%0.',num2str(ndigit),'i']),fileback]);
       if ~isempty(x)
-      datafile=strtok(datafilestring,',');
+%       datafile=strtok(datafilestring,',');
       [x,nsort]=sort(x);
       ss.x=x;
       ss.y=y(nsort);
       ss.e=err(nsort);
       ss.x_label=xlab;
       ss.y_label=ylab;
-      ss.datafile=datafile;
+      ss.datafile=[filefront,num2str(expnumbers(n),['%0.',num2str(ndigit),'i']),strtok(fileback,',')];
       ss.yfit=[];
       s(n)=spec1d(ss);
       end
@@ -217,14 +217,14 @@ elseif multiscans
    for n=1:length(expnumbers)
       [x,y,err,xlab,ylab]=feval(filetype,[filefront,num2str(expnumbers(n),['%0.',num2str(ndigit),'i']),fileback]);
       if ~isempty(x)
-      datafile=strtok(datafilestring,',');
+%       datafile=strtok(datafilestring,',');
       [x,nsort]=sort(x);
       ss.x=x;
       ss.y=y(nsort);
       ss.e=err(nsort);
       ss.x_label=xlab;
       ss.y_label=ylab;
-      ss.datafile=datafile;
+      ss.datafile=[filefront,num2str(expnumbers(n),['%0.',num2str(ndigit),'i']),strtok(fileback,',')];
       ss.yfit=[];
       s(n)=spec1d(ss);
       end

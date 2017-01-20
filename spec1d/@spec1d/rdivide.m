@@ -40,25 +40,25 @@ if isempty(fac)
             s2 = interpolate(s2,s(i),'method','builtin');
         end
         
-        rvec = s(i);
-        rvec.y = rvec.y ./ s2.y;
-        rvec.e = sqrt((s(i).e./s(i).y).^2 + (s2.e./s2.y).^2).*rvec.y;
-        rvec.yfit = rvec.yfit ./ s2.yfit;
-        s_out(i) = spec1d(rvec);
+        r = s(i);
+        r.y = r.y ./ s2.y;
+        r.e = sqrt((s(i).e./s(i).y).^2 + (s2.e./s2.y).^2).*r.y;
+        r.yfit = r.yfit ./ s2.yfit;
+        s_out(i) = feval(class(r),r);
     end
 else
     for i = 1:length(s)
         if r
-            rvec   = s(i);
-            rvec.y = fac./rvec.y;
-            rvec.e = fac*rvec.e./s(i).y.^2;
-            rvec.yfit = fac./rvec.yfit;
+            r   = s(i);
+            r.y = fac./r.y;
+            r.e = fac*r.e./s(i).y.^2;
+            r.yfit = fac./r.yfit;
         else
-            rvec   = s(i);
-            rvec.y = rvec.y/fac;
-            rvec.e = rvec.e/fac;
-            rvec.yfit = rvec.yfit/fac;
+            r   = s(i);
+            r.y = r.y/fac;
+            r.e = r.e/fac;
+            r.yfit = r.yfit/fac;
         end
-        s_out(i) = spec1d(rvec);
+        s_out(i) = feval(class(r),r);
     end
 end

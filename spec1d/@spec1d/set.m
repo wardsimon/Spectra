@@ -1,4 +1,4 @@
-function s = set(s,varargin)
+function sout = set(s,varargin)
     
     p = inputParser;
     p.CaseSensitive = false;
@@ -6,7 +6,7 @@ function s = set(s,varargin)
     p.addRequired('spec1d',@(x) isa(x,'spec1d'));
     names = fieldnames(spec1d());
     for i = 1:length(names)
-        p.addParamValue(names{i},[]); %#ok<NVREPL>
+        p.addParamValue(names{i},NaN); %#ok<NVREPL>
     end
     p.parse(s,varargin{:});
     
@@ -15,5 +15,10 @@ function s = set(s,varargin)
     opt = p.Results;
     opt = rmfield(opt,'spec1d');
    
-    s = setstructfields(s,opt);
-    s = spec1d(s);
+    sout = s.copy;
+    for i = 1:length(names)
+        if ~isnan(opt.(names{i}))
+            sout.(names{i}) = opt.(names{i});
+        end
+    end
+    sout = spec1d(sout);

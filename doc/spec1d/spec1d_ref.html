@@ -1,0 +1,106 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Des McMorrow">
+   <meta name="GENERATOR" content="Mozilla/4.6 [en-gb] (Win98; I) [Netscape]">
+   <title>spec1d</title>
+</head>
+<body>
+\section{Reference}
+<p>\subsection{Loading spectra}
+<p>Spectra can be loaded using the command file loads.
+<br>This makes use of the standard MFIT/MVIEW load routines
+<br>to load the data into a data structure.
+<p>For example, the SPEC data file 'spec.01' maybe loaded into
+<br>the data structure 's1' using the following command
+<p>>>s1=loads('specbatch','spec.01,X=K,Y=Detector,S=3');
+<p>Here 'specbatch' specifies the standard
+<br>MFIT/MVIEW load routine for SPEC type data files, and
+<br>the line 'spec.01,X=K,Y=Detector,S=3' causes the
+<br>3rd scan from the file 'spec.01' to be loaded with
+<br>the x varible equal to 'K' and the Y variable set to
+<br>'Detector'.
+<p>s1 is a data structure defined in 'spec1d.m' to be
+<p>s1.x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; x-data
+<br>s1.y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; y-data
+<br>s1.e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; error on y
+<br>s1.x_label&nbsp; : Label for x-axis
+<br>s1.y_label&nbsp; : Label for y-axis
+<br>s1.datafile : Data file from which the scan was loaded
+<br>s1.yfit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : Fitted value
+of data
+<p>\subsection{Basic plotting}
+<p>A basic plot of the spectra can be generated with the
+<br>plot command, eg.
+<p>>>plot(s1);
+<p>Two or more spectra can be overlayed
+<p>>>plot(s1,s2,s3);
+<p>Most properties of the graph can be edited by clicking on the
+<br>appropriate feature. Left click on the lables to edit them.
+<br>Right click on the lines to edit them.
+<p>\subsection{Simple operations}
+<p>Simple arithmetic operations may be performed on the
+<br>spectra using the plus '+', minus '-', element-by-element
+<br>multiplication '.*', and simple element-by-element divide
+<br>'./'.
+<p>Note: these operations require that the spectra have
+<br>identical x-values. If this is not the case then the
+<br>spectra have to be first interpolated, or in the case of
+<br>'+' 'combine' may be used.
+<p>For example, suppose we wish to load scans 3, 4 and 5 from
+<br>file 'spec.01' and then process them using simple
+<br>arithmetic.
+<p>First load the scans into workspaces:
+<p>>>s3=loads('specbatch','spec.01,X=K,Y=Detector,S=3');
+<br>>>s4=loads('specbatch','spec.01,X=K,Y=Detector,S=4');
+<br>>>s5=loads('specbatch','spec.01,X=K,Y=Detector,S=5');
+<p>We can now add the three spectra and view the result
+<br>by typing:
+<p>>>r=s3+s4+s5;
+<br>>>plot(r);
+<p>Alternatively s5 could be subtracted from the sum of
+<br>s3 and s4.
+<p>>>r=s3+s4-s5;
+<br>>>plot(r);
+<p>The operators '.*' and './' work in a similar way,
+<br>e.g.
+<p>>>r=s3.*s4;
+<p>or even
+<p>>>r=2.*s4-s3;
+<p>It is possible to append spectra as follows
+<p>>>r=[s1;s2;s3;s4];
+<p>\subsection{Other operations}
+<p>These will be added to with time.
+<br>See the help section of the individual commands.
+<br>Presently supported commands include:
+<p>\subsubsection{combine}
+<p>This is used to combine data points when averaging spectra that
+<br>do not have the same x-values, e.g.,
+<p>>>r=combine(0.01,s1,s2,s3);
+<p>Averages points in spectra s1, s2, and s3 that do not differ by
+<br>0.01 in their x values. This can also be used as a crude rebinning
+<br>of one spectra
+<p>>>r=combine(0.01,s1);
+<p>\subsubsection{cut}
+<p>\subsubsection{disp}
+<p>\subsubsection{extract}
+<p>\subsubsection{fits}
+<p>\subsection{formatpars}
+<p>\subsection{gfields}
+<p>\subsubsection{peakm}
+<p>\subsubsection{peakt}
+<p>\subsection{rebin}
+<p>\subsection{sfields}
+<p>\subsubsection{transform}
+<p>spectrum_out=transform(transform_function,spectrum_in,args)
+<p>Transform spectrum according to the transform function, e.g.,
+<p>>>r=transform('normalise',spectra,1)
+<p>Currently available transform functions include:
+<p>- r=transform('normalise',spectra,normalisation_value);
+<br>- r=transform('dydx'&nbsp;&nbsp;&nbsp;&nbsp; ,spectra);
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>
