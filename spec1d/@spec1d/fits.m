@@ -278,7 +278,7 @@ else % This is for normal fitting and multi-fitting.
             switch  options.optimiser
                 case 'spec_lm'
 %                     fitdata = speclsqr(f_in,s1(il));
-                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(s1(il).x,s1(il).y,s1(il).e,pin,notfixed,func,fcp,options);
+                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(s1(il),pin,notfixed,func,fcp,options);
                 case 'builtin'
                     infun = @(x,xin) feval(func,xin,x);
                     opt = optimset('MaxIter',fcp(2),'Display','Off');

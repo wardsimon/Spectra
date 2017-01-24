@@ -210,7 +210,7 @@ s_out = feval(class(r),r);
                 edges = [minx minxi:binwidth:maxxi maxx];
             end
         else
-            edges = scottsrule(x,minx,maxx,hardlimits);
+            edges = sturgesrule(x,minx,maxx,hardlimits);
         end
     end
 
@@ -274,10 +274,30 @@ s_out = feval(class(r),r);
     end
 
     function C = optim_bin(b)
+        % Function adapted from...
+        % Shimazaki H. and Shinomoto S., 
+        % Kernel Bandwidth Optimization in Spike Rate Estimation. 
+        % Journal of Computational Neuroscience (2009) doi:10.1007/s10827-009-0180-4
         EDG = calc_bins(b);
         ki = cellfun(@sum,(arrayfun(@(i) (x >= EDG(i)) & (x < EDG(i+1)),1:(length(EDG)-1),'UniformOutput',0)));
         k = mean(ki);
         v = sum((ki - k).^2)/(length(EDG) - 1);
         C = abs((2*k - v)/(b^2));
+    end
+
+    function y = datafuniqr(x)
+        % DATAFUNIQR Compute interquartile range for histogram functions
+        % Copyright 1984-2015 The MathWorks, Inc.
+        
+        n = numel(x);
+        F = ((1:n)'-.5) / n;
+        if ~isfloat(x)
+            x = double(x);
+        end
+        if n > 0
+            y = diff(interp1q(F, sort(x(:)), [.25; .75]));
+        else
+            y = NaN('like',x);
+        end
     end
 end
