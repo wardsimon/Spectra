@@ -42,6 +42,7 @@ s_out = s(1);
 s_out.x = x;
 s_out.y = y;
 s_out.e = e;
+s_out.yfit = [];
 s_out = feval(class(s(1)),s_out);
 
 %---- Take care of the parameters!

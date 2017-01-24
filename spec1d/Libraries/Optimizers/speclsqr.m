@@ -1,4 +1,4 @@
-function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,pin,dpin,F,fcp,options)
+function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(s,pin,dpin,F,fcp,options)
     %%
     %% Levenberg-Marquardt nonlinear regression of f(x,p) to y(x).
     %%
@@ -159,9 +159,19 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     dp    = -(dpin>0)*fcp(1);
     
     %%
-    x = x(:);
-    y   = y(:);
-    wt  = 1./err(:);
+    x = s.x(:);
+    y   = s.y(:);
+    wt  = 1./s.e(:);
+    try
+        rind = s.userdata.rind;
+        x = x(rind);
+        y   = y(rind);
+        wt  = wt(rind);
+    catch
+        rind = [];
+    end
+    
+    
     wt  = wt(:);
     pin = pin(:);
     dp  = dp(:); %change all vectors to columns
@@ -619,6 +629,11 @@ function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std] = speclsqr(x,y,err,
     r2 = r(1,2).^2;
     ra2 = 1-(1-r2)*((length(y)-1)/(length(y)-sum(msk)-1));
     
+    % Now put back the order if needed
+    if ~isempty(rind)
+        [~, rind] = sort(rind); 
+        f = f(rind);
+    end
     
     %% if someone has asked for it, let them have it
     %%
