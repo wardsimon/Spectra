@@ -34,7 +34,7 @@ function s_out = combine(toll,varargin)
 %                            widely used in other software packages. It
 %                            chooses the number of bins to be
 %                            CEIL(SQRT(NUMEL(X))).
-% 'legacy'      : Replicate the original @spec1d/combine
+%                 'legacy'   Replicate the original @spec1d/combine
 % Default is 'relative' due to speed considerations.
 %
 % s1,s2,... can be single spectra or arrays of spectra.
@@ -174,7 +174,6 @@ if ~isempty(y_fit_s)
 end
 s_out = feval(class(r),r);
 
-
     function edges = calc_bins(varargin)
         maxx = max(x);
         minx = min(x);
@@ -302,5 +301,3 @@ s_out = feval(class(r),r);
         end
     end
 end
-
-

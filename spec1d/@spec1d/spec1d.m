@@ -11,7 +11,7 @@ classdef spec1d
     properties
         userdata
     end
-    
+   
     properties (Hidden=true)
         datafile
         x_label
