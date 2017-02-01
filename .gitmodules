@@ -4,3 +4,6 @@
 [submodule "Mtools"]
 	path = Mtools
 	url = https://github.com/substance33/Mtools
+[submodule "ResLibCal"]
+	path = ResLibCal
+	url = git@github.com:simonward86/ResLibCal.git
