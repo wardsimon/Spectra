@@ -42,8 +42,12 @@ dPref = struct('val',{},'name',{},'label',{});
 [dPref(:).val]            = dv{:};
 
 % get stored preferences
-sPref = getpref('mtools');
-
+try
+    sPref = getpref('mtools');
+catch
+    sPref = dPref;
+end
+    
 if (nargin>0)
     if strcmp(prefName,'default')
         % return default preference values
