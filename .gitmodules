@@ -1,9 +1,6 @@
 [submodule "export_fig"]
 	path = export_fig
 	url = https://github.com/altmany/export_fig
-[submodule "Mtools"]
-	path = Mtools
-	url = https://github.com/substance33/Mtools
 [submodule "ResLibCal"]
 	path = ResLibCal
 	url = git@github.com:simonward86/ResLibCal.git
