@@ -42,10 +42,10 @@ catch % We have not fixed the path
         if ismac
             libroot = uigetdir(fullfile(matlabroot,'toolbox'),'Select Spectra root directory');
         else
-            libroot = uigetdir(st_home,'Select mtools root directory');
+            libroot = uigetdir(st_home,'Select Spectra root directory');
         end
         if all(libroot == 0)
-            error('Without an mtools directory, here be dragons!')
+            error('Without a Spectra directory, here be dragons!')
         else
             addpath(genpath(libroot))
             sdext.setpref('libroot',libroot)

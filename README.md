@@ -19,10 +19,9 @@ This software can be obtained by git or as a [zip file](https://github.com/simon
 
 1. ``git clone https://github.com/simonward86/Spectra.git``
 2. If you want the additional submodules run ``git clone --recursive https://github.com/simonward86/Spectra.git`` instead.
-3. You can use ``spectra_on`` or rename ``startup_example.m`` to ``startup.m`` and place it in the MATLAB home directory.
-4. If you do the former, you will neet to execute ``startup.m`` when you start MATLAB.
+3. You can use ``spectra_on.m`` or modify the ``startup_example.m`` and place it in the MATLAB home directory.
 
-**Note** that some functions rely on the startup script having been run at least once!
+**Note** that some functions rely on the startup script having been run at least once! It is recommended that one of the files is in the MATLAB path.
 
 ## Information
 User guides and examples can be found at the project site https://simonward86.github.io/Spectra look for tagged posts.
