@@ -21,6 +21,7 @@ function onlineRev = spectra_update(installDir)
 % onlineVer     If output is expected, the revision number of the online
 %               Spectra is given. Optional.
 %
+% This has been modified from the spinW help file. Thanks to Sandor Toth!
 
 % check current version
 swVer = spectra_version;

@@ -5,6 +5,7 @@ function rootdir = spectra_rootdir()
 %
 % See also SPECTRA.
 %
+% This has been modified from the spinW help file. Thanks to Sandor Toth!
 
 rootdir = mfilename('fullpath');
 idx     = strfind(rootdir,filesep);

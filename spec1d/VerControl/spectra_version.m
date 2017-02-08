@@ -76,7 +76,7 @@ if nargout == 0
         end
     else
         disp([verStruct.Name verStruct.Version ' (rev ' num2str(verStruct.Revision) ')']);
-        onlineRev = sw_update;
+        onlineRev = spectra_update;
         if onlineRev > str2num(verStruct.Revision) %#ok<ST2NM>
             disp(['Newer version of Spectra is available online (rev. num. ' num2str(onlineRev) '), use the spectra_update() function to download it!']);
         else
