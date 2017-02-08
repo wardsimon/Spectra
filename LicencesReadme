@@ -1,0 +1,34 @@
+All work is used as is or derrived from the listed authors. 
+File headers should denote the original authors, respective licences are in the directories.
+
+The package SPECTRA makes use of the following libraries/packages in the original or modified form:
+
+Colormaps/cbrewer 		Copyright (c) 2015,	Charles Robert				https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer---colorbrewer-schemes-for-matlab
+export_fig			Copyright (c) 2014,	Oliver J. Woodford, Yair M. Altman	https://www.mathworks.com/matlabcentral/fileexchange/23629-export-fig
+FileTools			Copyright (c) GPL ,	**					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+funcs				Copyright (c) GPL ,	**, ^					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+load				Copyright (c) GPL ,	**, ^					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+MiscTools			Copyright (c) GPL ,	**, ^					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+MiscTools/json			Copyright (C) 2015,	Qianqian Fang				https://www.mathworks.com/matlabcentral/fileexchange/33381-jsonlab--a-toolbox-to-encode-decode-json-files
+Mtools				Copyright (c) GPL ,	**					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+ResCalFit			Copyright (c) 2015,	Simon Ward				https://github.com/simonward86/Spectra
+ResLibCal			Copyright (c)     ,	Emmanuel Farhi, Simon Ward		http://ifit.mccode.org/Applications/ResLibCal/doc/ResLibCal.html							
+spec1d				Copyright (c) 2015,	**, Simon Ward				https://github.com/simonward86/Spectra			
+spec1d/@spec1d			Copyright (c) 2015,	Simon Ward, ^				https://github.com/simonward86/Spectra
+spec1d/+interp			Copyright (c) 2014, 	Joe Henning, Simon Ward			https://github.com/simonward86/Spectra
+spec1d/Libraries/Criteria	Copyright (c)     ,	Emmanuel Farhi,				http://ifit.mccode.org/
+spec1d/Libraries/Optimisers	Copyright (c)     ,	Emmanuel Farhi, Simon Ward, ^		http://ifit.mccode.org/			
+Spectratools			Copyright (c) GPL ,	**					https://www.ill.eu/en/instruments-support/computing-for-science/cs-software/all-software/matlab-ill/
+spinw				Copyright (c) GNU ,	Sandor Toth				http://www.psi.ch/spinw								
+
+# Derrived from previous author/s and modified.
+^ Others - see file headers
+
+** Group comprising of:
+E. Farhi      (farhi@ill.fr)                    alias EF    MFit >= 4
+A.R. Wildes   (wildes@ill.fr)                   alias ARW   Mview
+Des. McMorrow (des.mcmorrow@risoe.dk)           alias DFM   Mview, Spec1d
+M. Zinkin     (m.zinkin1@physics.ox.ac.uk)      alias MZ    MFit < 4, Mview, Rescal
+D.A. Tennant  (d.tennant1@physics.oxford.ac.uk) alias DAT   MFit < 4, Mview, Rescal
+K. Dabertran  (contact farhi)                   alias KD    MFit
+H. Ronnow     (henrik.ronnow@epfl.ch)

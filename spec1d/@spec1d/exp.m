@@ -17,5 +17,5 @@ for i = 1:length(s1)
     if ~isempty(s1(i).yfit)
         r.yfit = exp(s1(i).yfit);
     end
-    sout(i)=spec1d(r);
+    sout(i) = feval(class(r),r);
 end

@@ -22,7 +22,7 @@ for n = 1:length(s1)
     r.e = e./y;
     
     if ~isempty(yfit)
-        r.yfit=log(yfit);
+        r.yfit = log(yfit);
     end
-    sout(n)=spec1d(r);
+    sout(n) = feval(class(r),r);
 end

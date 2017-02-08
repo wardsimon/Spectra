@@ -20,7 +20,7 @@ function s_out = power(s,p)
         if ~ isempty(r.yfit)
             r.yfit  = r.yfit.^p;
         end
-        s_out(i) = spec1d(r);
+        s_out(i) = feval(class(r),r);
     end
     
         

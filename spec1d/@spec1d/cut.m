@@ -55,7 +55,5 @@ for n=1:length(svec)
              svec(n).yfit([xcl;xcr])=[]; 
          end
       end
-   
    end   
-
 end

@@ -1,4 +1,4 @@
-function r=setfield(s1,varargin)
+function r = setfield(s1,varargin)
 %
 % function r=setfield(s1,varargin)
 %
@@ -9,9 +9,16 @@ function r=setfield(s1,varargin)
 % DFM 1.3.99
 % %
 
-
-s = struct(s1);
-r = spec1d(s,varargin{:});
+r = feval(class(s1),s1);
+f = fieldnames(r);
+for i = 1:2:length(varargin)
+   if any(strcmp(varargin{i},f))
+       r.(varargin{i}) = varargin{i+1};
+   else
+       warning('spec1d:setfield:Unknownfieldname','Fieldname ''%s'' is not part of the %s structure.',varargin{i},class(s1))
+   end
+end
+r = feval(class(r),r);
 
 % if ~isa(s1,'spec1d'); disp('Not a spec1d object'), return, end
 % 

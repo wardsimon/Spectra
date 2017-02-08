@@ -26,13 +26,14 @@ path_ind = strfind(mfilename('fullpath'),filesep);
 path_d =  mfilename('fullpath');
 path_d = path_d(1:path_ind(end-3));
 
-dn = { 'libroot' 'experimental' 'doLog','gpuArray'};
-dv = { path_d    0              2        0};
+dn = { 'libroot' 'experimental' 'doLog','gpuArray', 'minGPULength'};
+dv = { path_d    0              2        0          1E5};
 dl = {...
     'Where Spectra files are stored',...
     'Enable experiemntal features',...
     'Log all interactions',...
-    'Should we run on the GPU'};
+    'Should we run on the GPU',...
+    'Minumum length of GPU array before speedup'};
 
 dPref = struct('val',{},'name',{},'label',{});
 
@@ -41,8 +42,12 @@ dPref = struct('val',{},'name',{},'label',{});
 [dPref(:).val]            = dv{:};
 
 % get stored preferences
-sPref = getpref('mtools');
-
+try
+    sPref = getpref('mtools');
+catch
+    sPref = dPref;
+end
+    
 if (nargin>0)
     if strcmp(prefName,'default')
         % return default preference values

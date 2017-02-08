@@ -23,8 +23,10 @@ function c=least_absolute(Signal, Error, Model)
 %     Error( Error < stdE/4 ) = stdE/4; 
 %     Error = Error *(normE/sum(Error(index)));
     
-    if isempty(index), c=Inf;
-    else               c=abs((residuals(index))./Error(index));
+    if isempty(index), 
+        c=Inf;
+    else
+        c=abs((residuals(index))./Error(index));
     end
   end
 end % least_absolute

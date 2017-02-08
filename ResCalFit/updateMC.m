@@ -22,7 +22,11 @@ try
     % This assumes the function was called from ResFitCal
     runGPU = evalin('caller','runGPU');
 catch
-    runGPU = sdext.getpref('gpuArray').val;
+    try
+        runGPU = sdext.getpref('gpuArray').val;
+    catch
+        runGPU = 0;
+    end
 end
     
 if isfield(s_in,'EXP') && isfield(s_in,'resolution')
