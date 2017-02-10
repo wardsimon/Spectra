@@ -1,8 +1,14 @@
-function [hout,hbout hfout]=areaplot(varargin)
-% areaplot     : Plots a spec1d object with a gradient fill
-% [PointsHandle ErrorBarHandles SurfHandels]=areaplot(s,zeroline,transparency)
-% s            : spec1d object or array of objects
-% zeroline     : [xstart ystart; xend yend] to describe sero line
+function [hout, hbout, hfout] = areaplot(varargin)
+% Plots a spec1d object with a gradient fill
+%
+% [PointsHandle ErrorBarHandles SurfHandels] = AREAPLOT(s,zeroline,transparency)
+%
+% Input:
+% 
+% s         spec1d object or array of objects
+% zeroline  [xstart ystart; xend yend] to describe zero line
+%
+
 amap=0;
 pt=[];
 for i=1:length(varargin)

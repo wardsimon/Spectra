@@ -1,4 +1,4 @@
-function [sout, vout] = multifit_extract(s,w,dpin)
+function [sout, vout] = multifit_extract(s,w)
 
 global x_per_spec param_keep
 

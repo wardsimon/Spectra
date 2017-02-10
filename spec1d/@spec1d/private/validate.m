@@ -1,6 +1,13 @@
 function  validate( s_in )
-%VALIDATE Summary of this function goes here
-%   Detailed explanation goes here
+% Validates a spec1d object to make sure all fields are correct.
+%
+% VALIDATE(s_in)
+%
+% Input:
+%
+% s_in  A spec1d object which needs to be validated.
+%
+
 p  = inputParser;
 p.addParamValue('x',@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'x'))
 p.addParamValue('y',@(x) validateattributes(x,{'numeric','gpuArray'},{'vector','real','finite','nonnan'},mfilename,'y'))

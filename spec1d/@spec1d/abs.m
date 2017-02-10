@@ -1,10 +1,14 @@
-function sout=abs(varargin)
+function s_out = abs(varargin)
+% Function to give the absolute value of spectrum.
 %
-% function r=abs(s1)
+% s_out = abs(s_in)
 %
-% @SPEC1D/abs function to give the absolute value of spectrum s1.
+% Input:
 %
-% Simon Ward 26/01/2016 - simon.ward@psi.ch
+% s_in  A single or array of spec1d objects
+%
+% This function returns a spec1d object of which the absolute value of the 
+% signal and y-fit values are returned (if available) 
 %
 
 s1 = [varargin{:}];
@@ -26,6 +30,5 @@ for n = 1:length(s1)
     r.e = e;
     r.yfit = yfit;
 
-    sout(n) = feval(class(r),r);
-    
+    s_out(n) = feval(class(r),r);    
 end

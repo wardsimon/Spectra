@@ -27,7 +27,7 @@ function onlineRev = spectra_update(installDir)
 swVer = spectra_version;
 
 % base url, where the sw_download_info file stored
-baseUrl = 'https://raw.githubusercontent.com/simonward86/Spectra/LNS/spec1d/VerControl/this_version.txt';
+baseUrl = 'https://raw.githubusercontent.com/simonward86/Spectra/Develop/spec1d/VerControl/this_version.txt';
 
 if nargout == 0
     if ~isempty(swVer.Version)
