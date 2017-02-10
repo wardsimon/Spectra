@@ -1,14 +1,34 @@
 function s = constructor(a,varargin)
+% Parses all the arguments for a spec1d object
 %
-% function spec1d(varargin)
+% s_out = SPEC1D(varargin)
 %
-% SPEC1D/spec1d Create a spec1d spectra object
+% Input:
+% 
+% x,y,e     Vectors of real numbers where e is positive and non-zero. e can
+%           be a single value, replicates for all datapoints.
+% s_in      Structure with fields x, y, e or an existing spec1d object.
 %
-% Usage:    1. s = spec1d(x,y,e);
-%           2. s = spec1d(x,y,e,'datafile',file,'x_label',xlabel,'y_label',ylabel);
+% Optional:
+% 
+% fitdata   Fit data stored in the @specfit class.
+% yfit      y-points of a fit which have been evaluated at the x-points of
+%           s_in.
+% x_label   Text field corresponding to a label which goes on the x-axis of
+%           a plot.
+% y_label   Text field corresponding to a label which goes on the y-axis of
+%           a plot.
+% datafile  Text field corrsponding to where the data was obtained. Will
+%           also be used as a title for plotting.
+% userdata  A structure which stores additional data. This can be set as
+%           required and has no set fields.
 %
-% Update : Start GPU work.
-% Simon Ward 25/01/2016
+% This function creates a spec1d object from inputs given. 
+%
+% Example:    
+%   s_out = spec1d(x,y,e);
+%   s_out = spec1d(x,y,e,'datafile',file,'x_label',xlabel,'y_label',ylabel);
+%
 
 p = inputParser;
 
@@ -95,6 +115,9 @@ for i = 1:length(s_in)
     if isfield(s_in(i).userdata,'rind')
         % Dont f*ck around with indexing!
         if isempty(s_in(i).userdata.rind)
+            [~, s_in(i).userdata.rind] = sort(ind);
+        % Check if this is multifit call or something.    
+        elseif length(s_in(i).userdata.rind) ~= length(s_in(i).x)
             [~, s_in(i).userdata.rind] = sort(ind);
         end
     else

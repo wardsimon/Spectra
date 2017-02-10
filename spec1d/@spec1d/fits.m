@@ -80,10 +80,10 @@ else
 end
 p.addParamValue('bounds',[-Inf(length(pin),1) Inf(length(pin),1)],@(x) (size(x,1)==length(pin) & size(x,2)==2) | iscell(x))
 p.addParamValue('dfdp','specdfdp_multi',@(x) ischar(x) | isa(x,'function_handle'))
-p.addParamValue('confidence',0.05,@(x) isnumeric(x) & length(x)==1 & x>0 & x<1)
+p.addParamValue('confidence',0.95,@(x) isnumeric(x) & length(x)==1 & x>0 & x<1)
 p.addParamValue('inequc',{zeros(length(pin),0) zeros(0,1)},@iscell)
 %     p.addParamValue('sep',cell(length(s1),1), @iscell)
-p.addParamValue('optimiser','spec_lm',@(x) ischar(x) | isa(x,'function_handle'))
+p.addParamValue('optimiser','speclsqr',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@length,x)==2))
 p.addParamValue('parallel',0,@(x) x==0 | x == 1)
 p.addParamValue('criteria','least_square',@(x) ischar(x) | isa(x,'function_handle'))
@@ -130,10 +130,10 @@ end
 f_in = specfit(func,pin,notfixed);
 f_in.specID = [s1.ident];
 f_in = f_in.setFitdata('Display',options.verbose,'MaxIter',options.fcp(2),...
-                'TolFun',options.fcp(1),'Algorithm',options.optimiser,...
-                'UseParallel',options.parallel,'TolGradCon',options.fcp(3),...
+                'TolGradCon',options.fcp(3),'Algorithm',options.optimiser,...
+                'UseParallel',options.parallel,'TolX',options.fcp(1),...
                 'CriteriaFcn',options.criteria,'JacobFcn',options.dfdp,...
-                'Bounds',options.bounds);
+                'Bounds',options.bounds,'TolCon',options.confidence);
 f_in.userdata = struct('x_per_spec',[],'param_keep',[]);
 
 % Is this a multifit?
@@ -206,7 +206,7 @@ if all([sdext.getpref('experimental').val, options.parallel, ~options.multifit])
                 sig{n} = interlace(zeros(size(pin)),sqrt(diag(covp)),~notfixed);
                 ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
             end
-        case 'spec_lm'
+        case 'speclsqr'
             parfor n = 1:length(all_data) %#ok<*PFUIX>
                 [yfit{n},p{n},cvg,iter,corp,covp,covr,stdresid,Z,RSq{n},ra2{n},sig{n}] = speclsqr(all_data{n}{1},all_data{n}{2},all_data{n}{3},pin,notfixed,func,fcp,options); %#ok<*ASGLU>
                 ChiSq{n} = sum(((all_data{n}{2}-yfit{n})./all_data{n}{3}).^2 )/(length(all_data{n}{2})-sum(logical(notfixed)));
@@ -264,6 +264,7 @@ else % This is for normal fitting and multi-fitting.
         
         % When we just want to see the starting point
         if sum(notfixed) == 0
+            f_out(i) = f_in.copy();
             yfit = feval(func,s1(il).x,pin);
             p = pin;
             r = corrcoef([s1(il).y(:),s1(il).yfit(:)]);
@@ -276,9 +277,9 @@ else % This is for normal fitting and multi-fitting.
             end
             %----- Fit data
             switch  options.optimiser
-                case 'spec_lm'
+                case 'speclsqr'
 %                     fitdata = speclsqr(f_in,s1(il));
-                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig] = speclsqr(s1(il),pin,notfixed,func,fcp,options);
+                    [yfit,p,cvg,iter,corp,covp,covr,stdresid,Z,RSq,ra2,sig,f_out(il)] = speclsqr(s1(il),f_in,options);
                 case 'builtin'
                     infun = @(x,xin) feval(func,xin,x);
                     opt = optimset('MaxIter',fcp(2),'Display','Off');
@@ -301,6 +302,7 @@ else % This is for normal fitting and multi-fitting.
                     jtgjinv = pinv(jacobian'*Qinv*jacobian);
                     covp = jtgjinv*jacobian'*Qinv*Vy*Qinv*jacobian*jtgjinv; % Eq. 7-5-13, Bard %cov of parm est
                     sig = interlace(zeros(size(pin)),sqrt(diag(covp)),~notfixed);
+                    f_out(il) = f_in.copy();
                 otherwise
                     % Check that the criteria is possible.
                     if ~strcmpi(options.criteria,sdext.getCriteria)
@@ -337,9 +339,11 @@ else % This is for normal fitting and multi-fitting.
                     sig = output.parsHessianUncertainty;
                     r = corrcoef([s1(il).y(:),yfit(:)]);
                     RSq = r(1,2).^2;
-                    if nargout == 3
-                        optional = output;
-                    end
+                    f_out(il) = f_in.copy();
+                    f_out(il).fitdata = output;
+%                     if nargout == 3
+%                         optional = output;
+%                     end
             end
         end
         
@@ -376,7 +380,10 @@ else % This is for normal fitting and multi-fitting.
         % Make  the return spec1d objects
         sout(il) = s1(il).copy;
         sout(il) = set(sout(il),'x',s1(il).x,'y',s1(il).y,'e',s1(il).e,'yfit',yfit);
-        fitdata(il) = specfit(p,sig,func,notfixed,sout(il).ident,pnames);
+        fitdata(il) = f_out(il);
+        fitdata(il).specID = sout(il).ident;
+        fitdata(il).pnames = pnames;  
+%         fitdata(il) = specfit(p,sig,func,notfixed,sout(il).ident,pnames);
 %         results = struct('pvals',p,'evals',sig,'func',func,'pnames',pnames,'chisq',ChiSq,'rsq',RSq,'notfixed',notfixed);
 %         fitdata(il) = specfit(results);
         sout(il) = sout(il).setfitdata(fitdata(il));
@@ -385,7 +392,7 @@ end
 
 % If a multifit, convert back into single objects.
 if options.multifit
-    [sout, fitdata] = multifit_extract(sout,fitdata,notfixed);
+    [sout, fitdata] = multifit_extract(sout,fitdata);
     x_per_spec = [];
     multifit_ind = [];
 end

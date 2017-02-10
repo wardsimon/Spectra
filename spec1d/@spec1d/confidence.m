@@ -1,5 +1,8 @@
 function varargout = confidence(s,fit,conf,varargin)
-    %% Confidence
+% This function calculates the confidence levels for a given fit.
+%
+% 
+
     %  Calculates the confidence for a given fit and interval.
     %  -------------------------------------------------------
     %  !!! Input !!!

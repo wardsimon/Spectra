@@ -1,53 +1,56 @@
 function s_out = combine(toll,varargin)
+% Combine one or more spec1d objects with a given tolerance. 
 %
-% function s_out = combine(toll,s1,s2,....sn,'method','methods','indexing','auto')
+%  s_out = COMBINE(toll,s1,s2,....sn,'method','methods','indexing','auto')
 %
-% @SPEC1D/COMBINE function to combine two or more spectra.
+% Inputs:
 %
-% If the x values of two points differ by less
-% than tolerance 'toll', then the points are combined.
+% toll      Single value which should be binning width. Use NaN for auto
+%           binning
+% s_in      Single or arrays of objects in the @spec1d class.
 %
-% Depending on the optional 'method', points are combined as
-% 'mean'    : Simple means for x and y, errors are averaged in quadrature.
-% 'counts'	: Restablishes normalisation and original counts assuming
-%             square-root statistics, is correct for normalised counts
-% 'weight'	: Weights to inverse error. For more general data.
-% Default is 'counts'
+% Optional:
 %
-% Depending on the optional 'indexing', points are indexed as
-%                   'auto'   The default 'auto' algorithm chooses a bin
-%                            width to cover the data range and reveal the
-%                            shape of the underlying distribution.
-%                  'scott'   Scott's rule is optimal if X is close to being
-%                            normally distributed, but is also appropriate
-%                            for most other distributions. It uses a bin width
-%                            of 3.5*STD(X(:))*NUMEL(X)^(-1/3).
-%                     'fd'   The Freedman-Diaconis rule is less sensitive to
-%                            outliers in the data, and may be more suitable
-%                            for data with heavy-tailed distributions. It
-%                            uses a bin width of 2*IQR(X(:))*NUMEL(X)^(-1/3),
-%                            where IQR is the interquartile range.
-%                'sturges'   Sturges' rule is a simple rule that is popular
-%                            due to its simplicity. It chooses the number of
-%                            bins to be CEIL(1 + LOG2(NUMEL(X))).
-%                   'sqrt'   The Square Root rule is another simple rule
-%                            widely used in other software packages. It
-%                            chooses the number of bins to be
-%                            CEIL(SQRT(NUMEL(X))).
-%                 'legacy'   Replicate the original @spec1d/combine
-% Default is 'relative' due to speed considerations.
+% method    Depending on the optional 'method', points are combined as
+%               'mean'      : Simple means for x and y, errors are averaged in quadrature.
+%               'counts'    : Restablishes normalisation and original counts assuming
+%                             square-root statistics, is correct for normalised counts
+%               'weight'	: Weights to inverse error. For more general data.
+%           Default is 'counts'
+% indexing  Depending on the optional 'indexing', points are indexed as
+%               'auto'      : The default 'auto' algorithm chooses a bin
+%                             width to cover the data range and reveal the
+%                             shape of the underlying distribution.
+%               'scott'     : Scott's rule is optimal if X is close to being
+%                             normally distributed, but is also appropriate
+%                             for most other distributions. It uses a bin width
+%                             of 3.5*STD(X(:))*NUMEL(X)^(-1/3).
+%               'fd'        : The Freedman-Diaconis rule is less sensitive to
+%                             outliers in the data, and may be more suitable
+%                             for data with heavy-tailed distributions. It
+%                             uses a bin width of 2*IQR(X(:))*NUMEL(X)^(-1/3),
+%                             where IQR is the interquartile range.
+%               'sturges'   : Sturges' rule is a simple rule that is popular
+%                             due to its simplicity. It chooses the number of
+%                             bins to be CEIL(1 + LOG2(NUMEL(X))).
+%               'sqrt'      : The Square Root rule is another simple rule
+%                             widely used in other software packages. It
+%                             chooses the number of bins to be
+%                             CEIL(SQRT(NUMEL(X))).
+%               'legacy'    : Replicate the original @spec1d/combine
+%           Default is 'auto' due to speed considerations.
 %
-% s1,s2,... can be single spectra or arrays of spectra.
+% If the x values of two points differ by less than tolerance 'toll', 
+% then the points are combined.
 %
 % Example:
+%
 % Combine s1,s2 and s3 when x values differ by less than 0.01.
-% >r = combine(0.01,s1,s2,s3) % combine s1,s2,s3 by counts method
-% >r = combine(0.01,s1,s2,s3,'method','mean') % combine s1,s2,s3 by mean method
-% >r = combine(0.01,s1,s2,s3,'method','weight','indexing',absolute) % combine s1,s2,s3 by
-% weight method and indexing 'absolute'
-
-% Simon Ward 19/01/2017
-
+% r = combine(0.01,s1,s2,s3) % combine s1,s2,s3 by counts method
+% r = combine(0.01,s1,s2,s3,'method','mean') % combine s1,s2,s3 by mean method
+% r = combine(0.01,s1,s2,s3,'method','weight','indexing',sturges) % combine s1,s2,s3 by
+% sturges method and indexing 'absolute'
+% 
 
 s_ind = cellfun(@(x) isa(x,'spec1d'),varargin);
 s = varargin(s_ind);
@@ -172,6 +175,7 @@ r.e = es(~isnan(xs));
 if ~isempty(y_fit_s)
     r.yfit = y_fit_s(~isnan(xs));
 end
+
 s_out = feval(class(r),r);
 
     function edges = calc_bins(varargin)

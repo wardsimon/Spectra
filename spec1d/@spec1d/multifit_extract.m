@@ -1,14 +1,16 @@
-function [sout, vout] = multifit_extract(s,w,dpin)
+function [sout, vout] = multifit_extract(s,w)
 
 global x_per_spec param_keep
 
 wout = cell(param_keep(length(param_keep)),1);
 eout = wout;
+dout = zeros(1,param_keep(length(param_keep)));
 
 for j = 1:param_keep(length(param_keep))
     index = find(param_keep == j);
-    wout{j}=w.pvals(index);
-    eout{j}=w.evals(index); 
+    wout{j} = w.pvals(index);
+    eout{j} = w.evals(index); 
+    dout(j) = w.notfixed(index(1));
 end
 
 try
@@ -42,7 +44,7 @@ for il=1:length(x_per_spec)
     sout(il) = feval(class(s),sloop);
     pout = zeros(1,param_keep(length(param_keep)));
     eout = zeros(1,param_keep(length(param_keep)));
-        
+       
     for h = 1:param_keep(length(param_keep))
         index = (find(param_keep == h));
         if length(index) == 1
@@ -56,7 +58,7 @@ for il=1:length(x_per_spec)
         end
     end
     
-    vout(il) = specfit(pout,eout,w.func,dpin,sout(il).ident,w.pnames);
+    vout(il) = specfit(pout,eout,w.func,dout,sout(il).ident,w.pnames);
 %         results = struct('pvals',p,'evals',sig,'func',func,'pnames',pnames,'chisq',ChiSq,'rsq',RSq,'notfixed',notfixed);
 %         fitdata(il) = specfit(results);
     sout(il) = sout(il).setfitdata(vout(il));

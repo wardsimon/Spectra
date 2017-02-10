@@ -1,6 +1,7 @@
-function r=combine(varargin)
+function r = combine_legacy(varargin)
+% Combine one or more spec1d objects with a given tolerance. - Legacy
 %
-% function r=combine(method,toll,s1,s2,....sn)
+% r = COMBINE_LEGACY(method,toll,s1,s2,....sn)
 %
 % @SPEC1D/COMBINE function to combine two or more spectra. 
 %
@@ -19,8 +20,11 @@ function r=combine(varargin)
 % Example: 
 % Combine s1,s2 and s3 when x values differ by less than 0.01.
 % >r=combine('mean',0.01,s1,s2,s3)
-%
+% 
+% This function was written by:
 % DFM 1.4.98, HMR, NBC, BHL 20.11.2000
+%
+
 x=[];
 y=[];
 e=[];

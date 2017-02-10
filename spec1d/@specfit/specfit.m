@@ -136,9 +136,9 @@ classdef specfit
         function obj = setFitdata(obj,varargin)
             f = fieldnames(obj.fitdata);
             for i = 1:2:length(varargin)
-               if strcmp(varargin{i},f)
+               if any(strcmp(varargin{i},f))
                    try
-                       obj.(varargin{i}) = varargin{i+1};
+                       obj.fitdata.(varargin{i}) = varargin{i+1};
                    catch
                       warning('Can not set property: %s',varargin{i}) 
                    end
