@@ -1,4 +1,4 @@
-function [s_out, pout, dpin] = multifit_ini(s,pin,flag,sep)
+function varargout = multifit_ini(s,pin,flag)
 %% Multifit initialisation procedure
 % s = arrray of spec1d objects
 % pin = parameters for fitting
@@ -21,6 +21,14 @@ global  x_per_spec param_keep
 %      ones. Also, memorize the number of points per spec1d file so that
 %      this operation stays reversible!
 
+if nargin == 2 && isa(pin,'specfit')
+   f_in = pin;
+   pin = f_in.pvals;
+   flag = f_in.notfixed;
+else
+    f_in = [];
+end
+
 x_per_spec = zeros(1,length(s));
 
 x = []; y = []; e = [];
@@ -38,11 +46,35 @@ for il = 1:length(s)
     e((length(e)+1):length(e)+length(eil)) = eil(:);
 end
 
-s_out = s(1);
+% Handle the basic data.
+s_out = s(1).copy;
 s_out.x = x;
 s_out.y = y;
 s_out.e = e;
 s_out.yfit = [];
+
+% This deals with additional data in each spectra.
+add_dat = {s.userdata};
+for i = 1:length(add_dat)
+    add_dat{i} = rmfield(add_dat{i},'rind');
+    if isfield(add_dat{i},'combine')
+        if i == 1
+            ns = mergestruct(rmfield(add_dat{i},'combine'),add_dat{i}.combine);
+        else
+            f = fieldnames(add_dat{i}.combine);
+           for j = 1:length(f)
+               if isfield(ns,f{j})
+                    ns.(f{j}) = vertcat(ns.(f{j}),add_dat{i}.combine.(f{j}));
+               else
+                   ns.(f{j}) = add_dat{i}.combine.(f{j});
+               end
+           end
+        end
+    end
+end
+ns.rind = s(1).userdata.rind;
+s_out.userdata = ns;
+
 s_out = feval(class(s(1)),s_out);
 
 %---- Take care of the parameters!
@@ -81,3 +113,21 @@ for j = 1:length(dpin_old)
     end
 end
 
+if ~isempty(f_in)
+    f_in = f_in.copy;
+    f_in.specID = s_out.ident;
+    f_in.pvals = pout;
+    f_in.evals = nan(size(pout));
+    f_in.notfixed = dpin;
+    f_in.userdata.param_keep = param_keep;
+    f_in.userdata.x_per_spec = x_per_spec;
+end
+
+if nargout == 2
+    varargout{1} = s_out;
+    varargout{2} = f_in;
+else
+    varargout{1} = s_out;
+    varargout{2} = pout;
+    varargout{3} = dpin;
+end

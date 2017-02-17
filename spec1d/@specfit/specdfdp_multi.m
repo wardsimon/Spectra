@@ -28,9 +28,9 @@ function f_in = specdfdp_multi (f_in, s_in)
     
     global param_keep x_per_spec multifit_ind
     
-    if isfield(s_in.userdata,'x_per_spec')
-        x_per_spec = s_in.userdata.x_per_spec;
-        param_keep = s_in.userdata.param_keep;
+    if isfield(f_in.userdata,'x_per_spec')
+        x_per_spec = f_in.userdata.x_per_spec;
+        param_keep = f_in.userdata.param_keep;
         multifit_ind = s_in.userdata.multifit_ind;
     else
         x_per_spec = [];
@@ -160,7 +160,7 @@ function f_in = specdfdp_multi (f_in, s_in)
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                             multifit_ind = ind;
-                            f1(ind) = feval(func,x(ind),p_new);
+                            f2(ind) = feval(func,x(ind),p_new);
                         end
                         prt(:, par_ind) = (f1 - f2) / min_del(par_ind);
                     end
@@ -213,7 +213,7 @@ function f_in = specdfdp_multi (f_in, s_in)
                             for i = 1:length(x_per_spec)
                                 [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                                 multifit_ind = ind;
-                                f1(ind) = feval(func,x(ind),p_new);
+                                f2(ind) = feval(func,x(ind),p_new);
                             end
                             prt((lo_ind:ma_ind), jjj) = (f1(lo_ind:ma_ind) - f2(lo_ind:ma_ind)) / min_del(jjj);
                         end

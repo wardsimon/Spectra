@@ -1,4 +1,4 @@
-function [y, name, pnames, pin] = ResCalFit(x,p,flag)
+function [y, name, pnames, pin] = ResCalFit(x,p,flag,add_data)
     %% ResCalFit function [y, name, pnames, pin] = ResCalFit(x,p,flag)
     % For fitting triple-axis data using ResLibCal as a back-end.
     % S(Q,w) is convoluted with the 4D resolution function.
@@ -18,7 +18,7 @@ function [y, name, pnames, pin] = ResCalFit(x,p,flag)
         runGPU = sdext.getpref('gpuArray').val;
     end
     
-    if nargin == 2;
+    if nargin == 2 || ((nargin == 3) && isstruct(flag))
         % Check to see if the fit has been initialised
         if isempty(ResFitScn)
             error('The fitting needs to be intitialised with ResCalFit_ini');
