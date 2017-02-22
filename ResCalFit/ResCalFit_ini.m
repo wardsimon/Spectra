@@ -93,8 +93,8 @@ else
     return
 end
 
-% Fill in t he scan with the correct Q points and re-compute
-for i = 1:length(ResFitScn);
+% Fill in the scan with the correct Q points and re-compute
+for i = 1:length(ResFitScn)
     ResFitScn(i).EXP.QH = Q(i,1); ResFitScn(i).ResCal.QH = Q(i,1);
     ResFitScn(i).EXP.QK = Q(i,2); ResFitScn(i).ResCal.QK = Q(i,2);
     ResFitScn(i).EXP.QL = Q(i,3); ResFitScn(i).ResCal.QL = Q(i,3);

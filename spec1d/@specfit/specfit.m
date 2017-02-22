@@ -2,13 +2,17 @@ classdef specfit
     %SPECFIT Summary of this class goes here
     %   Detailed explanation goes here
     
+    properties (Dependent)
+            pvals
+    end
+    
     properties
-        pvals
         evals
         func = '';
         pnames = {};
         userdata
         notfixed = true(0,0);
+        parser
     end
     
     properties (SetAccess=protected)
@@ -22,6 +26,7 @@ classdef specfit
     
     properties(Hidden=true)
         specID
+        p_vals
     end
     
     properties (SetAccess=immutable,Hidden=true)
@@ -34,12 +39,12 @@ classdef specfit
                 return
             elseif nargin == 3
                 obj.func = varargin{1};
-                obj.pvals = varargin{2};
+                obj.p_vals = varargin{2};
                 obj.evals = nan(size(obj.pvals));
                 obj.notfixed = varargin{3};
             elseif nargin >= 4
                 % Fill out the basics for creating a fit object.
-                obj.pvals = varargin{1};
+                obj.p_vals = varargin{1};
                 obj.evals = varargin{2};
                 obj.func = varargin{3};
                 obj.notfixed = varargin{4};
@@ -110,6 +115,34 @@ classdef specfit
             value = sum(((s.y-s.yfit)./s.e).^2 )/v;
         end
         
+        function p = get.pvals(obj)
+            if ~isstruct(obj.p_vals)
+                p = obj.p_vals;
+            else
+                if ~isempty(obj.parser)
+                    p = [];
+                    for i = 1:length(obj.parser) 
+                        p = vertcat(p,reshape(eval(sprintf('obj.p_vals.%s',obj.parser{i})),[],1));
+                    end
+                else
+                    p = 'This is a structure, please define a parser';
+                end
+            end
+        end
+        
+        function obj = set.pvals(obj,vals)
+            if ~isempty(obj.parser)
+                offset = 1;
+                for i = 1:length(obj.parser)
+                    l = length(eval(sprintf('obj.p_vals.%s',obj.parser{i})));
+                    eval(sprintf('obj.p_vals.%s = vals(%i:%i)',obj.parser{i},offset,offset+l-1));
+                    offset = offset + l;
+                end
+            else
+                obj.p_vals = vals;
+            end
+        end
+        
         function value = get.rsq(obj)
             value = NaN;
             if isempty(obj.pvals) || isempty(obj.notfixed)
@@ -146,10 +179,20 @@ classdef specfit
             end
         end
         
+        function len = lengthP(obj)
+            if isempty(obj.parser)
+                len = length(obj.pvals);
+            else
+                len = 0;
+                for i = 1:length(obj.parser)
+                    l = length(eval(sprintf('obj.p_vals.%s',obj.parser{i})));
+                    len = len + l;
+                end
+            end
+        end
     end
     
     methods (Hidden=true)
-        
         function obj2 = copy(obj)
             obj2 = specfit();
             f = properties(obj);
@@ -158,6 +201,8 @@ classdef specfit
                     obj2.(f{i}) = obj.(f{i});
                 end
             end
+            obj2.p_vals = obj.p_vals;
+            obj2.specID = obj.specID;
         end
     end
 end

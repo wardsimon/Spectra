@@ -158,7 +158,51 @@ niter = f_in.fitdata.MaxIter;
 
 dpin = f_in.notfixed;
 dp    = -(dpin>0)*f_in.fitdata.TolX;
-F = f_in.func;
+F_in = f_in.func;
+
+add_dat = s.userdata;
+add_dat = rmfield(add_dat,'rind');
+if isempty(fieldnames(add_dat)) 
+    add_dat = [];
+end
+if nargin(F_in) > 2
+    % Check for m-fit crazyness....
+    try
+        mf_f = 0;
+        [~] = feval(F_in,s.x(:),f_in.pvals(:),struct());
+    catch ME
+       er = 'Undefined function ''eq'' for input arguments of type ''struct''.'; 
+       if strmatch(ME.message,er)
+           mf_f = 1;
+       else
+           mf_f = 0;
+       end
+    end
+    % Use a value for the flag..
+    if ischar(F_in)
+        if mf_f
+            F = F_in;
+            if ~isempty(add_dat)
+                warning('This is a m-fit function and will not work with additional data. Please try modernising it')
+            end
+        else
+            F = @(varargin) feval(F_in,varargin{:});
+        end
+    else
+        if mf_f
+            F = F_in;
+            if ~isempty(add_dat)
+                warning('This is a m-fit function and will not work with additional data. Please try modernising it')
+            end
+        else
+            F = @(varargin) F_in(varargin{:});
+        end
+    end
+else
+    mf_f = 1;
+    add_dat = [];
+    F = F_in;
+end
 
 %%
 x = s.x(:);
@@ -274,14 +318,23 @@ end
 %%
 p = pin;
 if isempty(x_per_spec_local)
-    f = feval(F,x,p);
+    if mf_f
+        f = feval(F,x,p);
+    else
+        f = feval(F,x,p,add_dat);
+    end
     f = f(:);
 else
     f = zeros(sum(x_per_spec_local),1);
     for i = 1:length(x_per_spec_local)
         [p_new, ~, ind] = multifitp2p(p,dpin,i);
         multifit_ind = ind;
-        f(ind) = feval(F,x(ind),p_new);
+        add_dat.multifit_ind = ind;
+        if mf_f
+            f(ind) = feval(F,x(ind),p_new);
+        else
+            f(ind) = feval(F,x(ind),p_new,add_dat);
+        end
     end
 end
 fbest = f;
@@ -310,16 +363,18 @@ nz = eps; % This is arbitrary. Constraint fuction will be regarded as
 % <= zero if less than nz.
 %% do iterations
 %%
+add_dat.mf_f = mf_f;
 for iter = 1:niter
     iter_l = iter;
+    add_dat.iter_l = iter_l;
     c_act = mc.' * p + vc < nz; % index of active constraints
     mca   = mc(:, c_act);
     %     vca = vc(c_act);
     mcat  = mca.';
     nrm   = zeros (1, n);
     pprev = f_in.pvals;
-    prt   = feval(dFdp,x,fbest,p,dp,F,bounds);
-    if any(isnan(prt(:)));
+    prt   = feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
+    if any(isnan(prt(:)))
         error('Functional pin differential is NaN. Somethings gone wrong!')
     end
     r = wt.*(y-fbest);
@@ -406,14 +461,23 @@ for iter = 1:niter
             % change
             p = chg+pprev;
             if isempty(x_per_spec_local)
-                f = feval(F,x,p);
+                if mf_f
+                    f = feval(F,x,p);
+                else
+                    f = feval(F,x,p,add_dat);
+                end
                 f = f(:);
             else
                 f = zeros(sum(x_per_spec_local),1);
                 for i = 1:length(x_per_spec_local)
                     [p_new, ~, ind] = multifitp2p(p,dpin,i);
                     multifit_ind = ind;
-                    f(ind) = feval(F,x(ind),p_new);
+                    add_dat.multifit_ind = ind;
+                    if mf_f
+                        f(ind) = feval(F,x(ind),p_new);
+                    else
+                        f(ind) = feval(F,x(ind),p_new,add_dat);
+                    end
                 end
             end
             %                 r=wt.*(y-f);
@@ -435,7 +499,7 @@ for iter = 1:niter
     %% printf ('epsL no.: %i\n', jjj); % for testing
     epsLlast = epsL;
     if (verbose)
-        feval(dFdp,x,fbest,p,dp,F,bounds);
+        feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
     end
     if (ss<eps)
         break;
@@ -490,7 +554,7 @@ end
 
 %% CALC VARIANCE COV MATRIX AND CORRELATION MATRIX OF PARAMETERS
 %% re-evaluate the Jacobian at optimal values
-jac = feval(dFdp,x,fbest,p,dp,F,bounds);
+jac   = feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
 msk = dp ~= 0;
 n = sum(msk);           % reduce n to equal number of estimated parameters
 jac = jac(:, msk);    % use only fitted parameters
@@ -647,7 +711,7 @@ end
 %% if someone has asked for it, let them have it
 %%
 if (verbose)
-    feval(dFdp,x,fbest,p,dp,F,bounds);
+    jac
     fprintf(' Least Squares Estimates of Parameters after %i itterations\n',iter)
     disp(p.')
     disp(' Correlation matrix of parameters estimated')

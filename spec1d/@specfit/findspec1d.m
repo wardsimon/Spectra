@@ -7,9 +7,12 @@ s = [];
 for i = 1:length(v)
     temp = evalin('base',sprintf('isa(%s,''spec1d'')',v{i})); 
     if temp
-        s = evalin('base',sprintf('%s',v{i})); 
-        if any(s.findID(id))
-            return
+        s_in = evalin('base',sprintf('%s',v{i})); 
+        for j = 1:length(s_in)
+            if s_in(j).findID(id)
+                s = s_in(j);
+                return
+            end
         end
     end; 
 end

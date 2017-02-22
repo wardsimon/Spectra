@@ -79,7 +79,7 @@ else
     fcp = varargin{1};
 end
 p.addParamValue('bounds',[-Inf(length(pin),1) Inf(length(pin),1)],@(x) (size(x,1)==length(pin) & size(x,2)==2) | iscell(x))
-p.addParamValue('dfdp','specdfdp_multi',@(x) ischar(x) | isa(x,'function_handle'))
+p.addParamValue('dfdp','specdfdp_multi2',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('confidence',0.95,@(x) isnumeric(x) & length(x)==1 & x>0 & x<1)
 p.addParamValue('inequc',{zeros(length(pin),0) zeros(0,1)},@iscell)
 %     p.addParamValue('sep',cell(length(s1),1), @iscell)
@@ -141,12 +141,15 @@ if options.multifit
     if options.verbose
         warning('spec1d:fits:Multifit','This fit is a multifit.')
     end
-    [s1, pin, notfixed] = multifit_ini(s1,pin,notfixed);
-    f_in = f_in.copy;
-    f_in.specID = s1.ident;
-    f_in.pvals = pin;
-    f_in.evals = nan(size(pin));
-    f_in.notfixed = notfixed;
+%     [s1, pin, notfixed] = multifit_ini(s1,pin,notfixed);
+%     f_in = f_in.copy;
+%     f_in.specID = s1.ident;
+%     f_in.pvals = pin;
+%     f_in.evals = nan(size(pin));
+%     f_in.notfixed = notfixed;
+    [s1, f_in] = multifit_ini(s1,f_in);
+    pin = f_in.pvals;
+    notfixed = f_in.notfixed;
     options.inequc = {zeros(length(pin),0) zeros(0,1)};
     if iscell(options.bounds)
         options.bounds = multifit_bounds(options.fixed,options.bounds);

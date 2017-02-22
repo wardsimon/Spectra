@@ -1,4 +1,4 @@
-function prt = specdfdp_multi (x, f, p, dp, func, bounds)
+function prt = specdfdp_multi2 (x, f, p, dp, func, bounds,add_dat)
 % numerical partial derivatives (Jacobian) df/dp for use with leasqr
 % --------INPUT VARIABLES---------
 % x=vec or matrix of indep var(used as arg to func) x=[x0 x1 ....]
@@ -19,6 +19,9 @@ function prt = specdfdp_multi (x, f, p, dp, func, bounds)
 
 global param_keep x_per_spec multifit_ind
 
+mf_f = add_dat.mf_f;
+add_dat = rmfield(add_dat,'mf_f');
+
 if isempty(x_per_spec)
     m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
     n=length(p);      %dimensions
@@ -34,54 +37,6 @@ if isempty(x_per_spec)
     del(idx) = abs (del(idx)); % not for one-sided intervals, changed
     % direction of intervals could change
     % behavior of optimization without bounds
-    %         min_del = min (abs (del), bounds(:, 2) - bounds(:, 1));
-    %
-    %         tic
-    %         parallel = 0;
-    %         ps = repmat(p,1,n);
-    %         % We treat the dp < 0 case....
-    %         ps(diag(dp < 0)) = ps(diag(dp < 0)) + del(dp < 0);
-    %         ind = (ps(diag(dp < 0)) < bounds(dp < 0, 1) | ps(diag(dp < 0)) > bounds(dp < 0, 2));
-    %         if any(ind)
-    %             t_del1 = max (bounds(ind, 1) - p(ind), - abs (del(ind)));
-    %             t_del2 = min (bounds(ind, 2) - p(ind), abs (del(ind))); %
-    %             del(-t_del1 > t_del2  & ind) = t_del1;
-    %             del(-t_del1 <= t_del2 & ind) = t_del2;
-    %             ps(diag(ind)) = p(ind) + del(ind);
-    %         end
-    %         % Prepare for dp > 0
-    %         f2 = f;
-    %         ind1 = (p(:) - del(:) < bounds(:, 1)) & (dp > 0);
-    %         ind2 = (p(:) + del(:) < bounds(:, 2)) & (dp > 0);
-    %         tp = ps;
-    %         ps(diag(ind1)) = bounds(ind1,1) + min_del(ind1);
-    %         tp(diag(ind1)) = bounds(ind1,1);
-    %         ps(diag(ind2)) = bounds(ind2,2);
-    %         tp(diag(ind2)) = ps(diag(ind2)) - min_del(ind2);
-    %         ps(diag(~(ind1 | ind2) & (dp > 0))) = p(~(ind1 | ind2) & (dp > 0)) + del(~(ind1 | ind2) & (dp > 0));
-    %         tp(diag(~(ind1 | ind2) & (dp > 0))) = p(~(ind1 | ind2) & (dp > 0)) - del(~(ind1 | ind2) & (dp > 0));
-    %         min_del(~(ind1 | ind2) & (dp > 0)) = 2*min_del(~(ind1 | ind2) & (dp > 0));
-    %         if parallel
-    %
-    %         else
-    %             % !!! Need to separate !!!
-    %             prt(:,dp < 0) = cell2mat(cellfun(@(p_in,d_in) (feval(func,x,p_in)-f2)/d_in,mat2cell(ps(dp < 0,:)',ones(sum(dp < 0),1),n),mat2cell(del(dp < 0),ones(size(p(dp < 0))),1),'UniformOutput',0)');
-    %             prt(:,dp > 0) = cell2mat(cellfun(@(p_in,t_in,d_in) (feval(func,x,p_in)-feval(func,x,t_in))/d_in,mat2cell(ps(dp > 0,:)',ones(sum(dp > 0),1),n),mat2cell(tp(dp > 0,:)',ones(sum(dp > 0),1),n),mat2cell(min_del((dp > 0)),ones(size(p(dp > 0))),1),'UniformOutput',0)');
-    %
-    %             for j = 1:n
-    %                 if dp(j) < 0
-    % %                     f1 = feval(func,x,ps(:,j));
-    % %                     prt(:, j) = (f1(:) - f2(:)) / del(j);
-    %                 elseif dp(j) > 0;
-    %                     f1 = feval(func,x,ps(:,j));
-    %                     f2 = feval(func,x,tp(:,j));
-    %                     prt(:, j) = (f1(:) - f2(:)) / min_del(j);
-    %                 end
-    %             end
-    %         end
-    %         t(1) = toc;
-    %         prt2 = prt;
-    %
     prt = zeros(m,n);       % initialise Jacobian to Zero
     del = dp .* p; %cal delx=fract(dp)*param value(p)
     idx = p == 0;
@@ -92,7 +47,6 @@ if isempty(x_per_spec)
     % behavior of optimization without bounds
     min_del = min (abs (del), bounds(:, 2) - bounds(:, 1));
     
-    %         tic
     for j=1:n
         ps = p;
         if (dp(j)~=0)
@@ -110,7 +64,11 @@ if isempty(x_per_spec)
                     end
                     ps(j) = p(j) + del(j);
                 end
-                f1 = feval(func, x, ps);
+                if mf_f
+                    f1 = feval(func,x,ps);
+                else
+                    f1 = feval(func,x,ps,add_dat);
+                end
                 prt(:, j) = (f1(:) - f) / del(j);
             else
                 if (p(j) - del(j) < bounds(j, 1))
@@ -124,14 +82,21 @@ if isempty(x_per_spec)
                     tp = p(j) - del(j);
                     min_del(j) = 2 * del(j);
                 end
-                f1 = feval (func, x, ps);
+                if mf_f
+                    f1 = feval(func,x,ps);
+                else
+                    f1 = feval(func,x,ps,add_dat);
+                end
                 ps(j) = tp;
-                f2 = feval (func, x, ps);
+                if mf_f
+                    f2 = feval(func,x,ps);
+                else
+                    f2 = feval(func,x,ps,add_dat);
+                end
                 prt(:, j) = (f1(:) - f2(:)) / min_del(j);
             end
         end
     end
-    %         t(2) = toc;
 else
     m=size(x,1); if (m==1), m=size(x,2); end  %# PAK: in case #cols > #rows
     n=length(p);      %dimensions
@@ -176,7 +141,12 @@ else
                     for i = 1:length(x_per_spec)
                         [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                         multifit_ind = ind;
-                        f1(ind) = feval(func,x(ind),p_new);
+                        add_dat.multifit_ind = ind;
+                        if mf_f
+                            f1(ind) = feval(func,x(ind),p_new);
+                        else
+                            f1(ind) = feval(func,x(ind),p_new,add_dat);
+                        end
                     end
                     prt(:, par_ind) = (f1 - f) / del(1);
                 else
@@ -195,14 +165,24 @@ else
                     for i = 1:length(x_per_spec)
                         [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                         multifit_ind = ind;
-                        f1(ind) = feval(func,x(ind),p_new);
+                        add_dat.multifit_ind = ind;
+                        if mf_f
+                            f1(ind) = feval(func,x(ind),p_new);
+                        else
+                            f1(ind) = feval(func,x(ind),p_new,add_dat);
+                        end
                     end
                     ps(par_ind) = tp;
                     f2 = zeros(sum(x_per_spec),1);
                     for i = 1:length(x_per_spec)
                         [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                         multifit_ind = ind;
-                        f2(ind) = feval(func,x(ind),p_new);
+                        add_dat.multifit_ind = ind;
+                        if mf_f
+                            f2(ind) = feval(func,x(ind),p_new);
+                        else
+                            f2(ind) = feval(func,x(ind),p_new,add_dat);
+                        end
                     end
                     prt(:, par_ind) = (f1 - f2) / min_del(par_ind);
                 end
@@ -229,7 +209,12 @@ else
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                             multifit_ind = ind;
-                            f1(ind) = feval(func,x(ind),p_new);
+                            add_dat.multifit_ind = ind;
+                            if mf_f
+                                f1(ind) = feval(func,x(ind),p_new);
+                            else
+                                f1(ind) = feval(func,x(ind),p_new,add_dat);
+                            end
                         end
                         prt((lo_ind:ma_ind), jjj) = (f1(lo_ind:ma_ind) - f(lo_ind:ma_ind)) / del(jj);
                     else
@@ -248,14 +233,24 @@ else
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                             multifit_ind = ind;
-                            f1(ind) = feval(func,x(ind),p_new);
+                            add_dat.multifit_ind = ind;
+                            if mf_f
+                                f1(ind) = feval(func,x(ind),p_new);
+                            else
+                                f1(ind) = feval(func,x(ind),p_new,add_dat);
+                            end
                         end
                         ps(jjj) = tp;
                         f2 = zeros(sum(x_per_spec),1);
                         for i = 1:length(x_per_spec)
                             [p_new, ~, ind] = multifitp2p(ps,zeros(size(ps)),i);
                             multifit_ind = ind;
-                            f2(ind) = feval(func,x(ind),p_new);
+                            add_dat.multifit_ind = ind;
+                            if mf_f
+                                f2(ind) = feval(func,x(ind),p_new);
+                            else
+                                f2(ind) = feval(func,x(ind),p_new,add_dat);
+                            end
                         end
                         prt((lo_ind:ma_ind), jjj) = (f1(lo_ind:ma_ind) - f2(lo_ind:ma_ind)) / min_del(jjj);
                     end
