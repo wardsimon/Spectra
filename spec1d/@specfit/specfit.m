@@ -3,7 +3,7 @@ classdef specfit
     %   Detailed explanation goes here
     
     properties (Dependent)
-            pvals
+        pvals
     end
     
     properties
@@ -193,16 +193,19 @@ classdef specfit
     end
     
     methods (Hidden=true)
-        function obj2 = copy(obj)
-            obj2 = specfit();
+        function obj_r = copy(obj,obj2)
+            obj_r = feval(class(obj));
+            if nargin==2
+                obj = obj2;
+            end
             f = properties(obj);
             for i = 1:length(f)
                 try
-                    obj2.(f{i}) = obj.(f{i});
+                    obj_r.(f{i}) = obj.(f{i});
                 end
             end
-            obj2.p_vals = obj.p_vals;
-            obj2.specID = obj.specID;
+            obj_r.p_vals = obj.p_vals;
+            obj_r.specID = obj.specID;
         end
     end
 end

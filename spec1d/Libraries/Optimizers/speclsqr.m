@@ -1,4 +1,4 @@
-function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std,f_in] = speclsqr(s,f_in,options)
+function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2,ra2,std,f_in] = speclsqr(s_in,f_in,options)
 % Levenberg-Marquardt nonlinear regression of f(x,p) to y(x).
 %%
 %function [f,p,cvg,iter,corp,covp,covr,stdresid,Z,r2]=
@@ -157,10 +157,12 @@ stol  = f_in.fitdata.TolGradCon;
 niter = f_in.fitdata.MaxIter;
 
 dpin = f_in.notfixed;
-dp    = -(dpin>0)*f_in.fitdata.TolX;
+dp    = -(f_in.notfixed>0)*f_in.fitdata.TolX;
 F_in = f_in.func;
 
-add_dat = s.userdata;
+f_out = f_in.copy;
+
+add_dat = s_in.userdata;
 add_dat = rmfield(add_dat,'rind');
 if isempty(fieldnames(add_dat)) 
     add_dat = [];
@@ -169,7 +171,7 @@ if nargin(F_in) > 2
     % Check for m-fit crazyness....
     try
         mf_f = 0;
-        [~] = feval(F_in,s.x(:),f_in.pvals(:),struct());
+        [~] = feval(F_in,s_in.x(:),f_out.pvals(:),struct());
     catch ME
        er = 'Undefined function ''eq'' for input arguments of type ''struct''.'; 
        if strmatch(ME.message,er)
@@ -205,11 +207,11 @@ else
 end
 
 %%
-x = s.x(:);
-y   = s.y(:);
-wt  = 1./s.e(:);
+x = s_in.x(:);
+y   = s_in.y(:);
+wt  = 1./s_in.e(:);
 try
-    rind = s.userdata.rind;
+    rind = s_in.userdata.rind;
     x = x(rind);
     y   = y(rind);
     wt  = wt(rind);
@@ -219,7 +221,7 @@ end
 
 
 wt  = wt(:);
-pin = f_in.pvals(:);
+pin = f_out.pvals(:);
 dp  = dp(:); %change all vectors to columns
 
 
@@ -317,11 +319,12 @@ end
 %% set up for iterations
 %%
 p = pin;
+f_out = f_in.copy;
 if isempty(x_per_spec_local)
     if mf_f
-        f = feval(F,x,p);
+        f = feval(F,x,f_out.p_vals);
     else
-        f = feval(F,x,p,add_dat);
+        f = feval(F,x,f_out.p_vals,add_dat);
     end
     f = f(:);
 else
@@ -329,23 +332,18 @@ else
     for i = 1:length(x_per_spec_local)
         [p_new, ~, ind] = multifitp2p(p,dpin,i);
         multifit_ind = ind;
+        f_out.pvals = p_new;
         add_dat.multifit_ind = ind;
         if mf_f
-            f(ind) = feval(F,x(ind),p_new);
+            f(ind) = feval(F,x(ind),f_out.p_vals);
         else
-            f(ind) = feval(F,x(ind),p_new,add_dat);
+            f(ind) = feval(F,x(ind),f_out.p_vals,add_dat);
         end
     end
 end
 fbest = f;
-f_in.pvals = p;
 
 ss = sum(feval(f_in.fitdata.CriteriaFcn,y,1./wt,f));
-%     r = wt.*(y-f);
-%     if (~isreal (r))
-%         error ('Weighted residuals are not real');
-%     end
-%     ss = r.' * r;
 
 sbest = ss;
 chgprev = Inf*ones(n,1);
@@ -372,8 +370,8 @@ for iter = 1:niter
     %     vca = vc(c_act);
     mcat  = mca.';
     nrm   = zeros (1, n);
-    pprev = f_in.pvals;
-    prt   = feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
+    pprev = f_out.pvals(:);
+    prt   = feval(dFdp,s_in,f_in,fbest,add_dat);
     if any(isnan(prt(:)))
         error('Functional pin differential is NaN. Somethings gone wrong!')
     end
@@ -460,11 +458,12 @@ for iter = 1:niter
             % function if there is some non-miniscule
             % change
             p = chg+pprev;
+            f_out.pvals = p;
             if isempty(x_per_spec_local)
                 if mf_f
-                    f = feval(F,x,p);
+                    f = feval(F,x,f_out.p_vals);
                 else
-                    f = feval(F,x,p,add_dat);
+                    f = feval(F,x,f_out.p_vals,add_dat);
                 end
                 f = f(:);
             else
@@ -472,11 +471,12 @@ for iter = 1:niter
                 for i = 1:length(x_per_spec_local)
                     [p_new, ~, ind] = multifitp2p(p,dpin,i);
                     multifit_ind = ind;
+                    f_out.pvals = p_new;
                     add_dat.multifit_ind = ind;
                     if mf_f
-                        f(ind) = feval(F,x(ind),p_new);
+                        f(ind) = feval(F,x(ind),f_out.p_vals);
                     else
-                        f(ind) = feval(F,x(ind),p_new,add_dat);
+                        f(ind) = feval(F,x(ind),f_out.p_vals,add_dat);
                     end
                 end
             end
@@ -485,13 +485,13 @@ for iter = 1:niter
             %                     error ('weighted residuals are not real');
             %                 end
             %                 ss = r.' * r;
-            ss = sum(feval(f_in.fitdata.CriteriaFcn,y,1./wt,f));
+            ss = sum(feval(f_out.fitdata.CriteriaFcn,y,1./wt,f));
             if (ss<sbest)
-                f_in.pvals=p;
-                fbest=f;
-                sbest=ss;
+                f_in.pvals = f_out.pvals;
+                fbest = f;
+                sbest = ss;
             end
-            if (ss<=sgoal)
+            if (ss <= sgoal)
                 break;
             end
         end                          %---
@@ -499,23 +499,23 @@ for iter = 1:niter
     %% printf ('epsL no.: %i\n', jjj); % for testing
     epsLlast = epsL;
     if (verbose)
-        feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
+        feval(dFdp,s_in,f_in,fbest,add_dat);
     end
-    if (ss<eps)
+    if (ss < eps)
         break;
     end
     aprec=abs(pprec.*f_in.pvals);
     %% [aprec, chg, chgprev]
     if (all(abs(chg) < aprec) && all(abs(chgprev) < aprec))
-        cvg=1;
+        cvg = 1;
         if (verbose)
             fprintf('Parameter changes converged to specified precision\n');
         end
         break;
     else
-        chgprev=chg;
+        chgprev = chg;
     end
-    if (ss>sgoal)
+    if (ss > sgoal)
         break;
     end
 end
@@ -554,7 +554,7 @@ end
 
 %% CALC VARIANCE COV MATRIX AND CORRELATION MATRIX OF PARAMETERS
 %% re-evaluate the Jacobian at optimal values
-jac   = feval(dFdp,x,fbest,p,dp,F,bounds,add_dat);
+jac   = feval(dFdp,s_in,f_in,fbest,add_dat);
 msk = dp ~= 0;
 n = sum(msk);           % reduce n to equal number of estimated parameters
 jac = jac(:, msk);    % use only fitted parameters

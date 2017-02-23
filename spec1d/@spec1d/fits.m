@@ -70,7 +70,7 @@ else
     sf = false;
 end
 p.addRequired('func',@(x) ischar(x) || isa(x,'function_handle'))
-p.addRequired('pin',@(x) isnumeric(x) | iscell(x))
+p.addRequired('pin',@(x) isnumeric(x) | iscell(x) | isstruct(x))
 p.addRequired('fixed',@(x) isnumeric(x) | islogical(x))
 fcp = [];
 if length(varargin) ~= 1
@@ -79,7 +79,7 @@ else
     fcp = varargin{1};
 end
 p.addParamValue('bounds',[-Inf(length(pin),1) Inf(length(pin),1)],@(x) (size(x,1)==length(pin) & size(x,2)==2) | iscell(x))
-p.addParamValue('dfdp','specdfdp_multi2',@(x) ischar(x) | isa(x,'function_handle'))
+p.addParamValue('dfdp','specdfdp_multi3',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('confidence',0.95,@(x) isnumeric(x) & length(x)==1 & x>0 & x<1)
 p.addParamValue('inequc',{zeros(length(pin),0) zeros(0,1)},@iscell)
 %     p.addParamValue('sep',cell(length(s1),1), @iscell)
@@ -88,6 +88,7 @@ p.addParamValue('window',0,@(x) (isnumeric(x) && length(x)==2) || all(cellfun(@l
 p.addParamValue('parallel',0,@(x) x==0 | x == 1)
 p.addParamValue('criteria','least_square',@(x) ischar(x) | isa(x,'function_handle'))
 p.addParamValue('verbose',0,@(x) isnumeric(x) | islogical(x))
+p.addParamValue('parser',{},@iscell)
 if length(varargin) ~= 1
     p.parse(s1,func,pin,notfixed,varargin{:});
 else
@@ -128,6 +129,16 @@ end
 
 
 f_in = specfit(func,pin,notfixed);
+f_in.parser = options.parser;
+if isstruct(pin)
+   len = f_in.lengthP();
+   if length(options.inequc{1}) ~= len
+       options.inequc = {zeros(len,0), zeros(0,1)};
+   end
+   if size(options.bounds,1) ~=len
+       options.bounds = [-Inf(len,1), Inf(len,1)];
+   end
+end
 f_in.specID = [s1.ident];
 f_in = f_in.setFitdata('Display',options.verbose,'MaxIter',options.fcp(2),...
                 'TolGradCon',options.fcp(3),'Algorithm',options.optimiser,...
